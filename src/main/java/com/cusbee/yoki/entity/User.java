@@ -1,14 +1,20 @@
 package com.cusbee.yoki.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * 
@@ -21,30 +27,44 @@ import javax.persistence.Table;
 @Entity
 public class User implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@Column(name="name", nullable=false, length=45)
-	private String name;
-	
-	@Column(name="user_type", nullable=false, length=45)
-	@Enumerated(EnumType.STRING)
-	private UserType userType;
-	
-	@Column(name="phone_number", nullable=false, length=13)
-	private String phoneNumber;
-	
-	@Column(name="email", nullable=false, length=50)
-	private String email;
-	
-	@Column(name="password", nullable=false, length=25)
-	private String password;
-	
-	@Column(name="confirm_password", nullable=false, length=25)
-	private String confirmPassword;
+    @Column(name = "id")
+    @GeneratedValue
+    private Long id;
+
+    @Column(name = "username", length = 50, unique = true)
+    private String username;
+
+    @Column(name = "password", length = 100)
+    private String password;
+
+    @Column(name = "firstname", length = 50)
+    private String firstname;
+
+    @Column(name = "lastname", length = 50)
+    private String lastname;
+
+    @Column(name = "email", length = 50)
+    private String email;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
+
+    @Column(name = "lastpasswordresetdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastPasswordResetDate;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
+    private List<Authority> authorities;
 
 	public Long getId() {
 		return id;
@@ -54,36 +74,12 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public UserType getUserType() {
-		return userType;
-	}
-
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -94,12 +90,52 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getConfirmPassword() {
-		return confirmPassword;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-	
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Date getLastPasswordResetDate() {
+		return lastPasswordResetDate;
+	}
+
+	public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+		this.lastPasswordResetDate = lastPasswordResetDate;
+	}
+
+	public List<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
+	}
+    
 }

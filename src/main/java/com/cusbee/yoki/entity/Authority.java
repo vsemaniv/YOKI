@@ -1,0 +1,61 @@
+package com.cusbee.yoki.entity;
+
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+/**
+ * 
+ * @author Dmytro Khodan
+ * @date 28.06.2016
+ * @project: yoki
+ */
+
+@Table(name="authority")
+@Entity
+public class Authority {
+
+	@Id
+	@GeneratedValue
+	private Long id;
+	
+	@Column(name="name", length=50)
+	@Enumerated(EnumType.STRING)
+	private AuthorityName name;
+	
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="authorities")
+	private List<User> users;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public AuthorityName getName() {
+		return name;
+	}
+
+	public void setName(AuthorityName name) {
+		this.name = name;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+	
+}
