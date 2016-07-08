@@ -22,4 +22,14 @@ public class ErrorCodes {
 		int INVALID_PROFILE = 1005;
 	}
 	
+	public interface User {
+		
+		int EMPTY_REQUEST = 2000;
+		int EMPTY_FIELDS = 2001;
+		int ALREADY_EXIST = 2002;
+		int BAD_REQUEST = 2003;
+		int USER_UNVAILABLE = 2004;
+		
+	}
+	
 }

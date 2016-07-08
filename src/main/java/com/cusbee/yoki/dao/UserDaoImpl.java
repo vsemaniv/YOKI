@@ -1,5 +1,7 @@
 package com.cusbee.yoki.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -18,6 +20,17 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public void add(User user) {
 		em.merge(user);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<User> getAll(){
+		return (List<User>) em.createQuery("SELECT u FROM User u").getResultList();
+	}
+
+	@Override
+	public User getById(Long id) {
+		return em.find(User.class, id);
 	}
 
 }

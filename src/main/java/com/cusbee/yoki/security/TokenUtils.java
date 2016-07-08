@@ -9,16 +9,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TokenUtils {
 
-	private final String AUDIENCE_UNKNOWN = "unknown";
-	private final String AUDIENCE_WEB = "web";
 	private final String AUDIENCE_MOBILE = "mobile";
 	private final String AUDIENCE_TABLET = "tablet";
 
@@ -99,17 +95,17 @@ public class TokenUtils {
 		return (lastPasswordReset != null && created.before(lastPasswordReset));
 	}
 
-	private String generateAudience(Device device) {
-		String audience = this.AUDIENCE_UNKNOWN;
-		if (device.isNormal()) {
-			audience = this.AUDIENCE_WEB;
-		} else if (device.isTablet()) {
-			audience = AUDIENCE_TABLET;
-		} else if (device.isMobile()) {
-			audience = AUDIENCE_MOBILE;
-		}
-		return audience;
-	}
+//	private String generateAudience(Device device) {
+//		String audience = this.AUDIENCE_UNKNOWN;
+//		if (device.isNormal()) {
+//			audience = this.AUDIENCE_WEB;
+//		} else if (device.isTablet()) {
+//			audience = AUDIENCE_TABLET;
+//		} else if (device.isMobile()) {
+//			audience = AUDIENCE_MOBILE;
+//		}
+//		return audience;
+//	}
 
 	private Boolean ignoreTokenExpiration(String token) {
 		String audience = this.getAudienceFromToken(token);
@@ -153,7 +149,7 @@ public class TokenUtils {
 		YokiUser user = (YokiUser) userDetails;
 		final String username = this.getUsernameFromToken(token);
 		final Date created = this.getCreatedDateFromToken(token);
-		final Date expiration = this.getExpirationDateFromToken(token);
+//		final Date expiration = this.getExpirationDateFromToken(token);
 		return (username.equals(user.getUsername())
 				&& !(this.isTokenExpired(token)) && !(this
 					.isCreatedBeforeLastPasswordReset(created,

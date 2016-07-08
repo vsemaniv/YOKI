@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			AuthenticationManagerBuilder authenticationManagerBuilder)
 			throws Exception {
 		authenticationManagerBuilder
-				.userDetailsService(this.userDetailsService);
+				.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
