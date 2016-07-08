@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +22,9 @@ public class TokenUtils {
 	private final String AUDIENCE_MOBILE = "mobile";
 	private final String AUDIENCE_TABLET = "tablet";
 
-	@Value("${yoki.token.secret}")
-	private String secret;
+	private static final String SECRET = "sssshhhh!";
 
-	@Value("${yoki.token.expiration}")
-	private String expiration;
+	private final static Long EXPIRATION = 604800L;
 
 	public String getUsernameFromToken(String token) {
 		String username;
@@ -74,7 +73,7 @@ public class TokenUtils {
 	private Claims getClaimsFromToken(String token) {
 		Claims claims;
 		try {
-			claims = Jwts.parser().setSigningKey(this.secret)
+			claims = Jwts.parser().setSigningKey(SECRET)
 					.parseClaimsJws(token).getBody();
 		} catch (Exception e) {
 			claims = null;
@@ -87,7 +86,7 @@ public class TokenUtils {
 	}
 
 	private Date generateExpirationDate() {
-		return new Date(System.currentTimeMillis() + Long.valueOf(this.expiration) * 1000);
+		return new Date(System.currentTimeMillis() + Long.valueOf(EXPIRATION) * 1000);
 	}
 
 	private Boolean isTokenExpired(String token) {
@@ -118,18 +117,17 @@ public class TokenUtils {
 				.equals(audience));
 	}
 
-	public String generateToken(UserDetails userDetails, Device device) {
+	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("sub", userDetails.getUsername());
-		claims.put("audience", this.generateAudience(device));
-		claims.put("created", this.generateCurrentDate());
+		claims.put("created", Calendar.getInstance());
 		return this.generateToken(claims);
 	}
 
 	private String generateToken(Map<String, Object> claims) {
 		return Jwts.builder().setClaims(claims)
 				.setExpiration(this.generateExpirationDate())
-				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
+				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
 	}
 
 	public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {

@@ -3,7 +3,6 @@ package com.cusbee.yoki.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -39,8 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			AuthenticationManagerBuilder authenticationManagerBuilder)
 			throws Exception {
 		authenticationManagerBuilder
-				.userDetailsService(this.userDetailsService).passwordEncoder(
-						passwordEncoder());
+				.userDetailsService(this.userDetailsService);
 	}
 
 	@Bean
@@ -80,12 +78,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.antMatchers("/auth/**").permitAll()
-				.anyRequest().authenticated();
+				.antMatchers("/yoki/**").permitAll();
 		
 		http
 			.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+		
+		// Clear header cashes
+		http.headers().cacheControl();
 	}
 
 }
