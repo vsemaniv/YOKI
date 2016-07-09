@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.cusbee.yoki.utils.DomainBase;
+
 /**
  * 
  * @author Dmytro Khodan
@@ -25,7 +27,7 @@ import javax.persistence.TemporalType;
 
 @Table(name="user")
 @Entity
-public class User implements Serializable {
+public class Account extends DomainBase implements Serializable {
 
 	/**
 	 * 

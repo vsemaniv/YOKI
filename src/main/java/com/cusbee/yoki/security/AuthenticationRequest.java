@@ -14,7 +14,7 @@ public class AuthenticationRequest extends ModelBase implements Serializable {
 		super();
 	}
 
-	public AuthenticationRequest(String username, String password, Device device) {
+	public AuthenticationRequest(String username, String password, String role, Device device) {
 		this.setUsername(username);
 		this.setPassword(password);
 	}

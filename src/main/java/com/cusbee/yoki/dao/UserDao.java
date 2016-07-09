@@ -2,14 +2,14 @@ package com.cusbee.yoki.dao;
 
 import java.util.List;
 
-import com.cusbee.yoki.entity.User;
+import com.cusbee.yoki.entity.Account;
 
 public interface UserDao {
 	
-	void add(User user);
+	void add(Account user);
 	
-	List<User> getAll();
+	List<Account> getAll();
 	
-	User getById(Long id);
+	Account getById(Long id);
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cusbee.yoki.entity.User;
+import com.cusbee.yoki.entity.Account;
 
 @Repository("userDaoImpl")
 @Transactional
@@ -18,19 +18,19 @@ public class UserDaoImpl implements UserDao {
 	private EntityManager em;
 	
 	@Override
-	public void add(User user) {
+	public void add(Account user) {
 		em.merge(user);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<User> getAll(){
-		return (List<User>) em.createQuery("SELECT u FROM User u").getResultList();
+	public List<Account> getAll(){
+		return (List<Account>) em.createQuery("SELECT u FROM User u").getResultList();
 	}
 
 	@Override
-	public User getById(Long id) {
-		return em.find(User.class, id);
+	public Account getById(Long id) {
+		return em.find(Account.class, id);
 	}
 
 }

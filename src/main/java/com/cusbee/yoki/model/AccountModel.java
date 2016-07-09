@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class UserModel {
+public class AccountModel {
 
 	@JsonIgnore
 	private Long id;

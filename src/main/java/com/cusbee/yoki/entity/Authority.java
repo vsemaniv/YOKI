@@ -32,7 +32,7 @@ public class Authority {
 	private AuthorityName name;
 	
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="authorities")
-	private List<User> users;
+	private List<Account> users;
 
 	public Long getId() {
 		return id;
@@ -50,11 +50,11 @@ public class Authority {
 		this.name = name;
 	}
 
-	public List<User> getUsers() {
+	public List<Account> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<Account> users) {
 		this.users = users;
 	}
 	

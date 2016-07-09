@@ -8,10 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.dao.UserDao;
-import com.cusbee.yoki.entity.User;
+import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
-import com.cusbee.yoki.model.UserModel;
+import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.UserRepository;
 import com.cusbee.yoki.utils.AccountOperations;
 import com.cusbee.yoki.utils.ErrorCodes;
@@ -35,12 +35,20 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	/**
+	 * Add new account to database
+	 */
 	@Override
-	public void add(User user) {
+	public void add(Account user) {
 		this.userDao.add(user);
 	}
-
-	public User parse(UserModel request, AccountOperations operation)
+	
+	/**
+	 * Method check request parameters for null pointer
+	 * and if all is clear, in case of OperationStatus
+	 * choose what will do(CREATE account or UPDATE account)
+	 */
+	public Account parse(AccountModel request, AccountOperations operation)
 			throws BaseException {
 
 		if (Objects.isNull(request)) {
@@ -59,7 +67,7 @@ public class UserServiceImpl implements UserService {
 					"Field Email can't be empty");
 		}
 
-		User user = userRepository.findByUsername(request.getUsername());
+		Account user = userRepository.findByUsername(request.getUsername());
 
 		switch (operation) {
 		case CREATE:
@@ -72,7 +80,7 @@ public class UserServiceImpl implements UserService {
 				throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
 						"This email already used");
 			}
-			user = new User();
+			user = new Account();
 			user.setUsername(request.getUsername());
 			user.setPassword(encryptPassword(request.getPassword()));
 			user.setAuthority(request.getAuthority());
@@ -96,26 +104,45 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * method encrypt password before save account in database
+	 * @param password
+	 * @return
+	 */
 	public String encryptPassword(String password) {
 		return passwordEncoder.encode(password);
 	}
 
-	boolean validateAccount(UserModel request) {
+	/**
+	 * Method check if requested email doesn't not exist in database for this moment
+	 * @param request
+	 * @return
+	 */
+	boolean validateAccount(AccountModel request) {
 		return userRepository.validateAccount(request.getEmail()) == null;
 	}
 
+	/**
+	 * Return the list with all accounts
+	 */
 	@Override
-	public List<User> getAll() {
+	public List<Account> getAll() {
 		return this.userDao.getAll();
 	}
 
+	/**
+	 * Return account by requested ID
+	 */
 	@Override
-	public User getById(Long id) {
+	public Account getById(Long id) {
 		return this.userDao.getById(id);
 	}
 
+	/**
+	 * Method block or unblock account
+	 */
 	@Override
-	public void activation(User user, AccountOperations operation)
+	public void activation(Account user, AccountOperations operation)
 			throws BaseException {
 		
 		switch (operation) {
@@ -133,10 +160,22 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * Method check if existing user is enabled(active/unblocked) in database
+	 */
 	@Override
 	public void availability(String username) throws BaseException {
 		if(userRepository.availability(username)==null){
 			throw new ApplicationException(ErrorCodes.User.USER_UNVAILABLE, "User are blocked");
+		}
+	}
+	
+	/**
+	 * Check if reference is not null
+	 */
+	public void isNull(Account user) throws BaseException {
+		if(Objects.isNull(user)){
+			throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "This user is missing");
 		}
 	}
 }

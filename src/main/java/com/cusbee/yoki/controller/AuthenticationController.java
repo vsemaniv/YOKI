@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.security.AuthenticationRequest;
@@ -55,6 +56,7 @@ public class AuthenticationController {
 						authenticationRequest.getPassword()
 					)
 				); 
+ 		//Method checks if user is not blocked
  		userService.availability(authenticationRequest.getUsername());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername()); 
@@ -64,9 +66,7 @@ public class AuthenticationController {
 	
 	@ApiIgnore
 	@RequestMapping(value = "refresh", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AuthenticationResponse> authenticationResponse(HttpServletRequest request) {
-		
 		String token = request.getHeader(TOKEN_HEADER);
 		String username = this.tokenUtils.getUsernameFromToken(token);
 		YokiUser user = (YokiUser) this.userDetailsService.loadUserByUsername(username);
