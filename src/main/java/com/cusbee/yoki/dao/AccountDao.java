@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.cusbee.yoki.entity.Account;
 
-public interface UserDao {
+public interface AccountDao {
 	
 	void add(Account user);
 	

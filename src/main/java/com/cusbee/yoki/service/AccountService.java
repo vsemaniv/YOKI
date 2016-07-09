@@ -7,7 +7,7 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.utils.AccountOperations;
 
-public interface UserService {
+public interface AccountService {
 
 	void add(Account user);
 	

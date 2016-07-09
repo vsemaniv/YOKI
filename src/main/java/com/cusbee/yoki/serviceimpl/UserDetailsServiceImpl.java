@@ -1,4 +1,4 @@
-package com.cusbee.yoki.service;
+package com.cusbee.yoki.serviceimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

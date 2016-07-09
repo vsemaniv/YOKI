@@ -1,4 +1,4 @@
-package com.cusbee.yoki.service;
+package com.cusbee.yoki.serviceimpl;
 
 import java.util.List;
 import java.util.Objects;
@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cusbee.yoki.dao.UserDao;
+import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.UserRepository;
+import com.cusbee.yoki.service.AccountService;
 import com.cusbee.yoki.utils.AccountOperations;
 import com.cusbee.yoki.utils.ErrorCodes;
 
@@ -24,10 +25,10 @@ import com.cusbee.yoki.utils.ErrorCodes;
  */
 
 @Service(value = "UserService")
-public class UserServiceImpl implements UserService {
+public class AccountServiceImpl implements AccountService {
 
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	@Autowired
 	private UserRepository userRepository;

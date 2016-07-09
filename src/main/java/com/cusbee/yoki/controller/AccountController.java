@@ -16,7 +16,7 @@ import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.service.NullPointerService;
-import com.cusbee.yoki.service.UserService;
+import com.cusbee.yoki.service.AccountService;
 import com.cusbee.yoki.utils.AccountOperations;
 import com.mangofactory.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiClass;
@@ -36,7 +36,7 @@ import com.wordnik.swagger.annotations.ApiParam;
 public class AccountController {
 
 	@Autowired
-	private UserService userService;
+	private AccountService userService;
 	
 	@Autowired
 	private NullPointerService nullPointerService;

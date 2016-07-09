@@ -24,7 +24,7 @@ import com.cusbee.yoki.security.AuthenticationRequest;
 import com.cusbee.yoki.security.AuthenticationResponse;
 import com.cusbee.yoki.security.TokenUtils;
 import com.cusbee.yoki.security.YokiUser;
-import com.cusbee.yoki.service.UserService;
+import com.cusbee.yoki.service.AccountService;
 import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.mangofactory.swagger.annotations.ApiModel;
 
@@ -44,7 +44,7 @@ public class AuthenticationController {
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private UserService userService;
+	private AccountService userService;
 	
 	@ApiIgnore
 	@RequestMapping(method = RequestMethod.POST)

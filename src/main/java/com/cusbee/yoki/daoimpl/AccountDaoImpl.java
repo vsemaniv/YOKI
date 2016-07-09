@@ -1,4 +1,4 @@
-package com.cusbee.yoki.dao;
+package com.cusbee.yoki.daoimpl;
 
 import java.util.List;
 
@@ -8,11 +8,12 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
 
 @Repository("userDaoImpl")
 @Transactional
-public class UserDaoImpl implements UserDao {
+public class AccountDaoImpl implements AccountDao {
 
 	@PersistenceContext
 	private EntityManager em;
