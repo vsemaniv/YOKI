@@ -32,4 +32,11 @@ public class ErrorCodes {
 		
 	}
 	
+	public interface Category {
+		
+		int EMPTY_REQUEST = 3000;
+		int EMPTY_FIELD = 3001;
+		int ALREADY_EXIST = 3002;
+	}
+	
 }

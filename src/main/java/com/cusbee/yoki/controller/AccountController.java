@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Account;
+import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.service.NullPointerService;
 import com.cusbee.yoki.service.AccountService;
-import com.cusbee.yoki.utils.AccountOperations;
 import com.mangofactory.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -44,7 +44,7 @@ public class AccountController {
 	@ApiOperation(value="Creates user account")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> login(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) throws BaseException{
-		Account user = userService.parse(request, AccountOperations.CREATE);
+		Account user = userService.parse(request, CrudOperation.CREATE);
 		userService.add(user);
 		return new YokiResult<Account>(Status.SUCCESS, "User created successful", user);
 	}
@@ -52,7 +52,7 @@ public class AccountController {
 	@ApiOperation(value="Updates user account")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) throws BaseException {
-		Account user = userService.parse(request, AccountOperations.UPDATE);
+		Account user = userService.parse(request, CrudOperation.UPDATE);
 		userService.add(user);
 		return new YokiResult<Account>(Status.SUCCESS, "User updated successful", user);
 	}
@@ -64,7 +64,7 @@ public class AccountController {
 		nullPointerService.isNull(id);
 		Account user = userService.getById(id);
 		userService.isNull(user);
-		userService.activation(user, AccountOperations.BLOCK);
+		userService.activation(user, CrudOperation.BLOCK);
 		return new YokiResult<Account>(Status.SUCCESS, "User blocked successful", user);
 	}
 	
@@ -75,7 +75,7 @@ public class AccountController {
 		nullPointerService.isNull(id);
 		Account user = userService.getById(id);
 		userService.isNull(user);
-		userService.activation(user, AccountOperations.UNBLOCK);
+		userService.activation(user, CrudOperation.UNBLOCK);
 		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successful", user);
 	}
 	

@@ -6,15 +6,16 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
+import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.UserRepository;
 import com.cusbee.yoki.service.AccountService;
-import com.cusbee.yoki.utils.AccountOperations;
 import com.cusbee.yoki.utils.ErrorCodes;
 
 /**
@@ -40,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
 	 * Add new account to database
 	 */
 	@Override
+	@Transactional
 	public void add(Account user) {
 		this.userDao.add(user);
 	}
@@ -49,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
 	 * and if all is clear, in case of OperationStatus
 	 * choose what will do(CREATE account or UPDATE account)
 	 */
-	public Account parse(AccountModel request, AccountOperations operation)
+	public Account parse(AccountModel request, CrudOperation operation)
 			throws BaseException {
 
 		if (Objects.isNull(request)) {
@@ -143,7 +145,7 @@ public class AccountServiceImpl implements AccountService {
 	 * Method block or unblock account
 	 */
 	@Override
-	public void activation(Account user, AccountOperations operation)
+	public void activation(Account user, CrudOperation operation)
 			throws BaseException {
 		
 		switch (operation) {

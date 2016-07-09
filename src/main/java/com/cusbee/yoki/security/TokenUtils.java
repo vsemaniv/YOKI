@@ -11,7 +11,12 @@ import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
+/**
+ * 
+ * @author Dmytro Khodan
+ * @date 09.07.2016
+ * @project: yoki
+ */
 @Component
 public class TokenUtils {
 

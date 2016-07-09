@@ -7,7 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/**
+ * 
+ * @author Dmytro Khodan
+ * @date 09.07.2016
+ * @project: yoki
+ */
 public class YokiUser implements UserDetails {
 
 	/**

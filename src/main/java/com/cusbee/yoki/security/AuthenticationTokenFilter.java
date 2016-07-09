@@ -15,7 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-
+/**
+ * 
+ * @author Dmytro Khodan
+ * @date 09.07.2016
+ * @project: yoki
+ */
 public class AuthenticationTokenFilter extends
 		UsernamePasswordAuthenticationFilter {
 

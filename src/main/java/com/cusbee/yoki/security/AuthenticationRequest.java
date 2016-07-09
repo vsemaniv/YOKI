@@ -3,7 +3,12 @@ package com.cusbee.yoki.security;
 import java.io.Serializable;
 
 import org.springframework.mobile.device.Device;
-
+/**
+ * 
+ * @author Dmytro Khodan
+ * @date 09.07.2016
+ * @project: yoki
+ */
 public class AuthenticationRequest extends ModelBase implements Serializable {
 
 	private static final long serialVersionUID = 6624726180748515507L;

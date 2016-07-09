@@ -28,6 +28,12 @@ import com.cusbee.yoki.service.AccountService;
 import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.mangofactory.swagger.annotations.ApiModel;
 
+/**
+ * 
+ * @author Dmytro Khodan
+ * @date 09.07.2016
+ * @project: yoki
+ */
 @RestController
 @RequestMapping(value="auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {

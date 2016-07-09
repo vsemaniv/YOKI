@@ -25,7 +25,7 @@ import com.cusbee.yoki.utils.DomainBase;
  * @project: yoki
  */
 
-@Table(name="user")
+@Table(name="account")
 @Entity
 public class Account extends DomainBase implements Serializable {
 
@@ -70,7 +70,7 @@ public class Account extends DomainBase implements Serializable {
     
     @Column(name = "authority")
     private String authority;
-
+    
 	public String getAuthority() {
 		return authority;
 	}
@@ -81,7 +81,7 @@ public class Account extends DomainBase implements Serializable {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
