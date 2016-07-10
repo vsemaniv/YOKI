@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -47,11 +48,11 @@ public class Dish implements Serializable{
 	private String description;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="order_id", nullable=false)
+	@JoinColumn(name="order_id")
 	private Order order;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="category_id", nullable=false)
+	@JoinColumn(name="category_id")
 	private Category category;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
@@ -59,6 +60,9 @@ public class Dish implements Serializable{
 			   joinColumns={@JoinColumn(name="dish_id")},
 			   inverseJoinColumns={@JoinColumn(name="ingredient_id")})
 	private List<Ingredient> ingredients;
+	
+	@OneToMany(mappedBy="dish")
+	private List<DishImage> images;
 	
 	public Long getId() {
 		return id;

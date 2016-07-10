@@ -40,8 +40,7 @@ public class CategoryController {
 		Category category = categoryService
 				.parse(request, CrudOperation.CREATE);
 		categoryService.add(category);
-		return new YokiResult<Category>(Status.SUCCESS,
-				"New category added successful", category);
+		return new YokiResult<Category>(Status.SUCCESS,"New category added successful", category);
 	}
 
 	@ApiOperation(value = "update category")
@@ -51,8 +50,7 @@ public class CategoryController {
 		Category category = categoryService
 				.parse(request, CrudOperation.UPDATE);
 		categoryService.update(category);
-		return new YokiResult<Category>(Status.SUCCESS,
-				"Category updated successful", category);
+		return new YokiResult<Category>(Status.SUCCESS,"Category updated successful", category);
 	}
 
 	@ApiOperation(value = "remove category")
@@ -64,8 +62,7 @@ public class CategoryController {
 		Category category = categoryService.getById(id);
 		nullPointerService.isNull(category);
 		categoryService.remove(category);
-		return new YokiResult<Category>(Status.SUCCESS,
-				"Category removed successful", null);
+		return new YokiResult<Category>(Status.SUCCESS,"Category removed successful", null);
 	}
 
 	@ApiOperation(value="get all categories")
@@ -73,5 +70,13 @@ public class CategoryController {
 	public List<Category> getAll() throws BaseException {
 		List<Category> categories = categoryService.getAll();
 		return categories;
+	}
+	
+	@ApiOperation(value="add dishes to any category")
+	@RequestMapping(value="/addDishes", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Category> addDishes(@RequestBody CategoryModel request) throws BaseException {
+		
+		
+		return new YokiResult<Category>();
 	}
 }

@@ -9,7 +9,9 @@ package com.cusbee.yoki.utils;
 public class ErrorCodes {
 
 	public interface Dish {
-		
+		int EMPTY_REQUEST = 0000;
+		int EMPTY_FIELD = 0001;
+		int ALREADY_EXISTS = 0002;
 	}
 	
 	public interface Common {
@@ -39,4 +41,9 @@ public class ErrorCodes {
 		int ALREADY_EXIST = 3002;
 	}
 	
+	public interface Ingredient {
+		int EMPTY_REQUEST = 4000;
+		int EMPTY_FIELD = 4001;
+		int ALREADY_EXIST = 4002;
+	}
 }

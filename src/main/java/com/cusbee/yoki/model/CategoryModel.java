@@ -1,9 +1,37 @@
 package com.cusbee.yoki.model;
 
-public class CategoryModel {
+import java.io.Serializable;
+import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+public class CategoryModel implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private String name;
+	private List<DishModel> dishes;
+	
+	public CategoryModel() {}
+	
+	public CategoryModel(Long id, String name, List<DishModel> dishes, MultipartFile[] images){
+		super();
+		this.id=id;
+		this.name=name;
+		this.dishes = dishes;
+	}
+	
+	public List<DishModel> getDishes() {
+		return dishes;
+	}
+
+	public void setDishes(List<DishModel> dishes) {
+		this.dishes = dishes;
+	}
 
 	public Long getId() {
 		return id;

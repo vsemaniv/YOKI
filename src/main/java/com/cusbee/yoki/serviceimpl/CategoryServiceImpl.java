@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
 					"Empty Request");
 		}
-
+		
 		if (Objects.isNull(request.getName())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"Requested fields are empty");
