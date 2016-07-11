@@ -31,7 +31,7 @@ public class DishController {
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE })
 	public YokiResult<Dish> add(@RequestBody DishModel request) throws BaseException {
-		Dish dish = dishService.parse(request, CrudOperation.CREATE);
+		Dish dish = dishService.parse(request, CrudOperation.CREATE); 
 		dishService.add(dish);
 		return new YokiResult<Dish>(Status.SUCCESS, "New dish added successful", dish);
 	}
