@@ -142,5 +142,12 @@ public class Account extends DomainBase implements Serializable {
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
-    
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 }
