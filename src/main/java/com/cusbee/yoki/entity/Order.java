@@ -4,17 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * 
@@ -24,7 +14,7 @@ import javax.persistence.TemporalType;
  */
 
 
-@Table(name="order")
+@Table(name="orders")
 @Entity
 public class Order implements Serializable {
 
@@ -36,7 +26,11 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id", nullable = false)
+	private Account account;
+
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="order")
 	private List<Dish> dishes;
 	
@@ -50,6 +44,14 @@ public class Order implements Serializable {
 	
 	@Column(name="amount")
 	private Double amount;
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 
 	public Long getId() {
 		return id;

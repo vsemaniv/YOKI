@@ -46,4 +46,8 @@ public class ErrorCodes {
 		int EMPTY_FIELD = 4001;
 		int ALREADY_EXIST = 4002;
 	}
+
+	public interface  Operator {
+		int EMPTY_REQUEST = 5000;
+	}
 }
