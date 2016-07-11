@@ -26,7 +26,7 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Account> getAll(){
-		return (List<Account>) em.createQuery("SELECT u FROM User u").getResultList();
+		return (List<Account>) em.createQuery("SELECT a FROM Account a").getResultList();
 	}
 
 	@Override
