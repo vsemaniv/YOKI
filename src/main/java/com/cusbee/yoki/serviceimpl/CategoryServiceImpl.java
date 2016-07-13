@@ -2,6 +2,8 @@ package com.cusbee.yoki.serviceimpl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@Transactional
 	public Category getById(Long id) {
 		return dao.getById(id);
 	}
@@ -80,6 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
 		switch (status) {
 		case CREATE:
 			category = new Category();
+			validateCategory(request.getName());
 			category.setName(request.getName());
 			return category;
 		case UPDATE:
@@ -88,6 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
 				throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with this ID is not present");
 			}
 			if(!Objects.isNull(request.getName())){
+				validateCategory(request.getName());
 				category.setName(request.getName());
 			}
 			return category;
@@ -111,6 +116,23 @@ public class CategoryServiceImpl implements CategoryService {
 	 */
 	protected boolean checkIfExist(String name) throws BaseException {
 		return repository.findByName(name) == null;
+	}
+	
+	protected boolean validateCategory(String name) throws BaseException {
+		Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,15}$");
+		Matcher matcher = pattern.matcher(name);
+		return matcher.matches();
+	}
+	
+	@Override
+	@Transactional
+	public List<Dish> getAllDishes(Long id) throws BaseException {
+		Category category = getById(id);
+		if(Objects.isNull(category)){
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "Dish with id:"+ id +" is not present");
+		}
+		List<Dish> dishes = category.getDishes();
+		return dishes;
 	}
 
 }

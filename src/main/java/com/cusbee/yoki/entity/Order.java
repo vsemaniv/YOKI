@@ -41,7 +41,7 @@ public class Order implements Serializable {
 	@Column(name="amount")
 	private Double amount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
 

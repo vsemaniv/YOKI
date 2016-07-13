@@ -14,6 +14,7 @@ import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Category;
 import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.service.CategoryService;
@@ -70,6 +71,14 @@ public class CategoryController {
 	public List<Category> getAll() throws BaseException {
 		List<Category> categories = categoryService.getAll();
 		return categories;
+	}
+	
+	@ApiOperation(value="get all dishes from category")
+	@RequestMapping(value="getAllDisheshFromCategory/{id}", method=RequestMethod.GET)
+	public List<Dish> getAllDishes(@PathVariable("id") Long id) throws BaseException {
+		nullPointerService.isNull(id);
+		List<Dish> dishes = categoryService.getAllDishes(id);
+		return dishes;
 	}
 	
 	@ApiOperation(value="add dishes to any category")

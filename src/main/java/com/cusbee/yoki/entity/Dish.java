@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -47,21 +51,27 @@ public class Dish implements Serializable{
 	@Column
 	private String description;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@Column(name="dish_type")
+	@Enumerated(EnumType.STRING)
+	private DishType type;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="order_id")
 	private Order order;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@JsonIgnore
+	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name="dish_ingredients",
 			   joinColumns={@JoinColumn(name="dish_id")},
 			   inverseJoinColumns={@JoinColumn(name="ingredient_id")})
 	private List<Ingredient> ingredients;
 	
-	@OneToMany(mappedBy="dish")
+	@JsonIgnore
+	@OneToMany(mappedBy="dish", fetch=FetchType.LAZY)
 	private List<DishImage> images;
 	
 	public Long getId() {
@@ -74,6 +84,22 @@ public class Dish implements Serializable{
 	
 	public Double getPrice() {
 		return price;
+	}
+	
+	public DishType getType() {
+		return type;
+	}
+
+	public void setType(DishType type) {
+		this.type = type;
+	}
+
+	public List<DishImage> getImages() {
+		return images;
+	}
+
+	public void setImages(List<DishImage> images) {
+		this.images = images;
 	}
 
 	public void setPrice(Double price) {

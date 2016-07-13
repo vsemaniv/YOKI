@@ -51,6 +51,23 @@ public class AccountServiceImpl implements AccountService {
 	}
 	
 	/**
+	 * Return the list with all accounts
+	 */
+	@Override
+	@Transactional
+	public List<Account> getAll() {
+		return userRepository.findAll();
+	}
+
+	/**
+	 * Return account by requested ID
+	 */
+	@Override
+	public Account getById(Long id) {
+		return this.userDao.getById(id);
+	}
+	
+	/**
 	 * Method check request parameters for null pointer
 	 * and if all is clear, in case of OperationStatus
 	 * choose what will do(CREATE account or UPDATE account)
@@ -63,6 +80,7 @@ public class AccountServiceImpl implements AccountService {
 			throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST,
 					"Request is empty");
 		}
+		
 		Account user;
 		switch (operation) {
 		case CREATE:
@@ -80,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
 						"User with this username already exist");
 			}
 
-			if (!validateAccount(request)) {
+			if (!checkForEmail(request)) {
 				throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
 						"This email already used");
 			}
@@ -96,6 +114,7 @@ public class AccountServiceImpl implements AccountService {
 			user.setEnabled(Boolean.TRUE);
 			return user;
 		case UPDATE:
+			
 			if(Objects.isNull(request.getId())){
 				throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID are empty");
 			}
@@ -155,25 +174,8 @@ public class AccountServiceImpl implements AccountService {
 	 * @param request
 	 * @return
 	 */
-	boolean validateAccount(AccountModel request) {
+	protected boolean checkForEmail(AccountModel request) {
 		return userRepository.validateAccount(request.getEmail()) == null;
-	}
-
-	/**
-	 * Return the list with all accounts
-	 */
-	@Override
-	@Transactional
-	public List<Account> getAll() {
-		return userRepository.findAll();
-	}
-
-	/**
-	 * Return account by requested ID
-	 */
-	@Override
-	public Account getById(Long id) {
-		return this.userDao.getById(id);
 	}
 
 	/**

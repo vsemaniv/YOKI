@@ -36,8 +36,8 @@ public class Category implements Serializable{
 	@Column
 	private String name;
 	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="category")
 	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="category")
 	private List<Dish> dishes;
 	
 	public Long getId() {

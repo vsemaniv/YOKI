@@ -3,7 +3,6 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
-
 public class DishModel implements Serializable {
 
 	/**
@@ -17,12 +16,13 @@ public class DishModel implements Serializable {
 	private Double price;
 	private String description;
 	private Long categoryId;
+	private String type;
 	private List<IngredientModel> ingredients;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Double weight, Double price, String description, Long category_id,
-						List<IngredientModel> ingreds) {
+						List<IngredientModel> ingreds, String type) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -31,6 +31,7 @@ public class DishModel implements Serializable {
 		this.description = description;
 		this.categoryId = category_id;
 		this.ingredients = ingreds;
+		this.type = type;
 	}
 
 	public Long getId() {
@@ -89,4 +90,11 @@ public class DishModel implements Serializable {
 		this.ingredients = ingredients;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

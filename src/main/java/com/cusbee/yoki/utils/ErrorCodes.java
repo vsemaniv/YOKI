@@ -12,6 +12,7 @@ public class ErrorCodes {
 		int EMPTY_REQUEST = 0000;
 		int EMPTY_FIELD = 0001;
 		int ALREADY_EXISTS = 0002;
+		int INVALID_REQUEST = 0003;
 	}
 	
 	public interface Common {

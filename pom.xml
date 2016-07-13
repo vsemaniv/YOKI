@@ -18,14 +18,14 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.4</version>
 		</dependency>
-	
+
 		<!-- Spring Mobile -->
 		<dependency>
 			<groupId>org.springframework.mobile</groupId>
@@ -39,7 +39,7 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-	
+
 		<!-- Jackson faster xml -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -75,7 +75,7 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.0</version>
 		</dependency>
-	
+
 		<!-- I don't know what that -->
 		<dependency>
 			<groupId>javax.annotation</groupId>
@@ -115,7 +115,7 @@
 			<artifactId>spring-web</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- Spring Framework Security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -133,7 +133,7 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${org.springframework.security.version}</version>
 		</dependency>
-		
+
 		<!-- Spring Data -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -287,7 +287,7 @@
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
-	
+
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
