@@ -17,7 +17,7 @@ public interface AccountService {
 	
 	Account getById(Long id);
 
-	void activation(Account user, CrudOperation operation) throws BaseException;
+	void activation(Long id, CrudOperation operation) throws BaseException;
 
 	void availability(String username) throws BaseException; 
 	

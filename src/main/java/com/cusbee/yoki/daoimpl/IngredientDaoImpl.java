@@ -29,6 +29,7 @@ public class IngredientDaoImpl implements IngredientDao {
 	}
 
 	@Override
+	@Transactional
 	public Ingredient getById(Long id) {
 		return em.find(Ingredient.class, id);
 	}

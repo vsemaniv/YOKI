@@ -27,7 +27,7 @@ public class Order implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="order")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="order")
 	private List<Dish> dishes;
 	
 	@Column(name="order_date")
@@ -53,6 +53,14 @@ public class Order implements Serializable {
 		this.id = id;
 	}
 	
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
 	public Double getAmount() {
 		return amount;
 	}

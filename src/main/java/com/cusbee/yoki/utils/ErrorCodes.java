@@ -31,6 +31,9 @@ public class ErrorCodes {
 		int ALREADY_EXIST = 2002;
 		int BAD_REQUEST = 2003;
 		int USER_UNVAILABLE = 2004;
+		int INVALID_EMAIL = 2005;
+		int IVALID_FIRST_OR_LAST_NAME = 2006;
+		int INVALID_USERNAME = 2007;
 		
 	}
 	

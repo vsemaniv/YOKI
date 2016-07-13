@@ -61,7 +61,7 @@ public class Account extends DomainBase implements Serializable {
     @Column(name = "authority")
     private String authority;
 
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "account", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Order> orders;
     
 	public String getAuthority() {

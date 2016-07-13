@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class AccountModel {
 
-	@JsonIgnore
 	private Long id;
 	private String username;
 	private String password;

@@ -1,11 +1,14 @@
 package com.cusbee.yoki.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.entity.Account;
 
-public interface UserRepository extends JpaRepository<Account, Long>{
+public interface AccountRepository extends JpaRepository<Account, Long>{
 	
 	Account findByUsername(String username);
 	
@@ -14,4 +17,8 @@ public interface UserRepository extends JpaRepository<Account, Long>{
 	
 	@Query(value="SELECT * FROM Account a WHERE a.username=?1 AND enabled=true", nativeQuery=true)
 	Account availability(String username);
+	
+	@Transactional
+	@Query(value="SELECT * FROM Account", nativeQuery=true)
+	List<Account> findAll();
 }

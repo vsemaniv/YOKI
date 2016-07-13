@@ -31,7 +31,7 @@ public class Authority {
 	@Enumerated(EnumType.STRING)
 	private AuthorityName name;
 	
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="authorities")
+	@ManyToMany(fetch=FetchType.EAGER, mappedBy="authorities")
 	private List<Account> users;
 
 	public Long getId() {

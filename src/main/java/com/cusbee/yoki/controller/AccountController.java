@@ -16,6 +16,7 @@ import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
+import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.NullPointerService;
 import com.cusbee.yoki.service.AccountService;
 import com.mangofactory.swagger.annotations.ApiModel;
@@ -41,6 +42,9 @@ public class AccountController {
 	@Autowired
 	private NullPointerService nullPointerService;
 	
+	@Autowired
+	private AccountRepository accountRepository;
+	
 	@ApiOperation(value="Creates user account")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> login(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) throws BaseException{
@@ -62,10 +66,8 @@ public class AccountController {
 	public YokiResult<Account> block(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
 	 							  @PathVariable("id") Long id) throws BaseException{
 		nullPointerService.isNull(id);
-		Account user = userService.getById(id);
-		userService.isNull(user);
-		userService.activation(user, CrudOperation.BLOCK);
-		return new YokiResult<Account>(Status.SUCCESS, "User blocked successful", user);
+		userService.activation(id, CrudOperation.BLOCK);
+		return new YokiResult<Account>(Status.SUCCESS, "User blocked successful", null);
 	}
 	
 	@ApiOperation(value="Unblock user")
@@ -73,16 +75,14 @@ public class AccountController {
 	public YokiResult<Account> unblock(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
 									@PathVariable("id") Long id) throws BaseException {
 		nullPointerService.isNull(id);
-		Account user = userService.getById(id);
-		userService.isNull(user);
-		userService.activation(user, CrudOperation.UNBLOCK);
-		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successful", user);
+		userService.activation(id, CrudOperation.UNBLOCK);
+		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successful", null);
 	}
 	
 	@ApiOperation(value="Get all users")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
 	public List<Account> getAll() throws BaseException {
-		List<Account> users = userService.getAll();
+		List<Account> users = accountRepository.findAll();
 		return users;
 	}
 }

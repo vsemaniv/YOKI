@@ -84,7 +84,12 @@ public class CategoryServiceImpl implements CategoryService {
 			return category;
 		case UPDATE:
 			category = dao.getById(request.getId());
-			category.setName(request.getName());
+			if(Objects.isNull(category)){
+				throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with this ID is not present");
+			}
+			if(!Objects.isNull(request.getName())){
+				category.setName(request.getName());
+			}
 			return category;
 		case REMOVE:
 			category = dao.getById(request.getId());

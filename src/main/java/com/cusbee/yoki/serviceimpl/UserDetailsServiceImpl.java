@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.entity.Account;
-import com.cusbee.yoki.repositories.UserRepository;
+import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.utils.UserFactory;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private AccountRepository userRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
