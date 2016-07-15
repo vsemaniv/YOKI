@@ -55,11 +55,11 @@ public class Dish implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private DishType type;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_id")
 	private Order order;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
 	

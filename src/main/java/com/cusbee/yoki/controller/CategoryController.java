@@ -60,9 +60,7 @@ public class CategoryController {
 			@ApiParam(required = true, value = "The id of the category that should be removed", name = "id") @PathVariable("id") Long id)
 			throws BaseException {
 		nullPointerService.isNull(id);
-		Category category = categoryService.getById(id);
-		nullPointerService.isNull(category);
-		categoryService.remove(category);
+		categoryService.remove(id);
 		return new YokiResult<Category>(Status.SUCCESS,"Category removed successful", null);
 	}
 
@@ -81,11 +79,19 @@ public class CategoryController {
 		return dishes;
 	}
 	
+	@ApiOperation(value="remove dish from category")
+	@RequestMapping(value="removeDishFromCategory", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Category> removeDishFromCategory(@RequestBody CategoryModel request) throws BaseException {
+		Category category = categoryService.removeDishFromCategory(request);
+		return new YokiResult<Category>(Status.SUCCESS, "Dishes removed successful from this category", category);
+	}
+	
 	@ApiOperation(value="add dishes to any category")
 	@RequestMapping(value="/addDishes", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Category> addDishes(@RequestBody CategoryModel request) throws BaseException {
 		
-		
-		return new YokiResult<Category>();
+		nullPointerService.isNull(request);
+		Category category = categoryService.addDishToCategory(request);
+		return new YokiResult<Category>(Status.SUCCESS, "Dishes successful added to category:" +category+".", category);
 	}
 }

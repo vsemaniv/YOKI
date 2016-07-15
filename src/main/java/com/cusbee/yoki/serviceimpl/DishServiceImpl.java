@@ -116,12 +116,41 @@ public class DishServiceImpl implements DishService {
 			}
 			return dish;
 		case UPDATE:
-			break;
+			dish = getById(request.getId());
+			nullPointerService.isNull(dish);
+			if(!validate(request.getName())){
+				throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Name: " + request.getName() +" already exists");
+			}
+			if(!Objects.isNull(request.getName())){
+				validateName(request.getName());
+				dish.setName(request.getName());
+			}
+			if(!Objects.isNull(request.getPrice())){
+				validatePrice(request.getPrice());
+				dish.setPrice(request.getPrice());
+			}
+			if(!Objects.isNull(request.getWeight())){
+				validateWeight(request.getWeight());
+				dish.setWeight(request.getWeight());
+			}
+			if(!Objects.isNull(request.getDescription())){
+				dish.setDescription(request.getDescription());
+			}
+			if(!Objects.isNull(request.getType())){
+				dish.setType(DishType.valueOf(request.getType().toUpperCase()));
+			}
+			if(!Objects.isNull(request.getCategoryId())){
+				Category category = categoryDao.getById(request.getCategoryId());
+				nullPointerService.isNull(category);
+				category.getDishes().remove(dish);
+				dish.setCategory(category);
+				category.getDishes().add(dish);
+			}
+			return dish;
 		default:
 			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
 					"Invalid request");
 		}
-		return null;
 	}
 	
 	protected boolean validateName(String name) throws BaseException {

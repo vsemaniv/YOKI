@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cusbee.yoki.utils.DomainBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -51,6 +52,7 @@ public class Account extends DomainBase implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordResetDate;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_authority",
@@ -61,7 +63,8 @@ public class Account extends DomainBase implements Serializable {
     @Column(name = "authority")
     private String authority;
 
-	@OneToMany(mappedBy = "account", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonIgnore
+	@OneToMany(mappedBy = "account", fetch=FetchType.EAGER)
 	private List<Order> orders;
     
 	public String getAuthority() {

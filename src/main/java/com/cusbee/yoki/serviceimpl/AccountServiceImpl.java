@@ -123,10 +123,10 @@ public class AccountServiceImpl implements AccountService {
 			if(Objects.isNull(user)) {
 				throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User with id:"+request.getId()+"are not present");
 			}
-			if(!isPresent(request.getUsername())){
-				throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST, "Username " + request.getUsername() +" already present");
-			}
 			if(!Objects.isNull(request.getUsername())){
+				if(!isPresent(request.getUsername())){
+					throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST, "Username " + request.getUsername() +" already present");
+				}
 				validUsername(request.getUsername());
 				user.setUsername(request.getUsername());
 			}

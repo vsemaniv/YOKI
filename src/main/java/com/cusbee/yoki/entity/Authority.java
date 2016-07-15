@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 
  * @author Dmytro Khodan
@@ -31,7 +33,8 @@ public class Authority {
 	@Enumerated(EnumType.STRING)
 	private AuthorityName name;
 	
-	@ManyToMany(fetch=FetchType.EAGER, mappedBy="authorities")
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="authorities")
+	@JsonIgnore
 	private List<Account> users;
 
 	public Long getId() {

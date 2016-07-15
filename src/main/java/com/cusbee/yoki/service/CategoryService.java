@@ -18,10 +18,14 @@ public interface CategoryService {
 
 	List<Category> getAll();
 
-	void remove(Category category);
+	void remove(Long id) throws BaseException;
 	
 	Category parse(CategoryModel request, CrudOperation status)
 			throws BaseException;
 	
 	List<Dish> getAllDishes(Long id) throws BaseException;
+	
+	Category removeDishFromCategory(CategoryModel request) throws BaseException ;
+
+	Category addDishToCategory(CategoryModel request) throws BaseException;
 }

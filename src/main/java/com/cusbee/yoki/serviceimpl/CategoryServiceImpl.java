@@ -1,5 +1,6 @@
 package com.cusbee.yoki.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -16,8 +17,10 @@ import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.CategoryModel;
+import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.service.CategoryService;
+import com.cusbee.yoki.service.DishService;
 import com.cusbee.yoki.utils.ErrorCodes;
 
 @Service
@@ -28,6 +31,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
+	
+	@Autowired
+	private DishService dishService;
 
 	@Override
 	public void add(Category category) {
@@ -52,9 +58,16 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public void remove(Category category) {
-		category.setDishes(null);
-		dao.remove(category);
+	public void remove(Long id) throws BaseException {
+		Category category = getById(id);
+		if(Objects.isNull(category)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present");
+		}
+		List<Dish> dishes = category.getDishes();
+		for(Dish dish: dishes){
+			dish.setCategory(null);
+		}
+		this.dao.remove(category);
 	}
 	
 	/**
@@ -96,18 +109,42 @@ public class CategoryServiceImpl implements CategoryService {
 				category.setName(request.getName());
 			}
 			return category;
-		case REMOVE:
-			category = dao.getById(request.getId());
-			List<Dish> dishes = category.getDishes();
-			category.getDishes().removeAll(dishes);
-			dao.remove(category);
-			return null;
 		default:
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
 					"Empty Request");
 		}
 	}
-
+	
+	public Category removeDishFromCategory(CategoryModel request) throws BaseException  {
+		if(Objects.isNull(request)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Empty Request");
+		}
+		if(Objects.isNull(request.getId())){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Category field ID is not present");
+		}
+		if(Objects.isNull(request.getDishes())){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Dishes ID's to remove is not present");
+		}
+		Category category = getById(request.getId());
+		if(Objects.isNull(category)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with id:" + request.getId()+ " is not present");
+		}
+		List<Long> ids = new ArrayList<Long>();
+		for(DishModel dish : request.getDishes()){
+			ids.add(dish.getId());
+		}
+		List<Dish> dishes = category.getDishes();
+		for(Dish dish : dishes) {
+			for(Long id : ids){
+				if(dish.getId()==id){
+					Dish dh = dishService.getById(id);
+					dh.setCategory(null);
+					dishService.update(dh);
+				}
+			}
+		}
+		return category;
+	}
 	/**
 	 * Check if this category not present
 	 * @param name
@@ -133,6 +170,25 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		List<Dish> dishes = category.getDishes();
 		return dishes;
+	}
+
+	@Override
+	public Category addDishToCategory(CategoryModel request)
+			throws BaseException {
+		
+		if(Objects.isNull(request.getId())){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Fild id is not present");
+		}
+		if(Objects.isNull(request.getDishes())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "You don't input no one dish to adding");
+		}
+		Category category = getById(request.getId());
+		for(DishModel model : request.getDishes()){
+			Dish dish = dishService.getById(model.getId());
+			dish.setCategory(category);
+			dishService.update(dish);
+		}
+		return category;
 	}
 
 }

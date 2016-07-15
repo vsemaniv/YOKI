@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 public class AccountModel {
 
@@ -12,18 +14,19 @@ public class AccountModel {
 	private String username;
 	private String password;
 	private String email;
-	
+	@JsonIgnore
 	private Date lastPasswordReset;
 	private String firstname;
 	private String lastname;
+	@JsonIgnore
 	private Collection<? extends GrantedAuthority> authorities;
-	
+	@JsonIgnore
 	private Boolean accountNonExpired;
-	
+	@JsonIgnore
 	private Boolean accountNonLocked;
-	
+	@JsonIgnore
 	private Boolean credentialsNonExpired = true;
-	
+	@JsonIgnore
 	private Boolean enabled;
 	private String authority;
 

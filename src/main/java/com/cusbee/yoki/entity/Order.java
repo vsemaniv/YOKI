@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 
  * @author Dmytro Khodan
@@ -27,7 +29,8 @@ public class Order implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="order")
+	@JsonIgnore
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="order")
 	private List<Dish> dishes;
 	
 	@Column(name="order_date")
@@ -41,7 +44,7 @@ public class Order implements Serializable {
 	@Column(name="amount")
 	private Double amount;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
 

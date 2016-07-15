@@ -35,4 +35,12 @@ public class DishController {
 		dishService.add(dish);
 		return new YokiResult<Dish>(Status.SUCCESS, "New dish added successful", dish);
 	}
+	
+	@ApiOperation(value="update dish") 
+	@RequestMapping(value="update", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Dish> update(@RequestBody DishModel request) throws BaseException {
+		Dish dish = dishService.parse(request, CrudOperation.UPDATE);
+		dishService.update(dish);
+		return new YokiResult<Dish>(Status.SUCCESS, "Dish updated successful", dish);
+	}
 }
