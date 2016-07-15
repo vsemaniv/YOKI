@@ -1,5 +1,6 @@
 package com.cusbee.yoki.exception;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -13,7 +14,7 @@ import com.cusbee.yoki.logging.LogFactory;
  * @date 28.06.2016
  * @project: yoki
  */
-public class BaseException extends Exception {
+public class BaseException extends Exception implements Serializable {
 
 	private static final Logger log = LogFactory.getLog(BaseException.class);
 

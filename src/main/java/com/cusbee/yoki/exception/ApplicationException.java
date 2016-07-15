@@ -1,5 +1,7 @@
 package com.cusbee.yoki.exception;
 
+import java.io.Serializable;
+
 import com.cusbee.yoki.utils.PropertyUtils;
 
 /**
@@ -8,7 +10,7 @@ import com.cusbee.yoki.utils.PropertyUtils;
  * @date 28.06.2016
  * @project: yoki
  */
-public class ApplicationException extends BaseException {
+public class ApplicationException extends BaseException implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

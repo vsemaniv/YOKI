@@ -14,7 +14,7 @@ public interface CategoryService {
 
 	void update(Category category);
 
-	Category get(Long id);
+	Category get(Long id) throws BaseException;
 
 	List<Category> getAll();
 

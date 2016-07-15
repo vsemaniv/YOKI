@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
@@ -58,12 +58,14 @@ public class Dish implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private DishType type;
 	
-	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="dishes")
+	@Fetch(FetchMode.JOIN)
 	private List<Order> order;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="category_id")
+	@Fetch(FetchMode.JOIN)
+	@JsonBackReference
 	private Category category;
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)

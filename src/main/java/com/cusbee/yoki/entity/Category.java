@@ -11,7 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * 
@@ -37,7 +41,8 @@ public class Category implements Serializable{
 	private String name;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="category")
-	@JsonIgnore
+	@Fetch(FetchMode.JOIN)
+	@JsonManagedReference
 	private List<Dish> dishes; 
 	
 	public Long getId() {

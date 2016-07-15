@@ -47,8 +47,15 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public Category get(Long id) {
-		return dao.get(id);
+	public Category get(Long id) throws BaseException {
+		if(Objects.isNull(id)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Field ID are empty");
+		}
+		Category category = dao.get(id);
+		if(Objects.isNull(category)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category is not present");
+		}
+		return category;
 	}
 
 	@Override
@@ -59,6 +66,9 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public void remove(Long id) throws BaseException {
+		if(Objects.isNull(id)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Field ID are not present");
+		}
 		Category category = get(id);
 		if(Objects.isNull(category)) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present");
@@ -98,6 +108,7 @@ public class CategoryServiceImpl implements CategoryService {
 			category = new Category();
 			validateCategory(request.getName());
 			category.setName(request.getName());
+			dao.add(category);
 			return category;
 		case UPDATE:
 			category = dao.get(request.getId());
@@ -108,6 +119,7 @@ public class CategoryServiceImpl implements CategoryService {
 				validateCategory(request.getName());
 				category.setName(request.getName());
 			}
+			dao.update(category);
 			return category;
 		default:
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
@@ -164,6 +176,9 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public List<Dish> getAllDishes(Long id) throws BaseException {
+		if(Objects.isNull(id)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Field id are not present");
+		}
 		Category category = get(id);
 		if(Objects.isNull(category)){
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "Dish with id:"+ id +" is not present");
@@ -175,6 +190,10 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category addDishToCategory(CategoryModel request)
 			throws BaseException {
+		
+		if(Objects.isNull(request)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Empty Request");
+		}
 		
 		if(Objects.isNull(request.getId())){
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Fild id is not present");

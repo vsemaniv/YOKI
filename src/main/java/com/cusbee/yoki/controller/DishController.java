@@ -3,6 +3,8 @@ package com.cusbee.yoki.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,11 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @ApiClass(value="operations with dish entity")
 @RestController
 @RequestMapping(value="dish")
+@PropertySource("classpath:ErrorMessages.properties")
 public class DishController {
+	
+	@Value("${success_request}")
+	public String STATUS;
 	
 	@Autowired
 	private DishService dishService;
@@ -37,42 +43,35 @@ public class DishController {
 	private DishRepository repository;
 	
 	@ApiOperation(value="create new dish")
-	@RequestMapping(value="create", method=RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.MULTIPART_FORM_DATA_VALUE })
+	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> add(@RequestBody DishModel request) throws BaseException {
-		Dish dish = dishService.parse(request, CrudOperation.CREATE); 
-		dishService.add(dish);
-		return new YokiResult<Dish>(Status.SUCCESS, "New dish added successful", dish);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.parse(request, CrudOperation.CREATE));
 	}
 	
 	@ApiOperation(value="update dish") 
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> update(@RequestBody DishModel request) throws BaseException {
-		Dish dish = dishService.parse(request, CrudOperation.UPDATE);
-		dishService.update(dish);
-		return new YokiResult<Dish>(Status.SUCCESS, "Dish updated successful", dish);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.parse(request, CrudOperation.UPDATE));
 	}
 	
+	@ApiOperation(value="remove dish")
 	@RequestMapping(value="remove/{id}", method=RequestMethod.POST)
 	public YokiResult<Dish> remove(@PathVariable("id") Long id) throws BaseException {
-		nullPointerService.isNull(id);
 		dishService.remove(id);
-		return new YokiResult<Dish>(Status.SUCCESS, "Dish removed successful", null);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, null);
 	}
 	
 	@ApiOperation(value="add ingredient/s to dish")
 	@RequestMapping(value="addIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> addIngredint(@RequestBody DishModel request) throws BaseException {
-		nullPointerService.isNull(request);
-		Dish dish = dishService.addIngredients(request);
-		return new YokiResult<Dish>(Status.SUCCESS, "Ingredients added successful", dish);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.addIngredients(request));
 	}
 	
 	@ApiOperation(value="get dish")
 	@RequestMapping(value="get/{id}", method=RequestMethod.GET)
 	public YokiResult<Dish> get(@PathVariable("id") Long id) throws BaseException {
 		nullPointerService.isNull(id);
-		return new YokiResult<Dish>(Status.SUCCESS, "Get dish with ID:"+id, repository.findById(id));
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, repository.findById(id));
 	}
 	
 	@ApiOperation(value="get all dishes")
