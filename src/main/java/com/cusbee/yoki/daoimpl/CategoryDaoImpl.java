@@ -29,7 +29,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public Category getById(Long id) {
+	public Category get(Long id) {
 		return em.find(Category.class, id);
 	}
 

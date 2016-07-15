@@ -47,8 +47,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public Category getById(Long id) {
-		return dao.getById(id);
+	public Category get(Long id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public void remove(Long id) throws BaseException {
-		Category category = getById(id);
+		Category category = get(id);
 		if(Objects.isNull(category)) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present");
 		}
@@ -100,7 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
 			category.setName(request.getName());
 			return category;
 		case UPDATE:
-			category = dao.getById(request.getId());
+			category = dao.get(request.getId());
 			if(Objects.isNull(category)){
 				throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with this ID is not present");
 			}
@@ -125,7 +125,7 @@ public class CategoryServiceImpl implements CategoryService {
 		if(Objects.isNull(request.getDishes())){
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Dishes ID's to remove is not present");
 		}
-		Category category = getById(request.getId());
+		Category category = get(request.getId());
 		if(Objects.isNull(category)){
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with id:" + request.getId()+ " is not present");
 		}
@@ -137,7 +137,7 @@ public class CategoryServiceImpl implements CategoryService {
 		for(Dish dish : dishes) {
 			for(Long id : ids){
 				if(dish.getId()==id){
-					Dish dh = dishService.getById(id);
+					Dish dh = dishService.get(id);
 					dh.setCategory(null);
 					dishService.update(dh);
 				}
@@ -164,7 +164,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public List<Dish> getAllDishes(Long id) throws BaseException {
-		Category category = getById(id);
+		Category category = get(id);
 		if(Objects.isNull(category)){
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "Dish with id:"+ id +" is not present");
 		}
@@ -182,9 +182,9 @@ public class CategoryServiceImpl implements CategoryService {
 		if(Objects.isNull(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "You don't input no one dish to adding");
 		}
-		Category category = getById(request.getId());
+		Category category = get(request.getId());
 		for(DishModel model : request.getDishes()){
-			Dish dish = dishService.getById(model.getId());
+			Dish dish = dishService.get(model.getId());
 			dish.setCategory(category);
 			dishService.update(dish);
 		}

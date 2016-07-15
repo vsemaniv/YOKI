@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.cusbee.yoki.utils.DomainBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -52,19 +54,19 @@ public class Account extends DomainBase implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordResetDate;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
+    @Fetch(FetchMode.JOIN)
     private List<Authority> authorities;
     
     @Column(name = "authority")
     private String authority;
 
-    @JsonIgnore
-	@OneToMany(mappedBy = "account", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "account", fetch=FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
 	private List<Order> orders;
     
 	public String getAuthority() {

@@ -31,7 +31,7 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public Account getById(Long id) {
+	public Account get(Long id) {
 		return em.find(Account.class, id);
 	}
 

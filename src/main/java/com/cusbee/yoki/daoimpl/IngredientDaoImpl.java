@@ -30,7 +30,7 @@ public class IngredientDaoImpl implements IngredientDao {
 
 	@Override
 	@Transactional
-	public Ingredient getById(Long id) {
+	public Ingredient get(Long id) {
 		return em.find(Ingredient.class, id);
 	}
 

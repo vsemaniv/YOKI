@@ -41,14 +41,13 @@ public class IngredientServiceImpl implements IngredientService {
 
 	@Override
 	@Transactional
-	public Ingredient getById(Long id) {
-		return dao.getById(id);
+	public Ingredient get(Long id) {
+		return dao.get(id);
 	}
 
-	@Override
 	@Transactional
-	public void remove(Ingredient ingredient) {
-		
+	public void remove(Long id) throws BaseException {
+		Ingredient ingredient = get(id);
 		List<Dish> dishes = ingredient.getDish();
 		ingredient.getDish().removeAll(dishes);
 		dao.remove(ingredient);
@@ -98,7 +97,7 @@ public class IngredientServiceImpl implements IngredientService {
 			ingredient.setDescription(request.getDescription());
 			return ingredient;
 		case UPDATE:
-			Ingredient ingred = getById(request.getId());
+			Ingredient ingred = get(request.getId());
 			if(Objects.isNull(ingred)){
 				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "Ingredient with this ID is not present");
 			}

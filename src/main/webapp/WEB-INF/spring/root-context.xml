@@ -16,7 +16,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:resources mapping="/webjars/**"
 		location="classpath:/META-INF/resources/webjars/" />
-		
+
 	<context:annotation-config />
 
 	<context:component-scan base-package="com.cusbee.yoki.controller">
@@ -30,8 +30,10 @@
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
-				<bean
-					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+					<property name="prefixJson" value="false" />
+					<property name="supportedMediaTypes" value="application/json" />
+				</bean>
 			</list>
 		</property>
 	</bean>

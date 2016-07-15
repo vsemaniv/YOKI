@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 /**
  * 
  * @author Dmytro Khodan
@@ -30,7 +31,10 @@ public class Order implements Serializable {
 	private Long id;
 	
 	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="order")
+	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinTable(name="ordered_dish",
+			   joinColumns={@JoinColumn(name="order_id")},
+			   inverseJoinColumns={@JoinColumn(name="dish_id")})
 	private List<Dish> dishes;
 	
 	@Column(name="order_date")

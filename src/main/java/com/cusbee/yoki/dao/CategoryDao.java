@@ -10,7 +10,7 @@ public interface CategoryDao {
 	
 	void update(Category category);
 	
-	Category getById(Long id);
+	Category get(Long id);
 	
 	List<Category> getAll();
 	

@@ -40,7 +40,7 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	@Override
-	public Order getById(Long id) {
+	public Order get(Long id) {
 		return em.find(Order.class, id);
 	}
 

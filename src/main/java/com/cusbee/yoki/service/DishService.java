@@ -13,12 +13,14 @@ public interface DishService {
 
 	void update(Dish dish);
 
-	void remove(Dish dish);
+	void remove(Long id) throws BaseException;
 
-	Dish getById(Long id);
+	Dish get(Long id) throws BaseException;
 
 	List<Dish> getAll();
 	
 	Dish parse(DishModel request, CrudOperation operation)
 			throws BaseException;
+	
+	Dish addIngredients(DishModel request) throws BaseException;
 }

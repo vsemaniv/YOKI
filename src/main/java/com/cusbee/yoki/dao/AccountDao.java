@@ -10,6 +10,6 @@ public interface AccountDao {
 	
 	List<Account> getAll();
 	
-	Account getById(Long id);
+	Account get(Long id);
 
 }

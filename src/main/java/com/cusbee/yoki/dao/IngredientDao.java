@@ -10,7 +10,7 @@ public interface IngredientDao {
 	
 	void update(Ingredient ingredient);
 	
-	Ingredient getById(Long id);
+	Ingredient get(Long id);
 	
 	void remove(Ingredient ingredient);
 	

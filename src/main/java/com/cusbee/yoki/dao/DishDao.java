@@ -12,7 +12,7 @@ public interface DishDao {
 	
 	void remove(Dish dish);
 	
-	Dish getById(Long id);
+	Dish get(Long id);
 	
 	List<Dish> getAll();
 }

@@ -63,8 +63,8 @@ public class AccountServiceImpl implements AccountService {
 	 * Return account by requested ID
 	 */
 	@Override
-	public Account getById(Long id) {
-		return this.userDao.getById(id);
+	public Account get(Long id) {
+		return this.userDao.get(id);
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class AccountServiceImpl implements AccountService {
 			if(Objects.isNull(request.getId())){
 				throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID are empty");
 			}
-			user = getById(request.getId());
+			user = get(request.getId());
 			
 			if(Objects.isNull(user)) {
 				throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User with id:"+request.getId()+"are not present");
@@ -186,7 +186,7 @@ public class AccountServiceImpl implements AccountService {
 	public void activation(Long id, CrudOperation operation)
 			throws BaseException {
 		
-		Account user = getById(id);
+		Account user = get(id);
 		if(Objects.isNull(user)){
 			throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User is not present");
 		}

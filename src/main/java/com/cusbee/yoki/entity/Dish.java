@@ -15,10 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * 
@@ -55,24 +58,20 @@ public class Dish implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private DishType type;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="order_id")
-	private Order order;
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="dishes")
+	private List<Order> order;
 	
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	@JoinTable(name="dish_ingredients",
 			   joinColumns={@JoinColumn(name="dish_id")},
 			   inverseJoinColumns={@JoinColumn(name="ingredient_id")})
 	private List<Ingredient> ingredients;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy="dish", fetch=FetchType.LAZY)
-	private List<DishImage> images;
 	
 	public Long getId() {
 		return id;
@@ -94,23 +93,14 @@ public class Dish implements Serializable{
 		this.type = type;
 	}
 
-	public List<DishImage> getImages() {
-		return images;
-	}
-
-	public void setImages(List<DishImage> images) {
-		this.images = images;
-	}
-
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	public Order getOrder() {
+	public List<Order> getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(List<Order> order) {
 		this.order = order;
 	}
 

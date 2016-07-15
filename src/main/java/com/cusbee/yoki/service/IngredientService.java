@@ -13,9 +13,9 @@ public interface IngredientService {
 
 	void update(Ingredient ingredient);
 
-	Ingredient getById(Long id);
+	Ingredient get(Long id);
 
-	void remove(Ingredient ingredient);
+	void remove(Long id) throws BaseException;
 
 	List<Ingredient> getAll();
 	

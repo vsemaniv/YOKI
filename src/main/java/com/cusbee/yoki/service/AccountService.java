@@ -15,7 +15,7 @@ public interface AccountService {
 	
 	List<Account> getAll();
 	
-	Account getById(Long id);
+	Account get(Long id);
 
 	void activation(Long id, CrudOperation operation) throws BaseException;
 

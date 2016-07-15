@@ -24,7 +24,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 
 @ApiClass(value="ingredients operations methods")
 @RestController
-@RequestMapping(value="ingredient", consumes=MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="ingredient")
 public class IngredientController {
 
 	@Autowired
@@ -54,12 +54,10 @@ public class IngredientController {
 	}
 	
 	@ApiOperation(value="remove ingredient")
-	@RequestMapping(value="remove/{id}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="remove/{id}", method=RequestMethod.POST)
 	public YokiResult<Ingredient> remove(@PathVariable("id") Long id) throws BaseException {
 		nullPointerService.isNull(id);
-		Ingredient ingredient = ingredientService.getById(id);
-		nullPointerService.isNull(ingredient);
-		ingredientService.remove(ingredient);
+		ingredientService.remove(id);
 		return new YokiResult<Ingredient>(Status.SUCCESS,"Ingredient successful removed", null);
 	}
 	
@@ -69,4 +67,5 @@ public class IngredientController {
 		List<Ingredient> ingredients = ingredientService.getAll();
 		return ingredients; 
 	}
+	
 }

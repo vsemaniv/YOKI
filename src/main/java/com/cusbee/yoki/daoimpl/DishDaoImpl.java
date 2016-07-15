@@ -33,14 +33,15 @@ public class DishDaoImpl implements DishDao {
 	}
 
 	@Override
-	public Dish getById(Long id) {
+	@Transactional
+	public Dish get(Long id) {
 		return em.find(Dish.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Dish> getAll() {
-		return (List<Dish>) em.createQuery("SELET d FROM Dish d").getResultList();
+		return (List<Dish>) em.createQuery("SELEÑT d FROM Dish d").getResultList();
 	}
 
 }

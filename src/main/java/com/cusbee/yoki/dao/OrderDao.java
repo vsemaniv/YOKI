@@ -14,6 +14,6 @@ public interface OrderDao {
 	
 	List<Order> getAll();
 	
-	Order getById(Long id);
+	Order get(Long id);
 	
 }
