@@ -87,4 +87,22 @@ public class DishController {
 		Dish dish = dishService.removeIngredients(request);
 		return new YokiResult<Dish>(Status.SUCCESS, "Ingredients successful removed from dish", dish);
 	}
+	
+	@ApiOperation(value="deactive dish")
+	@RequestMapping(value="deactivate/{id}", method=RequestMethod.POST)
+	public YokiResult<Dish> deactivate(@PathVariable("id")Long id) throws BaseException {
+		nullPointerService.isNull(id);
+		Dish dish = dishService.activation(id, CrudOperation.BLOCK);
+		dishService.update(dish);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
+	}
+	
+	@ApiOperation(value="activate dish")
+	@RequestMapping(value="activate/{id}", method=RequestMethod.POST)
+	public YokiResult<Dish> activate(@PathVariable("id")Long id) throws BaseException {
+		nullPointerService.isNull(id);
+		Dish dish = dishService.activation(id, CrudOperation.UNBLOCK);
+		dishService.update(dish);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
+	}
 }

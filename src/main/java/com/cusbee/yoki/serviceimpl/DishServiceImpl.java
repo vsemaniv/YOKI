@@ -24,6 +24,7 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.repositories.DishRepository;
+import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.DishService;
 import com.cusbee.yoki.service.IngredientService;
 import com.cusbee.yoki.service.NullPointerService;
@@ -81,6 +82,9 @@ public class DishServiceImpl implements DishService {
 	
 	@Autowired
 	private NullPointerService nullPointerService;
+	
+	@Autowired
+	private IngredientRepository ingredientRepository;
 
 	@Override
 	public void add(Dish dish) {
@@ -168,6 +172,7 @@ public class DishServiceImpl implements DishService {
 				dish.setCategory(category);
 				category.getDishes().add(dish);
 			}
+			dish.setEnabled(Boolean.TRUE);
 			dao.add(dish);
 			return dish;
 		case UPDATE:
@@ -209,7 +214,6 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	public Dish addIngredients(DishModel request) throws BaseException {
-		
 		if(Objects.isNull(request)){
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, EMPTY_REQUEST);
 		}
@@ -219,10 +223,13 @@ public class DishServiceImpl implements DishService {
 		if(Objects.isNull(request.getIngredients())){
 			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, EMPTY_REQUEST);
 		}
-		Dish dish = get(request.getId());
+		Dish dish = repository.findById(request.getId());
+		if(Objects.isNull(dish)){
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "This dish are not present or blocked");
+		}
 		List<Ingredient> ingredients = new ArrayList<>();
 		for(IngredientModel ingredient: request.getIngredients()){
-			Ingredient ingred = ingredientService.get(ingredient.getId());
+			Ingredient ingred = ingredientRepository.findById(ingredient.getId());
 			ingredients.add(ingred);
 		}
 		dish.getIngredients().addAll(ingredients);
@@ -242,11 +249,38 @@ public class DishServiceImpl implements DishService {
 		Dish dish = get(request.getId());
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		for(IngredientModel model : request.getIngredients()){
-			Ingredient ingredient = ingredientService.get(model.getId());
-			ingredients.add(ingredient);
+			Ingredient ingredient = ingredientRepository.findById(model.getId());
+			if(ingredient!=null)
+				ingredients.add(ingredient);
+			
 		}
 		dish.getIngredients().removeAll(ingredients);
 		return dish;
+	}
+	
+	public Dish activation(Long id, CrudOperation operation) throws BaseException {
+		if(Objects.isNull(id)){
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "ID is not present");
+		}
+		Dish dish;
+		switch (operation) {
+		case BLOCK:
+			dish = repository.findById(id);
+			if(Objects.isNull(dish)){
+				throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "This dish are not present or blocked");
+			}
+			dish.setEnabled(Boolean.FALSE);
+			return dish;
+		case UNBLOCK:
+			dish = get(id);
+			if(Objects.isNull(dish)){
+				throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "This dish are not present");
+			}
+			dish.setEnabled(Boolean.TRUE);
+			return dish;
+		default:
+			throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid request");
+		}
 	}
 	
 	protected boolean validateName(String name) throws BaseException {

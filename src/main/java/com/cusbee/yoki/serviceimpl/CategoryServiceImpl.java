@@ -120,7 +120,7 @@ public class CategoryServiceImpl implements CategoryService {
 			if (Objects.isNull(category)) {
 				throw new ApplicationException(
 						ErrorCodes.Category.EMPTY_REQUEST,
-						"Category with this ID is not present");
+						"Category with this ID is not present or blocked");
 			}
 			if (!Objects.isNull(request.getName())) {
 				validateCategory(request.getName());
