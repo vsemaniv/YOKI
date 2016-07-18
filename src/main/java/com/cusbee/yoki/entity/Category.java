@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -45,6 +46,10 @@ public class Category implements Serializable{
 	@JsonManagedReference
 	private List<Dish> dishes; 
 	
+	@Column
+	@Type(type = "org.hibernate.type.YesNoType")
+	private Boolean enabled;
+	
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +64,14 @@ public class Category implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public List<Dish> getDishes() {

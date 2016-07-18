@@ -37,7 +37,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	@Override
 	public List<Category> getAll() {
 		// TODO Auto-generated method stub	
-		return (List<Category>) em.createQuery("SELECT c FROM Category c").getResultList();
+		return (List<Category>) em.createQuery("SELECT c FROM Category c WHERE c.enabled=true").getResultList();
 	}
 
 	@Override

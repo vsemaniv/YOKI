@@ -28,4 +28,6 @@ public interface CategoryService {
 	Category removeDishFromCategory(CategoryModel request) throws BaseException ;
 
 	Category addDishToCategory(CategoryModel request) throws BaseException;
+	
+	Category activation(Long id, CrudOperation operation) throws BaseException;
 }

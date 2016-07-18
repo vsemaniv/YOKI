@@ -91,7 +91,7 @@ public class IngredientServiceImpl implements IngredientService {
 				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
 						"Empty field 'name'");
 			}
-			if (Objects.isNull(request.getWeight())) {
+			if (Objects.isNull(request.getValue())) {
 				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
 						"Empty field 'weight'");
 			}
@@ -100,7 +100,7 @@ public class IngredientServiceImpl implements IngredientService {
 			}
 			Ingredient ingredient = new Ingredient();
 			ingredient.setName(request.getName());
-			ingredient.setWeight(request.getWeight());
+			ingredient.setValue(request.getValue());
 			ingredient.setDescription(request.getDescription());
 			return ingredient;
 		case UPDATE:
@@ -111,8 +111,8 @@ public class IngredientServiceImpl implements IngredientService {
 			if(!Objects.isNull(request.getName())) {
 				ingred.setName(request.getName());
 			}
-			if(!Objects.isNull(request.getWeight())){
-				ingred.setWeight(request.getWeight());	
+			if(!Objects.isNull(request.getValue())){
+				ingred.setValue(request.getValue());	
 			}
 			if(!Objects.isNull(request.getDescription())){
 				ingred.setDescription(request.getDescription());

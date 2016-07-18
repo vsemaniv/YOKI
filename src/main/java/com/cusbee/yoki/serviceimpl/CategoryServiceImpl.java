@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
-	
+
 	@Autowired
 	private DishService dishService;
 
@@ -48,12 +48,14 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public Category get(Long id) throws BaseException {
-		if(Objects.isNull(id)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Field ID are empty");
+		if (Objects.isNull(id)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Field ID are empty");
 		}
 		Category category = dao.get(id);
-		if(Objects.isNull(category)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category is not present");
+		if (Objects.isNull(category)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"This category is not present");
 		}
 		return category;
 	}
@@ -66,23 +68,25 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public void remove(Long id) throws BaseException {
-		if(Objects.isNull(id)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Field ID are not present");
+		if (Objects.isNull(id)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Field ID are not present");
 		}
 		Category category = get(id);
-		if(Objects.isNull(category)) {
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present");
+		if (Objects.isNull(category)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"This category are not present");
 		}
 		List<Dish> dishes = category.getDishes();
-		for(Dish dish: dishes){
+		for (Dish dish : dishes) {
 			dish.setCategory(null);
 		}
 		this.dao.remove(category);
 	}
-	
+
 	/**
-	 * Method check for null pointers
-	 * and if all is right, create or update Category
+	 * Method check for null pointers and if all is right, create or update
+	 * Category
 	 */
 	public Category parse(CategoryModel request, CrudOperation status)
 			throws BaseException {
@@ -91,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
 					"Empty Request");
 		}
-		
+
 		if (Objects.isNull(request.getName())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"Requested fields are empty");
@@ -101,21 +105,24 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new ApplicationException(ErrorCodes.Category.ALREADY_EXIST,
 					"This category already exists");
 		}
-		
-		Category category = repository.findByName(request.getName());
+
+		Category category;
 		switch (status) {
 		case CREATE:
 			category = new Category();
 			validateCategory(request.getName());
 			category.setName(request.getName());
+			category.setEnabled(Boolean.TRUE);
 			dao.add(category);
 			return category;
 		case UPDATE:
-			category = dao.get(request.getId());
-			if(Objects.isNull(category)){
-				throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with this ID is not present");
+			category = repository.findById(request.getId());
+			if (Objects.isNull(category)) {
+				throw new ApplicationException(
+						ErrorCodes.Category.EMPTY_REQUEST,
+						"Category with this ID is not present");
 			}
-			if(!Objects.isNull(request.getName())){
+			if (!Objects.isNull(request.getName())) {
 				validateCategory(request.getName());
 				category.setName(request.getName());
 			}
@@ -126,29 +133,34 @@ public class CategoryServiceImpl implements CategoryService {
 					"Empty Request");
 		}
 	}
-	
-	public Category removeDishFromCategory(CategoryModel request) throws BaseException  {
-		if(Objects.isNull(request)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Empty Request");
+
+	public Category removeDishFromCategory(CategoryModel request)
+			throws BaseException {
+		if (Objects.isNull(request)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"Empty Request");
 		}
-		if(Objects.isNull(request.getId())){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Category field ID is not present");
+		if (Objects.isNull(request.getId())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Category field ID is not present");
 		}
-		if(Objects.isNull(request.getDishes())){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Dishes ID's to remove is not present");
+		if (Objects.isNull(request.getDishes())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Dishes ID's to remove is not present");
 		}
-		Category category = get(request.getId());
-		if(Objects.isNull(category)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Category with id:" + request.getId()+ " is not present");
+		Category category = repository.findById(request.getId());
+		if (Objects.isNull(category)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"Category with id:" + request.getId() + " is not present or blocked");
 		}
 		List<Long> ids = new ArrayList<Long>();
-		for(DishModel dish : request.getDishes()){
+		for (DishModel dish : request.getDishes()) {
 			ids.add(dish.getId());
 		}
 		List<Dish> dishes = category.getDishes();
-		for(Dish dish : dishes) {
-			for(Long id : ids){
-				if(dish.getId()==id){
+		for (Dish dish : dishes) {
+			for (Long id : ids) {
+				if (dish.getId() == id) {
 					Dish dh = dishService.get(id);
 					dh.setCategory(null);
 					dishService.update(dh);
@@ -157,8 +169,10 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		return category;
 	}
+
 	/**
 	 * Check if this category not present
+	 * 
 	 * @param name
 	 * @return
 	 * @throws BaseException
@@ -166,22 +180,24 @@ public class CategoryServiceImpl implements CategoryService {
 	protected boolean checkIfExist(String name) throws BaseException {
 		return repository.findByName(name) == null;
 	}
-	
+
 	protected boolean validateCategory(String name) throws BaseException {
 		Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,15}$");
 		Matcher matcher = pattern.matcher(name);
 		return matcher.matches();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Dish> getAllDishes(Long id) throws BaseException {
-		if(Objects.isNull(id)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Field id are not present");
+		if (Objects.isNull(id)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Field id are not present");
 		}
 		Category category = get(id);
-		if(Objects.isNull(category)){
-			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "Dish with id:"+ id +" is not present");
+		if (Objects.isNull(category)) {
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST,
+					"Dish with id:" + id + " is not present");
 		}
 		List<Dish> dishes = category.getDishes();
 		return dishes;
@@ -190,19 +206,23 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category addDishToCategory(CategoryModel request)
 			throws BaseException {
-		
-		if(Objects.isNull(request)){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "Empty Request");
+		if (Objects.isNull(request)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"Empty Request");
 		}
-		
-		if(Objects.isNull(request.getId())){
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "Fild id is not present");
+		if (Objects.isNull(request.getId())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Fild id is not present");
 		}
-		if(Objects.isNull(request.getDishes())) {
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD, "You don't input no one dish to adding");
+		if (Objects.isNull(request.getDishes())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"You don't input no one dish to adding");
 		}
-		Category category = get(request.getId());
-		for(DishModel model : request.getDishes()){
+		Category category = repository.findById(request.getId());
+		if(Objects.isNull(category)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present or blocked");
+		}
+		for (DishModel model : request.getDishes()) {
 			Dish dish = dishService.get(model.getId());
 			dish.setCategory(category);
 			dishService.update(dish);
@@ -210,4 +230,28 @@ public class CategoryServiceImpl implements CategoryService {
 		return category;
 	}
 
+	public Category activation(Long id, CrudOperation operation) throws BaseException {
+		if (Objects.isNull(id)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"ID is not present");
+		}
+		Category category;
+		switch (operation) {
+		case BLOCK:
+			category = repository.findById(id);
+			if (Objects.isNull(category)) {
+				throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+						"This category is not present or blocked");
+			}
+			category.setEnabled(Boolean.FALSE);
+			return category;
+		case UNBLOCK:
+			category = get(id);
+			category.setEnabled(Boolean.TRUE);
+			return category;
+		default:
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"Bad Request");
+		}
+	}
 }

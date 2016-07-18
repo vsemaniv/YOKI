@@ -42,7 +42,7 @@ public class IngredientDaoImpl implements IngredientDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ingredient> getAll() {
-		return (List<Ingredient>) em.createQuery("SELECT i FROM Ingredient i").getResultList();
+		return (List<Ingredient>) em.createQuery("SELECT i FROM Ingredient i WHERE i.enabled=true").getResultList();
 	}
 
 }

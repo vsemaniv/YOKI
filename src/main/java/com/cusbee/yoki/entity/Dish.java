@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -55,6 +56,10 @@ public class Dish implements Serializable{
 	@Column
 	private String description;
 	
+	@Column
+	@Type(type = "org.hibernate.type.YesNoType")
+	private Boolean enabled;
+	
 	@Column(name="dish_type")
 	@Enumerated(EnumType.STRING)
 	private DishType type;
@@ -89,6 +94,14 @@ public class Dish implements Serializable{
 		return price;
 	}
 	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public DishType getType() {
 		return type;
 	}

@@ -94,6 +94,23 @@ public class CategoryController {
 	@ApiOperation(value="get category by id")
 	@RequestMapping(value="get/{id}", method=RequestMethod.POST)
 	public YokiResult<Category> get(@PathVariable("id")Long id) throws BaseException {
-		return new YokiResult<Category>(Status.SUCCESS, STATUS, categoryService.get(id));
+		nullPointerService.isNull(id);
+		return new YokiResult<Category>(Status.SUCCESS, STATUS, repository.findById(id));
+	}
+	
+	@ApiOperation(value="deactivate category")
+	@RequestMapping(value="deativate/{id}", method=RequestMethod.POST)
+	public YokiResult<Category> deactivate(@PathVariable("id")Long id) throws BaseException{ 
+		Category category = categoryService.activation(id, CrudOperation.BLOCK);
+		categoryService.update(category);
+		return new YokiResult<Category>(Status.SUCCESS, STATUS, category);
+	}
+	
+	@ApiOperation(value="activate category")
+	@RequestMapping(value="activate/{id}", method=RequestMethod.POST)
+	public YokiResult<Category> activate(@PathVariable("id")Long id) throws BaseException {
+		Category category = categoryService.activation(id, CrudOperation.UNBLOCK);
+		categoryService.update(category);
+		return new YokiResult<Category>(Status.SUCCESS, STATUS, category);
 	}
 }

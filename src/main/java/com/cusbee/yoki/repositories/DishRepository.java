@@ -13,9 +13,9 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
 
 	Dish findByName(String name);
 	
-	@Query(value="SELECT d.* FROM Dish d WHERE d.id = (:id)", nativeQuery=true)
+	@Query(value="SELECT d.* FROM Dish d WHERE d.id = (:id) AND enabled='Y'", nativeQuery=true)
 	Dish findById(@Param("id") Long id);
 	
-	@Query(value="SELECT d.* FROM Dish d", nativeQuery=true)
+	@Query(value="SELECT d.* FROM Dish d WHERE enabled='Y'", nativeQuery=true)
 	List<Dish> findAll();
 }

@@ -3,6 +3,8 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.cusbee.yoki.entity.IngredientQuantityType;
+
 public class IngredientModel implements Serializable {
 
 	/**
@@ -12,7 +14,8 @@ public class IngredientModel implements Serializable {
 	
 	private Long id;
 	private String name;
-	private Double weight;
+	private Double value;
+	private IngredientQuantityType type;
 	private String description;
 	
 	public IngredientModel() {}
@@ -21,7 +24,7 @@ public class IngredientModel implements Serializable {
 		super();
 		this.id = id;
 		this.name = name;
-		this.weight = weight;
+		this.value = weight;
 		this.description = description;
 	}
 
@@ -41,12 +44,12 @@ public class IngredientModel implements Serializable {
 		this.name = name;
 	}
 
-	public Double getWeight() {
-		return weight;
+	public Double getValue() {
+		return value;
 	}
 
-	public void setWeight(Double weight) {
-		this.weight = weight;
+	public void setValue(Double weight) {
+		this.value = weight;
 	}
 
 	public String getDescription() {
@@ -55,6 +58,14 @@ public class IngredientModel implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public IngredientQuantityType getType() {
+		return type;
+	}
+
+	public void setType(IngredientQuantityType type) {
+		this.type = type;
 	}
 	
 }

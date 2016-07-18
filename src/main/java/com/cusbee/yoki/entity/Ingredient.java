@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -39,9 +42,6 @@ public class Ingredient implements Serializable{
 	@Column
 	private String name;
 	
-	@Column
-	private Double weight;
-	
 	@JsonBackReference
 	@ManyToMany(mappedBy="ingredients", fetch=FetchType.LAZY)
 	@Fetch(FetchMode.JOIN)
@@ -49,7 +49,18 @@ public class Ingredient implements Serializable{
 	
 	@Column
 	private String description;
+	
+	@Column(name="ingredient_quantity_type")
+	@Enumerated(EnumType.STRING)
+	private IngredientQuantityType type;
 
+	@Column(name="value")
+	private Double value;
+	
+	@Column(name="enabled")
+	@Type(type = "org.hibernate.type.YesNoType")
+	private Boolean enabled;
+	
 	public Long getId() {
 		return id;
 	}
@@ -58,10 +69,18 @@ public class Ingredient implements Serializable{
 		this.id = id;
 	}
 	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -73,13 +92,21 @@ public class Ingredient implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public Double getWeight() {
-		return weight;
+	
+	public IngredientQuantityType getType() {
+		return type;
 	}
 
-	public void setWeight(Double weight) {
-		this.weight = weight;
+	public void setType(IngredientQuantityType type) {
+		this.type = type;
+	}
+
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
 	}
 
 	public List<Dish> getDish() {
