@@ -41,8 +41,15 @@ public class IngredientServiceImpl implements IngredientService {
 
 	@Override
 	@Transactional
-	public Ingredient get(Long id) {
-		return dao.get(id);
+	public Ingredient get(Long id) throws BaseException {
+		if(Objects.isNull(id)){
+			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD, "Field ID is empty");
+		}
+		Ingredient ingredient = dao.get(id);
+		if(Objects.isNull(ingredient)){
+			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "Ingredient with is ID are not present");
+		}
+		return ingredient;
 	}
 
 	@Transactional
@@ -122,5 +129,4 @@ public class IngredientServiceImpl implements IngredientService {
 					"Server resolve your request");
 		}
 	}
-	
 }

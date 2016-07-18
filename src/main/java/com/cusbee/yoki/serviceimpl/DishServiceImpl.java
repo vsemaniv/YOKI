@@ -229,6 +229,26 @@ public class DishServiceImpl implements DishService {
 		return dish;
 	}
 	
+	public Dish removeIngredients(DishModel request) throws BaseException {
+		if(Objects.isNull(request)) {
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "Requets are empty");
+		}
+		if(Objects.isNull(request.getId())){
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_FIELD, "Field ID are empty");
+		}
+		if(Objects.isNull(request.getIngredients())){
+			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "List of ingredients are empty");
+		}
+		Dish dish = get(request.getId());
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		for(IngredientModel model : request.getIngredients()){
+			Ingredient ingredient = ingredientService.get(model.getId());
+			ingredients.add(ingredient);
+		}
+		dish.getIngredients().removeAll(ingredients);
+		return dish;
+	}
+	
 	protected boolean validateName(String name) throws BaseException {
 		Pattern patter = Pattern.compile("^([A-Z]{1}[a-z]{1,15}[\\s]{0,1})+$");
 		Matcher matcher = patter.matcher(name);

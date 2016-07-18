@@ -23,4 +23,6 @@ public interface DishService {
 			throws BaseException;
 	
 	Dish addIngredients(DishModel request) throws BaseException;
+	
+	Dish removeIngredients(DishModel request) throws BaseException;
 }

@@ -13,7 +13,7 @@ public interface IngredientService {
 
 	void update(Ingredient ingredient);
 
-	Ingredient get(Long id);
+	Ingredient get(Long id) throws BaseException;
 
 	void remove(Long id) throws BaseException;
 

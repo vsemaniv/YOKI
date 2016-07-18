@@ -21,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
@@ -73,6 +74,7 @@ public class Dish implements Serializable{
 	@JoinTable(name="dish_ingredients",
 			   joinColumns={@JoinColumn(name="dish_id")},
 			   inverseJoinColumns={@JoinColumn(name="ingredient_id")})
+	@JsonManagedReference
 	private List<Ingredient> ingredients;
 	
 	public Long getId() {

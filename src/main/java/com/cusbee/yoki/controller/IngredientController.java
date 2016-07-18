@@ -28,10 +28,10 @@ import com.wordnik.swagger.annotations.ApiOperation;
 public class IngredientController {
 
 	@Autowired
-	private IngredientService ingredientService;
+	private IngredientService service;
 	
 	@Autowired
-	private IngredientRepository ingredientRepository;
+	private IngredientRepository repository;
 	
 	@Autowired
 	private NullPointerService nullPointerService;
@@ -39,17 +39,16 @@ public class IngredientController {
 	@ApiOperation(value="method create new ingredient")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Ingredient> add(@RequestBody IngredientModel request) throws BaseException {
-		
-		Ingredient ingredient = ingredientService.parse(request, CrudOperation.CREATE);
-		ingredientService.add(ingredient);
+		Ingredient ingredient = service.parse(request, CrudOperation.CREATE);
+		service.add(ingredient);
 		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient addes successful ", ingredient);
 	}
 	
 	@ApiOperation(value="update ingredients")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Ingredient> update(@RequestBody IngredientModel request) throws BaseException {
-		Ingredient ingredient = ingredientService.parse(request, CrudOperation.UPDATE);
-		ingredientService.update(ingredient);
+		Ingredient ingredient = service.parse(request, CrudOperation.UPDATE);
+		service.update(ingredient);
 		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient updated successful", ingredient);
 	}
 	
@@ -57,15 +56,23 @@ public class IngredientController {
 	@RequestMapping(value="remove/{id}", method=RequestMethod.POST)
 	public YokiResult<Ingredient> remove(@PathVariable("id") Long id) throws BaseException {
 		nullPointerService.isNull(id);
-		ingredientService.remove(id);
+		service.remove(id);
 		return new YokiResult<Ingredient>(Status.SUCCESS,"Ingredient successful removed", null);
 	}
 	
 	@ApiOperation(value="get all ingredients")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
 	public List<Ingredient> getAll() throws BaseException {
-		List<Ingredient> ingredients = ingredientService.getAll();
+		List<Ingredient> ingredients = service.getAll();
 		return ingredients; 
+	}
+	
+	@ApiOperation(value="get ingredient by id")
+	@RequestMapping(value="get/{id}", method=RequestMethod.GET)
+	public YokiResult<Ingredient> get(@PathVariable("id")Long id) throws BaseException {
+		nullPointerService.isNull(id);
+		Ingredient ingredient = repository.findById(id);
+		return new YokiResult<Ingredient>(Status.SUCCESS, "Successful request", ingredient);
 	}
 	
 }

@@ -27,7 +27,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @ApiClass(value="operations with dish entity")
 @RestController
 @RequestMapping(value="dish")
-@PropertySource("classpath:ErrorMessages.properties")
+@PropertySource("classpath:ErrorMessages.properties")	
 public class DishController {
 	
 	@Value("${success_request}")
@@ -64,7 +64,8 @@ public class DishController {
 	@ApiOperation(value="add ingredient/s to dish")
 	@RequestMapping(value="addIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> addIngredint(@RequestBody DishModel request) throws BaseException {
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.addIngredients(request));
+		Dish dish = dishService.addIngredients(request);
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
 	}
 	
 	@ApiOperation(value="get dish")
@@ -78,5 +79,12 @@ public class DishController {
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
 	public List<Dish> getAll() throws BaseException {
 		return repository.findAll();
+	}
+	
+	@ApiOperation(value="remove ingredients from dish")
+	@RequestMapping(value="removeIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Dish> removeIngredients(@RequestBody DishModel request) throws BaseException {
+		Dish dish = dishService.removeIngredients(request);
+		return new YokiResult<Dish>(Status.SUCCESS, "Ingredients successful removed from dish", dish);
 	}
 }

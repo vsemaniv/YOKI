@@ -85,4 +85,10 @@ public class AccountController {
 		List<Account> users = accountRepository.findAll();
 		return users;
 	}
+	
+	@ApiOperation(value="get account by id")
+	@RequestMapping(value="get/{id}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Account> get(@PathVariable("id") Long id) throws BaseException {
+		return new YokiResult<Account>(Status.SUCCESS, "Successful request", userService.get(id));
+	}
 }

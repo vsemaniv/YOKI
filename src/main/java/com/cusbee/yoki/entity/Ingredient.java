@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * 
@@ -39,8 +42,9 @@ public class Ingredient implements Serializable{
 	@Column
 	private Double weight;
 	
-	@JsonIgnore
+	@JsonBackReference
 	@ManyToMany(mappedBy="ingredients", fetch=FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private List<Dish> dish;
 	
 	@Column
