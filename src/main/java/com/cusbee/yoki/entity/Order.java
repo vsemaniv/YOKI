@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 
 
 /**
@@ -30,11 +32,11 @@ public class Order implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name="ordered_dish",
 			   joinColumns={@JoinColumn(name="order_id")},
 			   inverseJoinColumns={@JoinColumn(name="dish_id")})
+	@Fetch(FetchMode.JOIN)
 	private List<Dish> dishes;
 	
 	@Column(name="order_date")
@@ -47,10 +49,18 @@ public class Order implements Serializable {
 	
 	@Column(name="amount")
 	private Double amount;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id", nullable = false)
-	private Account account;
+	
+	@Column(name="first_name", length=35, nullable=false)
+	private String firstName;
+	
+	@Column(name="second_name", length=35, nullable=false)
+	private String secondName;
+	
+	@Column(name="phone_number", length=35, nullable=false)
+	private String phoneNumber;
+	
+	@Column(name="location", length=35, nullable=false)
+	private String location;
 
 	public Long getId() {
 		return id;
@@ -60,14 +70,6 @@ public class Order implements Serializable {
 		this.id = id;
 	}
 	
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
 	public Double getAmount() {
 		return amount;
 	}
@@ -100,4 +102,36 @@ public class Order implements Serializable {
 		this.status = status;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getSecondName() {
+		return secondName;
+	}
+
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
 }

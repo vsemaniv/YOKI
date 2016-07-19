@@ -1,6 +1,5 @@
 package com.cusbee.yoki.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.CrudOperation;
-import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
@@ -148,11 +146,6 @@ public class AccountServiceImpl implements AccountService {
 				validFirstLastName(request.getLastname());
 				user.setLastname(request.getLastname());
 			}
-			if(Objects.isNull(user.getOrders()) || user.getOrders().isEmpty()){
-				user.setOrders(new ArrayList<Order>());
-			}
-			List<Order> orders = user.getOrders();
-			user.getOrders().addAll(orders);
 			return user;
 		default:
 			throw new ApplicationException(ErrorCodes.User.BAD_REQUEST,

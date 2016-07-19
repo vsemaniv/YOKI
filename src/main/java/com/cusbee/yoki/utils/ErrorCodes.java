@@ -54,4 +54,11 @@ public class ErrorCodes {
 	public interface  Operator {
 		int EMPTY_REQUEST = 5000;
 	}
+	
+	public interface Order {
+		int EMPTY_REQUEST = 6000;
+		int INVALID_REQUEST = 6001;
+		int EMPTY_LIST_OF_DISHES=6002;
+		int EMPTY_FIELD=6003;
+	}
 }
