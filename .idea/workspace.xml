@@ -1,53 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="78a92a65-b914-49e0-a90b-bdab70ff7580" name="Default" comment="Major changes in AccountService logic and part of tests">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/cusbee/yoki/TestData.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/cusbee/yoki/service/AccountServiceTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/resources/test-context.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.classpath" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.project" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/.jsdtscope" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.m2e.core.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.component" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.project.facet.core.prefs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.project.facet.core.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.jsdt.ui.superType.container" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.jsdt.ui.superType.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.validation.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/m2e-wtp/web-resources/META-INF/maven/com.cusbee/yoki/pom.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/m2e-wtp/web-resources/META-INF/maven/com.cusbee/yoki/pom.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/controller/AccountController.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/controller/AccountController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/dao/DishDao.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/dao/DishDao.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/dto/YokiResult$Status.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/dto/YokiResult$Status.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/dto/YokiResult.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/dto/YokiResult.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/entity/Dish.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/entity/Dish.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/ApplicationException.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/ApplicationException.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/BaseException.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/BaseException.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/Issue.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/Issue.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/IssueType.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/IssueType.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/Issues.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/exception/Issues.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/logging/LogFactory.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/logging/LogFactory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/repositories/DishRepository.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/repositories/DishRepository.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/service/DishService.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/service/DishService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/ErrorCodes$Common.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/ErrorCodes$Common.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/ErrorCodes$Dish.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/ErrorCodes$Dish.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/ErrorCodes.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/ErrorCodes.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/PropertyUtils.class" afterPath="$PROJECT_DIR$/target/classes/com/cusbee/yoki/utils/PropertyUtils.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="78a92a65-b914-49e0-a90b-bdab70ff7580" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YOKI.iml" afterPath="$PROJECT_DIR$/YOKI.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/controller/AuthenticationController.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/controller/AuthenticationController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/model/AccountModel.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/model/AccountModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/service/AccountService.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/service/AccountService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/CategoryServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/CategoryServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/ErrorCodes.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/ErrorCodes.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java" afterPath="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java" />
     </list>
     <list id="b44c8fdf-8923-41b1-a59b-522a9bbfdaa8" name="New changelist" comment="" />
     <ignored path="YOKI.iws" />
@@ -78,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="AccountServiceImpl.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AccountServiceImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="97" column="17" selection-start-line="97" selection-start-column="17" selection-end-line="97" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.07981221">
+              <caret line="93" column="38" selection-start-line="93" selection-start-column="38" selection-end-line="93" selection-end-column="38" />
               <folding>
                 <element signature="e#1620#1621#0" expanded="true" />
                 <element signature="e#1663#1664#0" expanded="true" />
@@ -105,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="41" column="96" selection-start-line="41" selection-start-column="96" selection-end-line="41" selection-end-column="96" />
+              <caret line="53" column="9" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -163,10 +120,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AccountServiceTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AccountServiceTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/com/cusbee/yoki/service/AccountServiceTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.6760564">
+            <state vertical-scroll-proportion="0.0">
               <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -230,11 +187,11 @@
         <option value="$PROJECT_DIR$/src/test/java/com/cusbee/yoki/TestData.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/model/AccountModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/ErrorCodes.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/spring/root-context.xml" />
         <option value="$PROJECT_DIR$/src/test/resources/test-context.xml" />
         <option value="$PROJECT_DIR$/src/test/java/com/cusbee/yoki/service/AccountServiceTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java" />
       </list>
     </option>
   </component>
@@ -1514,7 +1471,13 @@
       <option name="project" value="LOCAL" />
       <updated>1468481288936</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Major changes in AccountService logic and part of tests">
+      <created>1468946562101</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1468946562101</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1550,7 +1513,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48248000" />
+    <option name="totallyTimeSpent" value="49691000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1569,7 +1532,7 @@
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18701299" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22879177" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22943445" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3373656" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1988,27 +1951,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="97" column="17" selection-start-line="97" selection-start-column="17" selection-end-line="97" selection-end-column="17" />
-          <folding>
-            <element signature="e#1620#1621#0" expanded="true" />
-            <element signature="e#1663#1664#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="96" selection-start-line="41" selection-start-column="96" selection-end-line="41" selection-end-column="96" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/ErrorCodes.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.666667">
@@ -2043,10 +1985,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/cusbee/yoki/service/AccountServiceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.6760564">
+        <state vertical-scroll-proportion="0.0">
           <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/utils/Validator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="53" column="9" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/cusbee/yoki/serviceimpl/AccountServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07981221">
+          <caret line="93" column="38" selection-start-line="93" selection-start-column="38" selection-end-line="93" selection-end-column="38" />
+          <folding>
+            <element signature="e#1620#1621#0" expanded="true" />
+            <element signature="e#1663#1664#0" expanded="true" />
           </folding>
         </state>
       </provider>

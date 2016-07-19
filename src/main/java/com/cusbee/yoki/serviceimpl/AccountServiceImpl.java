@@ -92,22 +92,13 @@ public class AccountServiceImpl implements AccountService {
                 account.setEnabled(Boolean.TRUE);
                 return account;
             case UPDATE:
-
-                if (Objects.isNull(request.getId())) {
-                    throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID are empty");
-                }
-                account = get(request.getId());
-                if (Objects.isNull(account)) {
-                    throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User with id:" + request.getId() + "are not present");
-                }
+                account = Validator.validateAccountUpdateRequest(request);
                 if (!Objects.isNull(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
                 }
                 if (Objects.isNull(account.getOrders()) || account.getOrders().isEmpty()) {
                     account.setOrders(new ArrayList<Order>());
                 }
-                Validator.validateAccountUpdateRequest(request);
-
                 account.setAuthority(request.getAuthority());
                 account.setEmail(request.getEmail());
                 account.setFirstname(request.getFirstname());
