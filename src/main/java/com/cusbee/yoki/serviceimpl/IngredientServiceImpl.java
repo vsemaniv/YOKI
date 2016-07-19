@@ -70,12 +70,6 @@ public class IngredientServiceImpl implements IngredientService {
 	}
 
 	@Override
-	public List<Ingredient> parse(List<IngredientModel> request,
-			CrudOperation status) throws BaseException {
-		return null;
-	}
-
-	@Override
 	@Transactional
 	public Ingredient parse(IngredientModel request, CrudOperation status)
 			throws BaseException {
@@ -84,7 +78,6 @@ public class IngredientServiceImpl implements IngredientService {
 			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST,
 					"Empty Request");
 		}
-
 		switch (status) {
 		case CREATE:
 			if (Objects.isNull(request.getName())) {
@@ -104,7 +97,7 @@ public class IngredientServiceImpl implements IngredientService {
 			ingredient.setDescription(request.getDescription());
 			return ingredient;
 		case UPDATE:
-			Ingredient ingred = get(request.getId());
+			Ingredient ingred = repository.findById(request.getId());
 			if(Objects.isNull(ingred)){
 				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "Ingredient with this ID is not present");
 			}
@@ -127,6 +120,27 @@ public class IngredientServiceImpl implements IngredientService {
 		default:
 			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST,
 					"Server resolve your request");
+		}
+	}
+	
+	public Ingredient activation(Long id, CrudOperation operation) throws BaseException {
+		if(Objects.isNull(id)){
+			throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST, "Empty Request");
+		}
+		Ingredient ingredient = repository.findById(id);
+		if(Objects.isNull(ingredient)){
+			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "This ingredient is not present or already blocked");
+		}
+		switch(operation){
+		case BLOCK:
+			ingredient.setEnabled(Boolean.FALSE);
+			return ingredient;
+		case UNBLOCK:
+			ingredient = get(id);
+			ingredient.setEnabled(Boolean.TRUE);
+			return ingredient;
+		default:
+			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST, "Invalid Request");
 		}
 	}
 }

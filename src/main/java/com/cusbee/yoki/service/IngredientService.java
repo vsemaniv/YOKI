@@ -19,9 +19,9 @@ public interface IngredientService {
 
 	List<Ingredient> getAll();
 	
-	List<Ingredient> parse(List<IngredientModel> request, CrudOperation status) throws BaseException;
-
 	Ingredient parse(IngredientModel request, CrudOperation status)
 			throws BaseException;
+	
+	Ingredient activation(Long id, CrudOperation operation) throws BaseException;
 
 }

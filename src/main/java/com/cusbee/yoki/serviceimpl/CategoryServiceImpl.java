@@ -19,6 +19,7 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.repositories.CategoryRepository;
+import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.service.CategoryService;
 import com.cusbee.yoki.service.DishService;
 import com.cusbee.yoki.utils.ErrorCodes;
@@ -31,6 +32,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
+	
+	@Autowired
+	private DishRepository dishRepository;
 
 	@Autowired
 	private DishService dishService;
@@ -194,7 +198,7 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"Field id are not present");
 		}
-		Category category = get(id);
+		Category category = repository.findById(id);
 		if (Objects.isNull(category)) {
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST,
 					"Dish with id:" + id + " is not present");
@@ -223,7 +227,7 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present or blocked");
 		}
 		for (DishModel model : request.getDishes()) {
-			Dish dish = dishService.get(model.getId());
+			Dish dish = dishRepository.findById(model.getId());
 			dish.setCategory(category);
 			dishService.update(dish);
 		}
@@ -241,7 +245,7 @@ public class CategoryServiceImpl implements CategoryService {
 			category = repository.findById(id);
 			if (Objects.isNull(category)) {
 				throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
-						"This category is not present or blocked");
+						"This category is not present or already blocked");
 			}
 			category.setEnabled(Boolean.FALSE);
 			return category;

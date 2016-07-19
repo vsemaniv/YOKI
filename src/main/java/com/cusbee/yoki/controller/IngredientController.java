@@ -75,4 +75,19 @@ public class IngredientController {
 		return new YokiResult<Ingredient>(Status.SUCCESS, "Successful request", ingredient);
 	}
 	
+	@ApiOperation(value="activate ingredient")
+	@RequestMapping(value="activate/{id}", method=RequestMethod.POST)
+	public YokiResult<Ingredient> activate(@PathVariable("id")Long id) throws BaseException {
+		Ingredient ingredient = service.activation(id, CrudOperation.UNBLOCK);
+		service.update(ingredient);
+		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient successful unblocked", ingredient);
+	}
+	
+	@ApiOperation(value="deactivate ingredient")
+	@RequestMapping(value="deactivate/{id}", method=RequestMethod.POST)
+	public YokiResult<Ingredient> deactivate(@PathVariable("id")Long id) throws BaseException {
+		Ingredient ingredient = service.activation(id, CrudOperation.BLOCK);
+		service.update(ingredient);
+		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient successful blocked", ingredient);
+	}
 }
