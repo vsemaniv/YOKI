@@ -182,7 +182,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	protected boolean validateCategory(String name) throws BaseException {
-		Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,15}$");
+		Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,25}$");
 		Matcher matcher = pattern.matcher(name);
 		return matcher.matches();
 	}

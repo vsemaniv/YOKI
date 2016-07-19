@@ -61,13 +61,17 @@ public class AuthenticationController {
 						authenticationRequest.getUsername(),
 						authenticationRequest.getPassword()
 					)
-				); 
- 		//Method checks if user is not blocked
- 		userService.availability(authenticationRequest.getUsername());
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername()); 
-		String token = this.tokenUtils.generateToken(userDetails);
-		return ResponseEntity.ok(new AuthenticationResponse(token));
+				);
+		String username = authenticationRequest.getUsername();
+		if(username != null && !username.isEmpty() && username.length() < 25) {
+			//Method checks if user is not blocked
+			userService.validateUserEnabled(authenticationRequest.getUsername());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+			String token = this.tokenUtils.generateToken(userDetails);
+			return ResponseEntity.ok(new AuthenticationResponse(token));
+		}
+		return null;
 	}
 	
 	@ApiIgnore

@@ -19,7 +19,9 @@ public interface AccountService {
 
 	void activation(Long id, CrudOperation operation) throws BaseException;
 
-	void availability(String username) throws BaseException; 
+	void validateUserEnabled(String username) throws BaseException;
 	
 	void isNull(Account user) throws BaseException;
+
+	String encryptPassword(String password);
 }

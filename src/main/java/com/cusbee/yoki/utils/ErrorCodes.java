@@ -35,6 +35,8 @@ public class ErrorCodes {
 		int INVALID_EMAIL = 2005;
 		int IVALID_FIRST_OR_LAST_NAME = 2006;
 		int INVALID_USERNAME = 2007;
+		int INVALID_PASSWORD = 2008;
+		int WRONG_OLD_PASSWORD = 2009;
 		
 	}
 	

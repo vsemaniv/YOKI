@@ -3,6 +3,7 @@ package com.cusbee.yoki.model;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,7 +13,8 @@ public class AccountModel {
 
 	private Long id;
 	private String username;
-	private String password;
+	private String oldPassword;
+	private String newPassword;
 	private String email;
 	@JsonIgnore
 	private Date lastPasswordReset;
@@ -70,12 +72,24 @@ public class AccountModel {
 		this.username = username;
 	}
 
-	public String getPassword() {
-		return password;
+	@JsonIgnore
+	public String getOldPassword() {
+		return oldPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	@JsonProperty
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	@JsonIgnore
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	@JsonProperty
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
 	public String getEmail() {
