@@ -6,6 +6,7 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.AccountService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
@@ -14,16 +15,18 @@ import java.util.regex.Pattern;
 
 public class Validator {
     @Autowired
-    private static AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    private static AccountService accountService;
+    private AccountService accountService;
 
-    public static void validateAccountCreationRequest(AccountModel request) throws BaseException {
+    private static Validator validator = new Validator();
+
+    public void validateAccountCreationRequest(AccountModel request) throws BaseException {
         String username = request.getUsername();
         String email = request.getEmail();
         //username validation
-        if (Objects.isNull(username)
+        if (StringUtils.isEmpty(username)
                 || Objects.isNull(request.getOldPassword())) {
             throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
                     "Field Username or Password still empty");
@@ -33,7 +36,7 @@ public class Validator {
                     "User with this username already exist");
         }
         //email validation
-        if (Objects.isNull(email)) {
+        if (StringUtils.isEmpty(email)) {
             throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
                     "Field Email can't be empty");
         }
@@ -44,7 +47,7 @@ public class Validator {
         validateAccountFields(request, true);
     }
 
-    public static Account validateAccountUpdateRequest(AccountModel request) throws BaseException {
+    public Account validateAccountUpdateRequest(AccountModel request) throws BaseException {
         if (Objects.isNull(request.getId())) {
             throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID are empty");
         }
@@ -56,10 +59,17 @@ public class Validator {
         return account;
     }
 
+    public void validateRequestNotNull(AccountModel request) throws BaseException {
+        if (Objects.isNull(request)) {
+            throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST,
+                    "Request is empty");
+        }
+    }
+
 
 
     // *** REGEX VALIDATION METHODS ***
-    public static boolean validateAccountUsername(String username) throws BaseException{
+    public boolean validateAccountUsername(String username) throws BaseException{
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{5,15}$");
         Matcher matcher = pattern.matcher(username);
         if(!matcher.matches()){
@@ -68,7 +78,7 @@ public class Validator {
         return matcher.matches();
     }
 
-    public static boolean validateAccountPassword(String password) throws BaseException{
+    public boolean validateAccountPassword(String password) throws BaseException{
         Pattern pattern = Pattern.compile("^.{8,}$");
         Matcher matcher = pattern.matcher(password);
         if(!matcher.matches()){
@@ -77,7 +87,7 @@ public class Validator {
         return matcher.matches();
     }
 
-    public static boolean validateAccountEmail(String email) throws BaseException{
+    public boolean validateAccountEmail(String email) throws BaseException{
         Pattern pattern = Pattern.compile("^([a-z0-9.-]){1,20}[\\@]([a-z]){2,10}[\\.]([a-z]){2,4}$");
         Matcher matcher = pattern.matcher(email);
         if(!matcher.matches()){
@@ -86,7 +96,7 @@ public class Validator {
         return matcher.matches();
     }
 
-    public static boolean validateAccountFirstLastName(String name) throws BaseException {
+    public boolean validateAccountFirstLastName(String name) throws BaseException {
         Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){1,15}$");
         Matcher matcher = pattern.matcher(name);
         if(!matcher.matches()) {
@@ -95,7 +105,7 @@ public class Validator {
         return matcher.matches();
     }
 
-    public static void validateAccountFields(AccountModel request, boolean createOperation) throws BaseException {
+    public void validateAccountFields(AccountModel request, boolean createOperation) throws BaseException {
         validateAccountUsername(request.getUsername());
         validateAccountEmail(request.getEmail());
         validateAccountFirstLastName(request.getFirstname());
@@ -104,5 +114,11 @@ public class Validator {
             validateAccountPassword(request.getNewPassword());
         }
     }
+
+    public static Validator getValidator() {
+        return validator;
+    }
+
+    private Validator(){}
 
 }

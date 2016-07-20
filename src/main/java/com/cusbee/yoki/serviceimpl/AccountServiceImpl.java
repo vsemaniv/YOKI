@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 import com.cusbee.yoki.utils.Validator;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private Validator validator = Validator.getValidator();
+
     /**
      * Add new account to database
      */
@@ -71,16 +75,13 @@ public class AccountServiceImpl implements AccountService {
      * choose what will do(CREATE account or UPDATE account)
      */
     @Transactional
-    public Account parse(AccountModel request, CrudOperation operation)
+    public Account parseRequest(AccountModel request, CrudOperation operation)
             throws BaseException {
-        if (Objects.isNull(request)) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST,
-                    "Request is empty");
-        }
+        validator.validateRequestNotNull(request);
         Account account;
         switch (operation) {
             case CREATE:
-                Validator.validateAccountCreationRequest(request);
+                validator.validateAccountCreationRequest(request);
 
                 account = new Account();
                 account.setUsername(request.getUsername());
@@ -92,12 +93,10 @@ public class AccountServiceImpl implements AccountService {
                 account.setEnabled(Boolean.TRUE);
                 return account;
             case UPDATE:
-                account = Validator.validateAccountUpdateRequest(request);
-                if (!Objects.isNull(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
+                account = validator.validateAccountUpdateRequest(request);
+
+                if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
-                }
-                if (Objects.isNull(account.getOrders()) || account.getOrders().isEmpty()) {
-                    account.setOrders(new ArrayList<Order>());
                 }
                 account.setAuthority(request.getAuthority());
                 account.setEmail(request.getEmail());
@@ -170,6 +169,14 @@ public class AccountServiceImpl implements AccountService {
         return passwordEncoder.encode(password);
     }
 
+    /**
+     * Checks whether old password, that was entered by user in order
+     * to change the password is correct.
+     * @param passwordFromDB - current password
+     * @param enteredPassword - password entered by user
+     * @return
+     * @throws ApplicationException
+     */
     public boolean oldPasswordIsCorrect(String passwordFromDB, String enteredPassword) throws ApplicationException {
         String encodedPassword = passwordEncoder.encode(enteredPassword);
         if(passwordFromDB.equals(encodedPassword)) {

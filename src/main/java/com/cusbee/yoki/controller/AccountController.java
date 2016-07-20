@@ -47,8 +47,8 @@ public class AccountController {
 	
 	@ApiOperation(value="Creates user account")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Account> login(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) throws BaseException{
-		Account user = userService.parse(request, CrudOperation.CREATE);
+	public YokiResult<Account> create(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) throws BaseException{
+		Account user = userService.parseRequest(request, CrudOperation.CREATE);
 		userService.add(user);
 		return new YokiResult<Account>(Status.SUCCESS, "User created successful", user);
 	}
@@ -56,7 +56,7 @@ public class AccountController {
 	@ApiOperation(value="Updates user account")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) throws BaseException {
-		Account user = userService.parse(request, CrudOperation.UPDATE);
+		Account user = userService.parseRequest(request, CrudOperation.UPDATE);
 		userService.add(user);
 		return new YokiResult<Account>(Status.SUCCESS, "User updated successful", user);
 	}
@@ -67,7 +67,7 @@ public class AccountController {
 	 							  @PathVariable("id") Long id) throws BaseException{
 		nullPointerService.isNull(id);
 		userService.activation(id, CrudOperation.BLOCK);
-		return new YokiResult<Account>(Status.SUCCESS, "User blocked successful", null);
+		return new YokiResult<Account>(Status.SUCCESS, "User blocked successfully", null);
 	}
 	
 	@ApiOperation(value="Unblock user")
@@ -76,12 +76,13 @@ public class AccountController {
 									@PathVariable("id") Long id) throws BaseException {
 		nullPointerService.isNull(id);
 		userService.activation(id, CrudOperation.UNBLOCK);
-		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successful", null);
+		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successfully", null);
 	}
 	
 	@ApiOperation(value="Get all users")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
 	public List<Account> getAll() throws BaseException {
+		//todo Should we return YokiResult just as everywhere?
 		List<Account> users = accountRepository.findAll();
 		return users;
 	}
@@ -89,6 +90,7 @@ public class AccountController {
 	@ApiOperation(value="get account by id")
 	@RequestMapping(value="get/{id}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> get(@PathVariable("id") Long id) throws BaseException {
+		nullPointerService.isNull(id);
 		return new YokiResult<Account>(Status.SUCCESS, "Successful request", userService.get(id));
 	}
 }

@@ -6,7 +6,9 @@ import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.serviceimpl.AccountServiceImpl;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,6 +36,9 @@ public class AccountServiceTest {
 
     @InjectMocks
     private AccountServiceImpl service;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private static final String TEST = "test";
     private static final String TEST2 = "TEST2";
@@ -85,10 +90,11 @@ public class AccountServiceTest {
         verifyNoMoreInteractions(repository);
     }
 
-    @Test(expected = ApplicationException.class)
+    @Test
     public void isAccountEnabledExceptionTest() throws BaseException {
         when(repository.availability(TEST)).thenReturn(null);
         service.validateUserEnabled(TEST);
+        thrown.expect(ApplicationException.class);
     }
 
     @Test
@@ -99,10 +105,5 @@ public class AccountServiceTest {
         verifyNoMoreInteractions(passwordEncoder);
 
         assertEquals(TEST2, result);
-    }
-
-    @Test
-    public void parseAccountTest() {
-
     }
 }

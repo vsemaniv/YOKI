@@ -11,7 +11,7 @@ public interface AccountService {
 
 	void add(Account user);
 	
-	Account parse(AccountModel request,  CrudOperation operations) throws BaseException;
+	Account parseRequest(AccountModel request, CrudOperation operations) throws BaseException;
 	
 	List<Account> getAll();
 	
