@@ -12,6 +12,7 @@ import com.cusbee.yoki.dao.IngredientDao;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Ingredient;
+import com.cusbee.yoki.entity.IngredientQuantityType;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.IngredientModel;
@@ -95,6 +96,7 @@ public class IngredientServiceImpl implements IngredientService {
 			ingredient.setName(request.getName());
 			ingredient.setValue(request.getValue());
 			ingredient.setDescription(request.getDescription());
+			ingredient.setType(request.getType());
 			return ingredient;
 		case UPDATE:
 			Ingredient ingred = repository.findById(request.getId());
