@@ -50,17 +50,18 @@ public class Order implements Serializable {
 	@Column(name="amount")
 	private Double amount;
 	
-	@Column(name="first_name", length=35, nullable=false)
-	private String firstName;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="client_id")
+	@Fetch(FetchMode.JOIN)
+	private Client client;
 	
-	@Column(name="second_name", length=35, nullable=false)
-	private String secondName;
-	
-	@Column(name="phone_number", length=35, nullable=false)
-	private String phoneNumber;
-	
-	@Column(name="location", length=35, nullable=false)
-	private String location;
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
 	public Long getId() {
 		return id;
@@ -102,36 +103,4 @@ public class Order implements Serializable {
 		this.status = status;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getSecondName() {
-		return secondName;
-	}
-
-	public void setSecondName(String secondName) {
-		this.secondName = secondName;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
 }

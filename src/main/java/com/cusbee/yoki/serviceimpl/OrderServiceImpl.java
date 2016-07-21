@@ -69,30 +69,10 @@ public class OrderServiceImpl implements OrderService {
 						ErrorCodes.Order.EMPTY_LIST_OF_DISHES,
 						"List of ordered dishes are empty");
 			}
-			if (Objects.isNull(request.getFirstName())) {
-				throw new ApplicationException(ErrorCodes.Order.EMPTY_FIELD,
-						"FirstName empty");
-			}
-			if (Objects.isNull(request.getLastName())) {
-				throw new ApplicationException(ErrorCodes.Order.EMPTY_FIELD,
-						"LastName empty");
-			}
-			if (Objects.isNull(request.getPhoneNumber())) {
-				throw new ApplicationException(ErrorCodes.Order.EMPTY_FIELD,
-						"Phone number are not present");
-			}
-			if (Objects.isNull(request.getLocation())) {
-				throw new ApplicationException(ErrorCodes.Order.EMPTY_FIELD,
-						"Address are not present");
-			}
 			order = new Order();
 			order.setDishes(getDishesFromModel(request));
-			order.setFirstName(request.getFirstName());
-			order.setSecondName(request.getLastName());
-			order.setLocation(request.getLocation());
 			order.setOrderDate(Calendar.getInstance());
 			order.setAmount(countAmount(order.getDishes()));
-			order.setPhoneNumber(request.getPhoneNumber());
 			order.setStatus(OrderStatus.IN_PROGRESS);
 			return order;
 		case UPDATE:
@@ -106,21 +86,6 @@ public class OrderServiceImpl implements OrderService {
 			}
 			
 			order = repository.findById(request.getId());
-			if(!Objects.isNull(request.getFirstName())){
-				order.setFirstName(request.getFirstName());
-			}
-			if(!Objects.isNull(request.getLastName())){
-				order.setSecondName(request.getLastName());
-			}
-			if(!Objects.isNull(request.getDishes())){
-				order.getDishes().addAll(getDishesFromModel(request));
-			}
-			if(!Objects.isNull(request.getLocation())){
-				order.setLocation(request.getLocation());
-			}
-			if(!Objects.isNull(request.getPhoneNumber())){
-				order.setPhoneNumber(request.getPhoneNumber());
-			}
 			return order;
 		default:
 			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,

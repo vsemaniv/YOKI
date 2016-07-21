@@ -15,7 +15,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 /**
@@ -43,7 +44,7 @@ public class Category implements Serializable{
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="category")
 	@Fetch(FetchMode.JOIN)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Dish> dishes; 
 	
 	@Column
