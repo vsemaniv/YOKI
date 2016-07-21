@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-//@ContextConfiguration({"/test-context.xml"})
 public class AccountServiceTest {
 
     @Mock
@@ -93,8 +92,8 @@ public class AccountServiceTest {
     @Test
     public void isAccountEnabledExceptionTest() throws BaseException {
         when(repository.availability(TEST)).thenReturn(null);
-        service.validateUserEnabled(TEST);
         thrown.expect(ApplicationException.class);
+        service.validateUserEnabled(TEST);
     }
 
     @Test
