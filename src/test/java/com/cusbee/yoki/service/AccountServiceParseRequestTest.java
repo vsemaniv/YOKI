@@ -2,6 +2,7 @@ package com.cusbee.yoki.service;
 
 import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.serviceimpl.AccountServiceImpl;
@@ -11,6 +12,7 @@ import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,10 +30,13 @@ public class AccountServiceParseRequestTest {
     private Validator validator;
 
     @Mock
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private AccountServiceImpl service;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     Account account = new Account();
     AccountModel request = new AccountModel();
@@ -85,18 +90,42 @@ public class AccountServiceParseRequestTest {
 
     @Test
     @Parameters(method = "getNormalPasswords")
-    public void updateAccountPassword(String oldPassword, String newPassword) throws BaseException {
+    public void updateAccountPasswordTest(String oldPassword, String newPassword) throws BaseException {
         request.setNewPassword(newPassword);
         request.setOldPassword(oldPassword);
         account.setPassword(oldPassword);
         when(validator.validateAccountUpdateRequest(request)).thenReturn(account);
-        when(passwordEncoder.encode(anyString())).thenReturn(oldPassword);
+        when(passwordEncoder.encode(anyString())).thenReturn(oldPassword).thenReturn("ENCODED");
         Account result = service.parseRequest(request, CrudOperation.UPDATE);
 
         assertNotNull(result.getPassword());
     }
 
-    //TODO MAKE FAILED VARIANTS OF PASSWORD SETTING
+    @Test
+    public void oldPasswordDoesntMatchTest() throws BaseException {
+        String oldPassword = "oldpasswordFromDb123";
+        request.setNewPassword("NEW");
+        account.setPassword(oldPassword);
+        when(validator.validateAccountUpdateRequest(request)).thenReturn(account);
+        //password encoder tries to encode old password coming from request in order to compare encoded value with value from db
+        when(passwordEncoder.encode(anyString())).thenReturn("does not match");
+        thrown.expect(ApplicationException.class);
+
+        service.parseRequest(request, CrudOperation.UPDATE);
+    }
+
+    @Test
+    public void accountUpdateInvalidPasswordTest(String oldPassword, String newPassword) throws BaseException {
+        request.setNewPassword(newPassword);
+        request.setOldPassword(oldPassword);
+        account.setPassword(oldPassword);
+        thrown.expect(ApplicationException.class);
+        when(validator.validateAccountUpdateRequest(request)).thenReturn(account);
+        when(passwordEncoder.encode(anyString())).thenReturn(oldPassword);
+
+
+    }
+
     private Object[] getNormalPasswords() {
         return $(
                 $("normalLength3","normalTREND"),
