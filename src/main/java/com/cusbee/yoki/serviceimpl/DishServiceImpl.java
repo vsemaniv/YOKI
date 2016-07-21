@@ -23,6 +23,7 @@ import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.model.IngredientModel;
+import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.DishService;
@@ -78,6 +79,9 @@ public class DishServiceImpl implements DishService {
 	private CategoryDao categoryDao;
 	
 	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
 	private IngredientService ingredientService;
 	
 	@Autowired
@@ -85,7 +89,7 @@ public class DishServiceImpl implements DishService {
 	
 	@Autowired
 	private IngredientRepository ingredientRepository;
-
+	
 	@Override
 	public void add(Dish dish) {
 		this.dao.add(dish);
@@ -167,7 +171,7 @@ public class DishServiceImpl implements DishService {
 				dish.setType(DishType.valueOf(request.getType().toUpperCase()));
 			}
 			if(!Objects.isNull(request.getCategoryId())){
-				Category category = categoryDao.get(request.getCategoryId());
+				Category category = categoryRepository.findById(request.getCategoryId());
 				nullPointerService.isNull(category);
 				dish.setCategory(category);
 				category.getDishes().add(dish);
@@ -176,7 +180,7 @@ public class DishServiceImpl implements DishService {
 			dao.add(dish);
 			return dish;
 		case UPDATE:
-			dish = get(request.getId());
+			dish = repository.findById(request.getId());
 			nullPointerService.isNull(dish);
 			if(!validate(request.getName())){
 				throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, ALREADY_EXISTS);
@@ -200,7 +204,7 @@ public class DishServiceImpl implements DishService {
 				dish.setType(DishType.valueOf(request.getType().toUpperCase()));
 			}
 			if(!Objects.isNull(request.getCategoryId())){
-				Category category = categoryDao.get(request.getCategoryId());
+				Category category = categoryRepository.findById(request.getCategoryId());
 				nullPointerService.isNull(category);
 				category.getDishes().remove(dish);
 				dish.setCategory(category);
@@ -230,7 +234,8 @@ public class DishServiceImpl implements DishService {
 		List<Ingredient> ingredients = new ArrayList<>();
 		for(IngredientModel ingredient: request.getIngredients()){
 			Ingredient ingred = ingredientRepository.findById(ingredient.getId());
-			ingredients.add(ingred);
+			if(ingred!=null)
+				ingredients.add(ingred);
 		}
 		dish.getIngredients().addAll(ingredients);
 		return dish;
@@ -246,7 +251,10 @@ public class DishServiceImpl implements DishService {
 		if(Objects.isNull(request.getIngredients())){
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "List of ingredients are empty");
 		}
-		Dish dish = get(request.getId());
+		Dish dish = repository.findById(request.getId());
+		if(Objects.isNull(dish)){
+			throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "This dish is not present or blocked");
+		}
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		for(IngredientModel model : request.getIngredients()){
 			Ingredient ingredient = ingredientRepository.findById(model.getId());

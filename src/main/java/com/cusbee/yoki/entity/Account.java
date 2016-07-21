@@ -65,10 +65,6 @@ public class Account extends DomainBase implements Serializable {
     @Column(name = "authority")
     private String authority;
 
-	@OneToMany(mappedBy = "account", fetch=FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-	private List<Order> orders;
-    
 	public String getAuthority() {
 		return authority;
 	}
@@ -146,13 +142,5 @@ public class Account extends DomainBase implements Serializable {
 
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
-	}
-
-	public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
 	}
 }

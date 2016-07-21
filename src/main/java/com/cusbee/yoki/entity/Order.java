@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 
 
 /**
@@ -30,11 +32,11 @@ public class Order implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name="ordered_dish",
 			   joinColumns={@JoinColumn(name="order_id")},
 			   inverseJoinColumns={@JoinColumn(name="dish_id")})
+	@Fetch(FetchMode.JOIN)
 	private List<Dish> dishes;
 	
 	@Column(name="order_date")
@@ -47,10 +49,19 @@ public class Order implements Serializable {
 	
 	@Column(name="amount")
 	private Double amount;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="client_id")
+	@Fetch(FetchMode.JOIN)
+	private Client client;
+	
+	public Client getClient() {
+		return client;
+	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id", nullable = false)
-	private Account account;
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
 	public Long getId() {
 		return id;
@@ -60,14 +71,6 @@ public class Order implements Serializable {
 		this.id = id;
 	}
 	
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
 	public Double getAmount() {
 		return amount;
 	}

@@ -21,7 +21,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -71,7 +70,6 @@ public class Dish implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="category_id")
 	@Fetch(FetchMode.JOIN)
-	@JsonBackReference
 	private Category category;
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
