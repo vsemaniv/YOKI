@@ -21,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -63,6 +64,7 @@ public class Dish implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private DishType type;
 	
+	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="dishes")
 	@Fetch(FetchMode.JOIN)
 	private List<Order> order;

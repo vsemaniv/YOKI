@@ -13,11 +13,11 @@ public class OrderModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private List<DishModel> dishes;
+	private List<DishQuantity> dishes;
 	private Double amount;
 	private Client client;
 	private String message;
-	
+
 	
 	public Client getClient() {
 		return client;
@@ -31,18 +31,19 @@ public class OrderModel implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public List<DishModel> getDishes() {
-		return dishes;
-	}
-	public void setDishes(List<DishModel> dishes) {
-		this.dishes = dishes;
-	}
 	public Double getAmount() {
 		return amount;
 	}
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
+	public List<DishQuantity> getDishes() {
+		return dishes;
+	}
+	public void setDishes(List<DishQuantity> dishes) {
+		this.dishes = dishes;
+	}
+
 
 	public String getMessage() {
 		return message;

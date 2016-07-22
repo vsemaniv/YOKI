@@ -5,3 +5,5 @@
 /.classpath
 /yoki.iml
 .idea
+*.iml
+/bin/
