@@ -59,7 +59,7 @@ public class Dish implements Serializable{
 	@Type(type = "org.hibernate.type.YesNoType")
 	private Boolean enabled;
 	
-	@Column(name="dish_type")
+	@Column(name="dish_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private DishType type;
 	
