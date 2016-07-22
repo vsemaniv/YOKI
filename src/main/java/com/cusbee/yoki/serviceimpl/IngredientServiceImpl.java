@@ -12,7 +12,6 @@ import com.cusbee.yoki.dao.IngredientDao;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Ingredient;
-import com.cusbee.yoki.entity.IngredientQuantityType;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.IngredientModel;

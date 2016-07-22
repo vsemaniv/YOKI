@@ -1,5 +1,7 @@
 package com.cusbee.yoki.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +40,11 @@ public class OrderController {
 		Order order = service.parse(request, CrudOperation.CREATE);
 		service.add(order);
 		return new YokiResult<Order>(Status.SUCCESS, "Order create successful", order);
+	} 
+	
+	@ApiOperation(value="get all orders for operator")
+	@RequestMapping(value="getUnchekedOrders", method=RequestMethod.GET)
+	public List<Order> getOperatorOrders() throws BaseException {
+		return repository.findAllOperatorOrders();
 	}
 }

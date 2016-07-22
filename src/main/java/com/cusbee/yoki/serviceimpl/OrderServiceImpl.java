@@ -16,7 +16,7 @@ import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.OrderStatus;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
-import com.cusbee.yoki.model.DishModel;
+import com.cusbee.yoki.model.DishQuantity;
 import com.cusbee.yoki.model.OrderModel;
 import com.cusbee.yoki.repositories.ClientRepositories;
 import com.cusbee.yoki.repositories.DishRepository;
@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 			order = new Order();
 			order.setDishes(getDishesFromModel(request));
 			order.setOrderDate(Calendar.getInstance());
-			order.setAmount(countAmount(order.getDishes()));
+			order.setAmount(countAmount(request.getDishes()));
 			order.setStatus(OrderStatus.IN_PROGRESS);
 			order.setClient(addClient(request.getClient()));
 			clientService.add(order.getClient());
@@ -114,18 +114,18 @@ public class OrderServiceImpl implements OrderService {
 	
 	protected List<Dish> getDishesFromModel(OrderModel request) {
 		List<Dish> dishes = new ArrayList<>();
-		for(DishModel model : request.getDishes()){
-			Dish dish = dishRepository.findById(model.getId());
+		for(DishQuantity model : request.getDishes()){
+			Dish dish = dishRepository.findById(model.getDish().getId());
 			 if(dish!=null)
 				 dishes.add(dish);
 		}
 		return dishes;
 	}
 	
-	protected Double countAmount(List<Dish> dishes){
+	protected Double countAmount(List<DishQuantity> request){
 		Double amount = 0.0;
-		for(Dish dish: dishes){
-			amount +=dish.getPrice();
+		for(DishQuantity dish : request){
+			amount+=dishRepository.findById(dish.getDish().getId()).getPrice()*dish.getQuantity();
 		}
 		return amount;
 	}
