@@ -1,5 +1,5 @@
-package com.cusbee.yoki.model;
 
+package com.cusbee.yoki.model;
 import java.io.Serializable;
 
 public class ImageModel implements Serializable {
@@ -66,5 +66,4 @@ public class ImageModel implements Serializable {
 	public void setImageUploadedDate(String imageUploadedDate) {
 		this.imageUploadedDate = imageUploadedDate;
 	}
-	
 }

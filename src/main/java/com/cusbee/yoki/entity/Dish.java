@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -81,6 +82,19 @@ public class Dish implements Serializable{
 			   inverseJoinColumns={@JoinColumn(name="ingredient_id")})
 	@JsonManagedReference
 	private List<Ingredient> ingredients;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="dish")
+	@Fetch(FetchMode.JOIN)
+	@JsonManagedReference
+	private List<DishImage> images; 
+	
+	public List<DishImage> getImages(){
+		return this.images;
+	}
+	
+	public void setImages(List<DishImage> images){
+		this.images=images;
+	}
 	
 	public Long getId() {
 		return id;
@@ -162,3 +176,4 @@ public class Dish implements Serializable{
 	}
 	
 }
+

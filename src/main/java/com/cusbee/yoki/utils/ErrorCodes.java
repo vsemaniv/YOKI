@@ -54,4 +54,7 @@ public class ErrorCodes {
 	public interface  Operator {
 		int EMPTY_REQUEST = 5000;
 	}
+	public interface Image{
+		int INVALID_REQUEST=6000;
+	}
 }

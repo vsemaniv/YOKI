@@ -17,15 +17,18 @@ import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.Category;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
+import com.cusbee.yoki.entity.DishImage;
 import com.cusbee.yoki.entity.DishType;
 import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.DishModel;
+import com.cusbee.yoki.model.ImageModel;
 import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.DishService;
+import com.cusbee.yoki.service.ImageService;
 import com.cusbee.yoki.service.IngredientService;
 import com.cusbee.yoki.service.NullPointerService;
 import com.cusbee.yoki.utils.ErrorCodes;
@@ -85,6 +88,9 @@ public class DishServiceImpl implements DishService {
 	
 	@Autowired
 	private IngredientRepository ingredientRepository;
+	
+	@Autowired
+	private ImageService imageService;
 
 	@Override
 	public void add(Dish dish) {
@@ -308,5 +314,39 @@ public class DishServiceImpl implements DishService {
 			throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, INVALID_DISH_WEIGHT);
 		}
 		return matcher.matches();
+	}
+
+	@Override
+	public Dish addImages(DishModel request) throws BaseException {
+		if (Objects.isNull(request)) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
+					"Empty Request");
+		}
+		if (Objects.isNull(request.getId())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"Fild id is not present");
+		}
+		if (Objects.isNull(request.getImages())) {
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+					"You don't input no one dish to adding");
+		}
+		Dish dish = repository.findById(request.getId());
+		if(Objects.isNull(dish)){
+			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST, "This category are not present or blocked");
+		}
+		List<DishImage> images=new ArrayList<>();
+		for (ImageModel model : request.getImages()) {
+			DishImage dishImage = imageService.get(model.getImageId());
+			images.add(dishImage);
+		}
+		dish.setImages(images);
+		update(dish);
+		return dish;
+	}
+
+	@Override
+	public Dish removeImages(DishModel request) throws BaseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
