@@ -95,6 +95,7 @@ public class IngredientServiceImpl implements IngredientService {
 			ingredient.setName(request.getName());
 			ingredient.setValue(request.getValue());
 			ingredient.setDescription(request.getDescription());
+			ingredient.setType(request.getType());
 			return ingredient;
 		case UPDATE:
 			Ingredient ingred = repository.findById(request.getId());
