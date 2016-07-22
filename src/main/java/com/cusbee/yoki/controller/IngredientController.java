@@ -36,7 +36,7 @@ public class IngredientController {
 	@Autowired
 	private NullPointerService nullPointerService;
 	
-	@ApiOperation(value="method create new ingredient")
+	@ApiOperation(value="create new ingredient")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Ingredient> add(@RequestBody IngredientModel request) throws BaseException {
 		Ingredient ingredient = service.parse(request, CrudOperation.CREATE);
