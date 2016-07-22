@@ -48,21 +48,22 @@ public class CategoryController {
 	@RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Category> add(@RequestBody CategoryModel request)
 			throws BaseException {
-		return new YokiResult<Category>(Status.SUCCESS, STATUS, categoryService.parse(request, CrudOperation.CREATE));
+		return new YokiResult<Category>(Status.SUCCESS, STATUS, categoryService.parseRequest(request, CrudOperation.CREATE));
 	}
 
 	@ApiOperation(value = "update category")
 	@RequestMapping(value = "update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Category> update(@RequestBody CategoryModel request)
 			throws BaseException {
-		return new YokiResult<Category>(Status.SUCCESS, STATUS, categoryService.parse(request, CrudOperation.UPDATE));
+		return new YokiResult<Category>(Status.SUCCESS, STATUS, categoryService.parseRequest(request, CrudOperation.UPDATE));
 	}
 
 	@ApiOperation(value = "remove category")
-	@RequestMapping(value = "remove/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
 	public YokiResult<Category> remove(
 			@ApiParam(required = true, value = "The id of the category that should be removed", name = "id") @PathVariable("id") Long id)
 			throws BaseException {
+		nullPointerService.isNull(id);
 		categoryService.remove(id);
 		return new YokiResult<Category>(Status.SUCCESS, STATUS, null);
 	}
@@ -76,6 +77,7 @@ public class CategoryController {
 	@ApiOperation(value="get all dishes from category")
 	@RequestMapping(value="getAllDisheshFromCategory/{id}", method=RequestMethod.GET)
 	public List<Dish> getAllDishes(@PathVariable("id") Long id) throws BaseException {
+		nullPointerService.isNull(id);
 		return categoryService.getAllDishes(id);
 	}
 	
@@ -99,18 +101,18 @@ public class CategoryController {
 	}
 	
 	@ApiOperation(value="deactivate category")
-	@RequestMapping(value="deativate/{id}", method=RequestMethod.POST)
-	public YokiResult<Category> deactivate(@PathVariable("id")Long id) throws BaseException{ 
+	@RequestMapping(value="deactivate/{id}", method=RequestMethod.GET)
+	public YokiResult<Category> deactivate(@PathVariable("id")Long id) throws BaseException {
+		nullPointerService.isNull(id);
 		Category category = categoryService.activation(id, CrudOperation.BLOCK);
-		categoryService.update(category);
 		return new YokiResult<Category>(Status.SUCCESS, STATUS, category);
 	}
 	
 	@ApiOperation(value="activate category")
-	@RequestMapping(value="activate/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="activate/{id}", method=RequestMethod.GET)
 	public YokiResult<Category> activate(@PathVariable("id")Long id) throws BaseException {
+		nullPointerService.isNull(id);
 		Category category = categoryService.activation(id, CrudOperation.UNBLOCK);
-		categoryService.update(category);
 		return new YokiResult<Category>(Status.SUCCESS, STATUS, category);
 	}
 }

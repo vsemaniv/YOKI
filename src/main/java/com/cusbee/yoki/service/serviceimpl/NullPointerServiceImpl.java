@@ -21,7 +21,7 @@ public class NullPointerServiceImpl implements NullPointerService{
 	@Override
 	public void isNull(Object object) throws BaseException{
 		if(Objects.isNull(object)){
-			throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST, "Bad Request. NullPointerException");
+			throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST, "Bad Request. Null id was sent. NullPointerException");
 		}
 	}
 	

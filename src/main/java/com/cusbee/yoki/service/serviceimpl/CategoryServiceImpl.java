@@ -40,16 +40,6 @@ public class CategoryServiceImpl implements CategoryService {
 	private DishService dishService;
 
 	@Override
-	public void add(Category category) {
-		dao.add(category);
-	}
-
-	@Override
-	public void update(Category category) {
-		dao.update(category);
-	}
-
-	@Override
 	@Transactional
 	public Category get(Long id) throws BaseException {
 		if (Objects.isNull(id)) {
@@ -92,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
 	 * Method check for null pointers and if all is right, create or update
 	 * Category
 	 */
-	public Category parse(CategoryModel request, CrudOperation status)
+	public Category parseRequest(CategoryModel request, CrudOperation status)
 			throws BaseException {
 
 		if (Objects.isNull(request)) {
@@ -117,8 +107,7 @@ public class CategoryServiceImpl implements CategoryService {
 			validateCategory(request.getName());
 			category.setName(request.getName());
 			category.setEnabled(Boolean.TRUE);
-			dao.add(category);
-			return category;
+			break;
 		case UPDATE:
 			category = repository.findById(request.getId());
 			if (Objects.isNull(category)) {
@@ -130,12 +119,12 @@ public class CategoryServiceImpl implements CategoryService {
 				validateCategory(request.getName());
 				category.setName(request.getName());
 			}
-			dao.update(category);
-			return category;
+			break;
 		default:
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
 					"Empty Request");
 		}
+		return dao.save(category);
 	}
 
 	public Category removeDishFromCategory(CategoryModel request)
@@ -248,14 +237,15 @@ public class CategoryServiceImpl implements CategoryService {
 						"This category is not present or already blocked");
 			}
 			category.setEnabled(Boolean.FALSE);
-			return category;
+			break;
 		case UNBLOCK:
 			category = get(id);
 			category.setEnabled(Boolean.TRUE);
-			return category;
+			break;
 		default:
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_REQUEST,
 					"Bad Request");
 		}
+		return dao.save(category);
 	}
 }

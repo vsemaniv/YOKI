@@ -10,6 +10,7 @@ import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.model.OrderModel;
 import com.cusbee.yoki.repositories.OrderRepository;
 import com.cusbee.yoki.service.OperatorService;
+import com.cusbee.yoki.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ import java.util.List;
 
 @Service
 public class OperatorServiceImpl implements OperatorService {
+    @Autowired
+    OrderService orderService;
+
     @Autowired
     OrderRepository orderRepository;
 
@@ -36,10 +40,7 @@ public class OperatorServiceImpl implements OperatorService {
             if(accept) {
                 order.setAmount(request.getAmount());
                 order.setClient(request.getClient());
-            /*List<Dish> dishList = new ArrayList<>();
-            for(DishModel dish : request.getDishes()) {
-                dishList.add()
-            }*/
+                order.setDishes(orderService.getDishesFromOrderModel(request));
                 order.setMessage(request.getMessage());
                 order.setStatus(OrderStatus.KITCHEN);
                 return order;

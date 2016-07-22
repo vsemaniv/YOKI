@@ -49,7 +49,7 @@ public class Validator {
 
     public Account validateAccountUpdateRequest(AccountModel request) throws BaseException {
         if (Objects.isNull(request.getId())) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID are empty");
+            throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID is empty");
         }
         Account account = accountService.get(request.getId());
         if (Objects.isNull(account)) {

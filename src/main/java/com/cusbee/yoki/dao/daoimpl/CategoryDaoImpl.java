@@ -19,13 +19,9 @@ public class CategoryDaoImpl implements CategoryDao {
 	private EntityManager em;
 	
 	@Override
-	public void add(Category category) {
+	public Category save(Category category) {
 		em.merge(category);
-	}
-
-	@Override
-	public void update(Category category) {
-		em.merge(category);
+		return category;
 	}
 
 	@Override

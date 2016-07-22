@@ -6,9 +6,7 @@ import com.cusbee.yoki.entity.Category;
 
 public interface CategoryDao {
 
-	void add(Category category);
-	
-	void update(Category category);
+	Category save(Category category);
 	
 	Category get(Long id);
 	
