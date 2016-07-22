@@ -1,4 +1,4 @@
-package com.cusbee.yoki.daoimpl;
+package com.cusbee.yoki.dao.daoimpl;
 
 import java.util.List;
 

@@ -61,7 +61,7 @@ public class DishController {
 		return new YokiResult<Dish>(Status.SUCCESS, STATUS, null);
 	}
 	
-	@ApiOperation(value="add ingredient/s to dish")
+	@ApiOperation(value="add ingredients to dish")
 	@RequestMapping(value="addIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> addIngredint(@RequestBody DishModel request) throws BaseException {
 		Dish dish = dishService.addIngredients(request);

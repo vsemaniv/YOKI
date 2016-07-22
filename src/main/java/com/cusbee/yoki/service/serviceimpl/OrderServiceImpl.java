@@ -1,4 +1,4 @@
-package com.cusbee.yoki.serviceimpl;
+package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,13 +40,8 @@ public class OrderServiceImpl implements OrderService {
 	private ClientRepositories clientRepositories;
 
 	@Override
-	public void add(Order order) {
-		dao.add(order);
-	}
-
-	@Override
-	public void update(Order order) {
-		dao.update(order);
+	public void save(Order order) {
+		dao.save(order);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.repositories.AccountRepository;
-import com.cusbee.yoki.serviceimpl.AccountServiceImpl;
+import com.cusbee.yoki.service.serviceimpl.AccountServiceImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

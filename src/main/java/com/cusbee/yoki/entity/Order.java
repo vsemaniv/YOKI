@@ -54,6 +54,9 @@ public class Order implements Serializable {
 	@JoinColumn(name="client_id")
 	@Fetch(FetchMode.JOIN)
 	private Client client;
+
+	@Column(name = "message")
+	private String message;
 	
 	public Client getClient() {
 		return client;
@@ -103,4 +106,11 @@ public class Order implements Serializable {
 		this.status = status;
 	}
 
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }

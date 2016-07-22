@@ -1,7 +1,8 @@
-package com.cusbee.yoki.service;
+package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.List;
 
+import com.cusbee.yoki.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

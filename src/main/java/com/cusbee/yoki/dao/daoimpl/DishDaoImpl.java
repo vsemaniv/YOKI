@@ -1,4 +1,4 @@
-package com.cusbee.yoki.daoimpl;
+package com.cusbee.yoki.dao.daoimpl;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class DishDaoImpl implements DishDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Dish> getAll() {
-		return (List<Dish>) em.createQuery("SELEÑT d FROM Dish d WHERE d.enabled=true").getResultList();
+		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled=true").getResultList();
 	}
 
 }

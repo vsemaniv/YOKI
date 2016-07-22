@@ -1,4 +1,4 @@
-package com.cusbee.yoki.serviceimpl;
+package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;

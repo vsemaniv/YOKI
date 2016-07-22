@@ -1,4 +1,4 @@
-package com.cusbee.yoki.serviceimpl;
+package com.cusbee.yoki.service.serviceimpl;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -36,7 +36,7 @@ public class OrderController {
 	public YokiResult<Order> create(@RequestBody OrderModel request) throws BaseException {
 		nullPointerService.isNull(request);
 		Order order = service.parse(request, CrudOperation.CREATE);
-		service.add(order);
+		service.save(order);
 		return new YokiResult<Order>(Status.SUCCESS, "Order create successful", order);
 	}
 }

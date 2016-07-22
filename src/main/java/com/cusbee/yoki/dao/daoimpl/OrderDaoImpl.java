@@ -1,4 +1,4 @@
-package com.cusbee.yoki.daoimpl;
+package com.cusbee.yoki.dao.daoimpl;
 
 import java.util.List;
 
@@ -19,12 +19,7 @@ public class OrderDaoImpl implements OrderDao {
 	private EntityManager em;
 	
 	@Override
-	public void add(Order order) {
-		em.merge(order);
-	}
-
-	@Override
-	public void update(Order order) {
+	public void save(Order order) {
 		em.merge(order);
 	}
 

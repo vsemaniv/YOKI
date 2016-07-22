@@ -16,6 +16,7 @@ public class OrderModel implements Serializable {
 	private List<DishModel> dishes;
 	private Double amount;
 	private Client client;
+	private String message;
 	
 	
 	public Client getClient() {
@@ -42,5 +43,12 @@ public class OrderModel implements Serializable {
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }

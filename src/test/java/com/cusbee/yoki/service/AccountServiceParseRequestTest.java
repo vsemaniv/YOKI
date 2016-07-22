@@ -5,7 +5,7 @@ import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
-import com.cusbee.yoki.serviceimpl.AccountServiceImpl;
+import com.cusbee.yoki.service.serviceimpl.AccountServiceImpl;
 import com.cusbee.yoki.utils.Validator;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

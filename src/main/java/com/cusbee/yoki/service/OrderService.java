@@ -9,9 +9,7 @@ import com.cusbee.yoki.model.OrderModel;
 
 public interface OrderService {
 
-	void add(Order order);
-
-	void update(Order order);
+	void save(Order order);
 
 	void remove(Order order);
 
