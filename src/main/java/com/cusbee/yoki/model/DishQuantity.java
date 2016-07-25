@@ -1,7 +1,6 @@
 package com.cusbee.yoki.model;
 
 public class DishQuantity {
-
 	
 	private DishModel dish;
 	

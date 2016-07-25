@@ -19,8 +19,9 @@ public class OrderDaoImpl implements OrderDao {
 	private EntityManager em;
 	
 	@Override
-	public void save(Order order) {
+	public Order save(Order order) {
 		em.merge(order);
+		return order;
 	}
 
 	@Override

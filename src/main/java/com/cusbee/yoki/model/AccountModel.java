@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
-public class AccountModel {
+public class AccountModel implements RequestModel {
 
 	private Long id;
 	private String username;

@@ -3,7 +3,7 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class DishModel implements Serializable {
+public class DishModel implements RequestModel, Serializable {
 
 	/**
 	 * 

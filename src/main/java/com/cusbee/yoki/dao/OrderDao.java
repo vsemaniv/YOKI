@@ -6,7 +6,7 @@ import com.cusbee.yoki.entity.Order;
 
 public interface OrderDao {
 
-	void save(Order order);
+	Order save(Order order);
 	
 	void remove(Order order);
 	

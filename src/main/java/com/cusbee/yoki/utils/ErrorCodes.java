@@ -6,26 +6,18 @@ package com.cusbee.yoki.utils;
  * @project: yoki
  */
 public class ErrorCodes {
-
-    public interface Dish {
-        int EMPTY_REQUEST = 0000;
-        int EMPTY_FIELD = 0001;
-        int ALREADY_EXISTS = 0002;
-        int INVALID_REQUEST = 0003;
-    }
-
     public interface Common {
-
-        int KEY_CANNOT_BE_EMPTY = 1000;
-        int NO_MAPPING_EXISTS = 1001;
-        int INVALID_DATE_FORMAT = 1002;
-        int EMPTY_REQUEST = 1003;
-        int INVALID_REQUEST = 1004;
-        int INVALID_PROFILE = 1005;
+        int EMPTY_REQUEST = 1000;
+        int EMPTY_REQUEST_ID = 1001;
+        int NOT_EXIST = 1002;
+        int INVALID_REQUEST = 1003;
+        int KEY_CANNOT_BE_EMPTY = 1004;
+        int NO_MAPPING_EXISTS = 1005;
+        int INVALID_DATE_FORMAT = 1006;
+        int INVALID_PROFILE = 1007;
     }
 
     public interface User {
-
         int EMPTY_REQUEST = 2000;
         int EMPTY_FIELDS = 2001;
         int ALREADY_EXIST = 2002;
@@ -36,12 +28,10 @@ public class ErrorCodes {
         int INVALID_USERNAME = 2007;
         int INVALID_PASSWORD = 2008;
         int WRONG_OLD_PASSWORD = 2009;
-
     }
 
     public interface Category {
-
-        int EMPTY_REQUEST = 3000;
+        int NOT_EXIST = 3000;
         int EMPTY_FIELD = 3001;
         int ALREADY_EXIST = 3002;
     }
@@ -52,8 +42,11 @@ public class ErrorCodes {
         int ALREADY_EXIST = 4002;
     }
 
-    public interface Operator {
+    public interface Dish {
         int EMPTY_REQUEST = 5000;
+        int EMPTY_FIELD = 5001;
+        int ALREADY_EXISTS = 5002;
+        int INVALID_REQUEST = 5003;
     }
 
     public interface Order {
@@ -62,5 +55,9 @@ public class ErrorCodes {
         int EMPTY_LIST_OF_DISHES = 6002;
         int EMPTY_FIELD = 6003;
         int ORDER_NOT_EXIST = 6004;
+    }
+
+    public interface Operator {
+
     }
 }

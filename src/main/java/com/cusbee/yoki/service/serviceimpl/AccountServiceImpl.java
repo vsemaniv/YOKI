@@ -182,5 +182,4 @@ public class AccountServiceImpl implements AccountService {
             throw new ApplicationException(ErrorCodes.User.WRONG_OLD_PASSWORD, "Password entered in the \"Current password\" field is incorrect.");
         }
     }
-
 }

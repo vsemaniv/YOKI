@@ -2,13 +2,13 @@ package com.cusbee.yoki.model;
 
 import java.io.Serializable;
 
-public class ImageModel implements Serializable {
+public class ImageModel implements RequestModel, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3426220289417487763L;
-	private Long imageId;
+	private Long id;
 	private String imageURL;
 	private String imageName;
 	private String imageDescription;
@@ -20,19 +20,19 @@ public class ImageModel implements Serializable {
 	public ImageModel(Long imageId, String imageURL, String imageName,
 			String imageDescription, String imageUploadedDate) {
 		super();
-		this.setImageId(imageId);
+		this.setId(imageId);
 		this.setImageURL(imageURL);
 		this.setImageName(imageName);
 		this.setImageDescription(imageDescription);
 		this.setImageUploadedDate(imageUploadedDate);
 	}
 
-	public Long getImageId() {
-		return imageId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setImageId(Long imageId) {
-		this.imageId = imageId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getImageURL() {

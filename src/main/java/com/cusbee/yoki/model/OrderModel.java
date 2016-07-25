@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.cusbee.yoki.entity.Client;
 
-public class OrderModel implements Serializable {
+public class OrderModel implements RequestModel, Serializable {
 
 	/**
 	 * 

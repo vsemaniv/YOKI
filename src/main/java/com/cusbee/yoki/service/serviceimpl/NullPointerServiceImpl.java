@@ -24,5 +24,5 @@ public class NullPointerServiceImpl implements NullPointerService{
 			throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST, "Bad Request. Null id was sent. NullPointerException");
 		}
 	}
-	
+
 }

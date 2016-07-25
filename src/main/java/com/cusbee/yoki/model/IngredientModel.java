@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.cusbee.yoki.entity.IngredientQuantityType;
 
-public class IngredientModel implements Serializable {
+public class IngredientModel implements RequestModel, Serializable {
 
 	/**
 	 * 
