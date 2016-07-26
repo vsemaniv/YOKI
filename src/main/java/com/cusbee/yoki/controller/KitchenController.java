@@ -30,8 +30,8 @@ public class KitchenController {
     NullPointerService npService;
 
     @RequestMapping(value = "getAll", method = RequestMethod.GET)
-    public YokiResult<List<Order>> getKitchenOrders() throws BaseException {
-        return new YokiResult<>(YokiResult.Status.SUCCESS, "Orders were successfully returned", kitchenService.getKitchenOrders());
+    public List<Order> getKitchenOrders() throws BaseException {
+        return kitchenService.getKitchenOrders();
     }
 
     @RequestMapping(value = "deliver/{id}", method = RequestMethod.POST)

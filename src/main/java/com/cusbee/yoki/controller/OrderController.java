@@ -21,9 +21,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value="order")
 public class OrderController {
-
-	@Autowired
-	private OrderRepository repository;
 	
 	@Autowired
 	private OrderService service;
