@@ -35,9 +35,16 @@ public class KitchenController {
     }
 
     @RequestMapping(value = "deliver/{id}", method = RequestMethod.POST)
-    public YokiResult<Order> processOrder(@PathVariable("id")Long id) throws BaseException {
+    public YokiResult<Order> passToDriver(@PathVariable("id")Long id) throws BaseException {
         npService.isNull(id);
         Order order = kitchenService.passToDriver(id);
-        return new YokiResult<>(YokiResult.Status.SUCCESS, "Order was successfully processed", order);
+        return new YokiResult<>(YokiResult.Status.SUCCESS, "Order status was successfully changed", order);
+    }
+
+    @RequestMapping(value = "return/{id}", method = RequestMethod.POST)
+    public YokiResult<Order> canNotPrepare(@RequestParam(value = "message") String message, @PathVariable("id")Long id) throws BaseException {
+        npService.isNull(id);
+        Order order = kitchenService.canNotPrepare(id);
+        return new YokiResult<>(YokiResult.Status.SUCCESS, "Order status was successfully changed", order);
     }
 }

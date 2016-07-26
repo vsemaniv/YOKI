@@ -30,41 +30,39 @@ public class Validator {
 
     private static Validator validator = new Validator();
 
-    public void validateAccountCreationRequest(AccountModel request) throws BaseException {
-        String username = request.getUsername();
-        String email = request.getEmail();
-        //username validation
-        if (StringUtils.isEmpty(username)
-                || Objects.isNull(request.getOldPassword())) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
-                    "Field Username or Password still empty");
+    public void validateAccountParseRequest(AccountModel request, CrudOperation operation) throws BaseException {
+        validateRequestNotNull(request);
+        switch (operation) {
+            case CREATE:
+                String username = request.getUsername();
+                String email = request.getEmail();
+                //username validation
+                if (StringUtils.isEmpty(username)
+                        || Objects.isNull(request.getOldPassword())) {
+                    throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
+                            "Field Username or Password still empty");
+                }
+                if (accountRepository.findByUsername(username) != null) {
+                    throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
+                            "User with this username already exist");
+                }
+                //email validation
+                if (StringUtils.isEmpty(email)) {
+                    throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
+                            "Field Email can't be empty");
+                }
+                if (accountRepository.validateAccount(email) != null) {
+                    throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
+                            "This email already used");
+                }
+                validateAccountFields(request, true);
+                break;
+            case UPDATE:
+                validateAccountFields(request, false);
+                break;
+            default:
+                throw new ApplicationException(ErrorCodes.User.BAD_REQUEST, "Unsupported operation");
         }
-        if (accountRepository.findByUsername(username) != null) {
-            throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
-                    "User with this username already exist");
-        }
-        //email validation
-        if (StringUtils.isEmpty(email)) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
-                    "Field Email can't be empty");
-        }
-        if (accountRepository.validateAccount(email) != null) {
-            throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
-                    "This email already used");
-        }
-        validateAccountFields(request, true);
-    }
-
-    public Account validateAccountUpdateRequest(AccountModel request) throws BaseException {
-        if (Objects.isNull(request.getId())) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS, "Field ID is empty");
-        }
-        Account account = accountService.get(request.getId());
-        if (Objects.isNull(account)) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User with id:" + request.getId() + "are not present");
-        }
-        validateAccountFields(request, false);
-        return account;
     }
 
     public void validateCategory(CategoryModel request, CrudOperation status) throws BaseException {
@@ -106,7 +104,7 @@ public class Validator {
         validateRegexAccountEmail(request.getEmail());
         validateRegexAccountFirstLastName(request.getFirstname());
         validateRegexAccountFirstLastName(request.getLastname());
-        if(createOperation || request.getNewPassword() != null) {
+        if(createOperation || StringUtils.isNotEmpty(request.getNewPassword())) {
             validateRegexAccountPassword(request.getNewPassword());
         }
     }

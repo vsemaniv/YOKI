@@ -30,7 +30,7 @@ public class OperatorServiceImpl implements OperatorService {
 
     @Override
     public List<Order> getAllNonProcessedOrders() {
-        return orderRepository.getAvailableOrders(OrderStatus.IN_PROGRESS);
+        return orderRepository.getOperatorOrders();
     }
 
     @Override

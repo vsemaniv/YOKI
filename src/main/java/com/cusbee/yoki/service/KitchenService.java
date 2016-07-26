@@ -12,4 +12,6 @@ public interface KitchenService {
     List<Order> getKitchenOrders();
 
     Order passToDriver(Long id);
+
+    Order canNotPrepare(Long id);
 }

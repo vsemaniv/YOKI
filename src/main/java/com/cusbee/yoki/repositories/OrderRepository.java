@@ -15,6 +15,9 @@ public interface OrderRepository  extends JpaRepository<Order, Long>{
 	@Query(value = "SELECT o.* FROM orders WHERE o.order_status=?1", nativeQuery = true)
 	List<Order> getAvailableOrders(OrderStatus status);
 
+	@Query(value = "SELECT o.* FROM orders WHERE o.order_status IN ('OPERATOR','CANT_PREPARE')", nativeQuery = true)
+	List<Order> getOperatorOrders();
+
 	@Query(value="SELECT o.* FROM orders o WHERE o.id=?1", nativeQuery=true)
 	Order findById(Long id);
 }

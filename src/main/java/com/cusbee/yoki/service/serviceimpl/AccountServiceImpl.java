@@ -74,12 +74,10 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public Account parseRequest(AccountModel request, CrudOperation operation)
             throws BaseException {
-        validator.validateRequestNotNull(request);
+        validator.validateAccountParseRequest(request, operation);
         Account account;
         switch (operation) {
             case CREATE:
-                validator.validateAccountCreationRequest(request);
-
                 account = new Account();
                 account.setUsername(request.getUsername());
                 account.setPassword(encryptPassword(request.getNewPassword()));
@@ -90,8 +88,8 @@ public class AccountServiceImpl implements AccountService {
                 account.setEnabled(Boolean.TRUE);
                 return account;
             case UPDATE:
-                account = validator.validateAccountUpdateRequest(request);
-
+                account = get(request.getId());
+                validator.validateEntityNotNull(account);
                 if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
                 }
@@ -114,7 +112,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void activation(Long id, CrudOperation operation)
             throws BaseException {
-
         Account user = get(id);
         if (Objects.isNull(user)) {
             throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User is not present");
