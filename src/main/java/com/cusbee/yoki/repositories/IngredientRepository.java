@@ -11,7 +11,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long>{
 
 	Ingredient findByName(String name);
 		
-	@Query(value="SELECT i.* FROM Ingredient i WHERE i.id=?1 AND enabled='Y'", nativeQuery=true)
+	@Query(value="SELECT i.* FROM ingredient i WHERE i.id=?1 AND enabled='Y'", nativeQuery=true)
 	Ingredient findById(Long id);
 		
 }
