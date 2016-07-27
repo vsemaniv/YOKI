@@ -38,7 +38,7 @@ public class Validator {
                 String email = request.getEmail();
                 //username validation
                 if (StringUtils.isEmpty(username)
-                        || Objects.isNull(request.getOldPassword())) {
+                        || Objects.isNull(request.getNewPassword())) {
                     throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
                             "Field Username or Password still empty");
                 }
