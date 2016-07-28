@@ -3,10 +3,8 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.cusbee.yoki.utils.Validator;
+import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,14 +39,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private DishService dishService;
 
-	private Validator validator = Validator.getValidator();
+	@Autowired
+	private ValidatorService validatorService;
 
 	@Override
 	@Transactional
 	public Category get(Long id) throws BaseException {
-		validator.validateRequestIdNotNull(id);
+		validatorService.validateRequestIdNotNull(id);
 		Category category = dao.get(id);
-		validator.validateEntityNotNull(category);
+		validatorService.validateEntityNotNull(category);
 		return category;
 	}
 
@@ -74,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
 	 */
 	public Category parseRequest(CategoryModel request, CrudOperation status)
 			throws BaseException {
-		validator.validateCategory(request, status);
+		validatorService.validateCategory(request, status);
 		Category category;
 		switch (status) {
 		case CREATE:
@@ -85,7 +84,7 @@ public class CategoryServiceImpl implements CategoryService {
 		case UPDATE:
 			//TODO replace repository with DAO? Replace two lines below with *get(id)* and check.
 			category = repository.findById(request.getId());
-			validator.validateEntityNotNull(category);
+			validatorService.validateEntityNotNull(category);
 			break;
 		default:
 			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
@@ -100,25 +99,25 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional
 	public List<Dish> getAllDishes(Long id) throws BaseException {
 		//TODO replace repository with DAO? Replace three lines below with *get(id)* and check.
-		validator.validateRequestIdNotNull(id);
+		validatorService.validateRequestIdNotNull(id);
 		Category category = repository.findById(id);
-		validator.validateEntityNotNull(category);
+		validatorService.validateEntityNotNull(category);
 		List<Dish> dishes = category.getDishes();
 		return dishes;
 	}
 
 	public Category activation(Long id, CrudOperation operation) throws BaseException {
-		validator.validateRequestIdNotNull(id);
+		validatorService.validateRequestIdNotNull(id);
 		Category category;
 		switch (operation) {
 		case BLOCK:
 			category = repository.findById(id);
-			validator.validateEntityNotNull(category);
+			validatorService.validateEntityNotNull(category);
 			category.setEnabled(Boolean.FALSE);
 			break;
 		case UNBLOCK:
 			category = get(id);
-			validator.validateEntityNotNull(category);
+			validatorService.validateEntityNotNull(category);
 			category.setEnabled(Boolean.TRUE);
 			break;
 		default:
@@ -131,15 +130,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category addDishToCategory(CategoryModel request)
 			throws BaseException {
-		validator.validateRequestNotNull(request);
-		validator.validateRequestIdNotNull(request.getId());
+		validatorService.validateRequestNotNull(request);
+		validatorService.validateRequestIdNotNull(request.getId());
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (CollectionUtils.isEmpty(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"You passed no dish to add");
 		}
 		Category category = repository.findById(request.getId());
-		validator.validateEntityNotNull(category);
+		validatorService.validateEntityNotNull(category);
 		for (DishModel model : request.getDishes()) {
 			Dish dish = dishRepository.findById(model.getId());
 			/*
@@ -157,15 +156,15 @@ public class CategoryServiceImpl implements CategoryService {
 
 	public Category removeDishFromCategory(CategoryModel request)
 			throws BaseException {
-		validator.validateRequestNotNull(request);
-		validator.validateRequestIdNotNull(request.getId());
+		validatorService.validateRequestNotNull(request);
+		validatorService.validateRequestIdNotNull(request.getId());
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (Objects.isNull(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"Dishes ID's to remove is not present");
 		}
 		Category category = repository.findById(request.getId());
-		validator.validateEntityNotNull(category);
+		validatorService.validateEntityNotNull(category);
 		List<Long> ids = new ArrayList<Long>();
 		for (DishModel dish : request.getDishes()) {
 			ids.add(dish.getId());

@@ -1,6 +1,5 @@
-package com.cusbee.yoki.utils;
+package com.cusbee.yoki.service.serviceimpl;
 
-import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.BaseEntity;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
@@ -10,25 +9,23 @@ import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.model.RequestModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.repositories.CategoryRepository;
-import com.cusbee.yoki.service.AccountService;
+import com.cusbee.yoki.service.ValidatorService;
+import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validator {
+@Service
+public class ValidatorServiceImpl implements ValidatorService {
     @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private AccountService accountService;
-
-    private static Validator validator = new Validator();
 
     public void validateAccountParseRequest(AccountModel request, CrudOperation operation) throws BaseException {
         validateRequestNotNull(request);
@@ -92,7 +89,7 @@ public class Validator {
         }
     }
 
-    public void validateEntityNotNull(BaseEntity entity) throws ApplicationException {
+    public void validateEntityNotNull(BaseEntity entity) throws BaseException {
         if (Objects.isNull(entity)) {
             throw new ApplicationException(ErrorCodes.Common.NOT_EXIST,
                     "Could not find "+entity.getClass().getSimpleName()+" in database or failed to retrieve it");
@@ -151,13 +148,4 @@ public class Validator {
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
-
-
-
-    public static Validator getValidator() {
-        return validator;
-    }
-
-    private Validator(){}
-
 }

@@ -3,7 +3,7 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.List;
 import java.util.Objects;
 
-import com.cusbee.yoki.utils.Validator;
+import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +38,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Validator validator = Validator.getValidator();
+    @Autowired
+    private ValidatorService validatorService;
 
     /**
      * Add new account to database
@@ -74,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public Account parseRequest(AccountModel request, CrudOperation operation)
             throws BaseException {
-        validator.validateAccountParseRequest(request, operation);
+        validatorService.validateAccountParseRequest(request, operation);
         Account account;
         switch (operation) {
             case CREATE:
@@ -89,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
                 return account;
             case UPDATE:
                 account = get(request.getId());
-                validator.validateEntityNotNull(account);
+                validatorService.validateEntityNotNull(account);
                 if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
                 }
