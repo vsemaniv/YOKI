@@ -7,7 +7,6 @@ import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.service.serviceimpl.AccountServiceImpl;
-import com.cusbee.yoki.utils.Validator;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class AccountServiceParseRequestTest {
 
     @Mock
-    private Validator validator;
+    private ValidatorService validatorService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -61,9 +60,9 @@ public class AccountServiceParseRequestTest {
         String encodedPassword = "ENCODED";
         when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
         Account account = service.parseRequest(request, CrudOperation.CREATE);
-        verify(validator, times(1)).validateAccountParseRequest(request, CrudOperation.CREATE);
+        verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.CREATE);
         verify(passwordEncoder, times(1)).encode(request.getNewPassword());
-        verifyNoMoreInteractions(validator, passwordEncoder);
+        verifyNoMoreInteractions(validatorService, passwordEncoder);
 
         assertEquals(account.getEmail(), request.getEmail());
         assertEquals(account.getUsername(), request.getUsername());
@@ -79,9 +78,9 @@ public class AccountServiceParseRequestTest {
         request.setNewPassword("");
         when(accountDao.get(anyLong())).thenReturn(account);
         Account account = service.parseRequest(request, CrudOperation.UPDATE);
-        verify(validator, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
-        verify(validator, times(1)).validateEntityNotNull(account);
-        verifyNoMoreInteractions(validator);
+        verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
+        verify(validatorService, times(1)).validateEntityNotNull(account);
+        verifyNoMoreInteractions(validatorService);
 
         assertEquals(account.getEmail(), request.getEmail());
         assertEquals(account.getUsername(), request.getUsername());
@@ -101,7 +100,7 @@ public class AccountServiceParseRequestTest {
         when(passwordEncoder.encode(anyString())).thenReturn(oldPassword).thenReturn("ENCODED");
         Account result = service.parseRequest(request, CrudOperation.UPDATE);
 
-        verify(validator, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
+        verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
         assertNotNull(result.getPassword());
     }
 
