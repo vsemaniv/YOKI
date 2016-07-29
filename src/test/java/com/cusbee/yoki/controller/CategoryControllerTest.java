@@ -72,11 +72,10 @@ public class CategoryControllerTest {
     @Test
     public void getCategoryByIdTest() throws BaseException {
         Long categoryId = 14572L;
-        when(categoryRepository.findById(categoryId)).thenReturn(category);
+        when(categoryService.get(categoryId)).thenReturn(category);
         YokiResult<Category> result = controller.get(categoryId);
-        verify(npService, times(1)).isNull(categoryId);
-        verify(categoryRepository, times(1)).findById(categoryId);
-        verifyNoMoreInteractions(categoryRepository, npService);
+        verify(categoryService, times(1)).get(categoryId);
+        verifyNoMoreInteractions(categoryService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), category);
     }
@@ -86,10 +85,10 @@ public class CategoryControllerTest {
         List<Category> categories = new ArrayList<>();
         categories.add(new Category());
         categories.add(category);
-        when(categoryRepository.findAll()).thenReturn(categories);
+        when(categoryService.getAll()).thenReturn(categories);
         List<Category> result = controller.getAll();
 
-        verify(categoryRepository, times(1)).findAll();
+        verify(categoryService, times(1)).getAll();
         assertEquals(categories, result);
     }
 
