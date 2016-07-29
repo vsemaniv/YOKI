@@ -79,7 +79,7 @@ public class AccountServiceParseRequestTest {
         when(accountDao.get(anyLong())).thenReturn(account);
         Account account = service.parseRequest(request, CrudOperation.UPDATE);
         verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
-        verify(validatorService, times(1)).validateEntityNotNull(account);
+        verify(validatorService, times(1)).validateEntityNotNull(account, Account.class);
         verifyNoMoreInteractions(validatorService);
 
         assertEquals(account.getEmail(), request.getEmail());

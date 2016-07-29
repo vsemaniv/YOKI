@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,6 @@ import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.model.DishModel;
-import com.cusbee.yoki.repositories.CategoryRepository;
-import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.service.CategoryService;
 import com.cusbee.yoki.service.DishService;
 import com.cusbee.yoki.utils.ErrorCodes;
@@ -29,12 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryDao dao;
-
-	@Autowired
-	private CategoryRepository repository;
 	
 	@Autowired
-	private DishRepository dishRepository;
+	private DishDao dishDao;
 
 	@Autowired
 	private DishService dishService;
@@ -47,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public Category get(Long id) throws BaseException {
 		validatorService.validateRequestIdNotNull(id);
 		Category category = dao.get(id);
-		validatorService.validateEntityNotNull(category);
+		validatorService.validateEntityNotNull(category, Category.class);
 		return category;
 	}
 
@@ -82,9 +78,8 @@ public class CategoryServiceImpl implements CategoryService {
 			category.setEnabled(Boolean.TRUE);
 			break;
 		case UPDATE:
-			//TODO replace repository with DAO? Replace two lines below with *get(id)* and check.
-			category = repository.findById(request.getId());
-			validatorService.validateEntityNotNull(category);
+			category = get(request.getId());
+			category.setName(request.getName());
 			break;
 		default:
 			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
@@ -98,26 +93,17 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public List<Dish> getAllDishes(Long id) throws BaseException {
-		//TODO replace repository with DAO? Replace three lines below with *get(id)* and check.
-		validatorService.validateRequestIdNotNull(id);
-		Category category = repository.findById(id);
-		validatorService.validateEntityNotNull(category);
-		List<Dish> dishes = category.getDishes();
-		return dishes;
+		Category category = get(id);
+		return category.getDishes();
 	}
 
 	public Category activation(Long id, CrudOperation operation) throws BaseException {
-		validatorService.validateRequestIdNotNull(id);
-		Category category;
+		Category category = get(id);
 		switch (operation) {
 		case BLOCK:
-			category = repository.findById(id);
-			validatorService.validateEntityNotNull(category);
 			category.setEnabled(Boolean.FALSE);
 			break;
 		case UNBLOCK:
-			category = get(id);
-			validatorService.validateEntityNotNull(category);
 			category.setEnabled(Boolean.TRUE);
 			break;
 		default:
@@ -131,23 +117,21 @@ public class CategoryServiceImpl implements CategoryService {
 	public Category addDishToCategory(CategoryModel request)
 			throws BaseException {
 		validatorService.validateRequestNotNull(request);
-		validatorService.validateRequestIdNotNull(request.getId());
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (CollectionUtils.isEmpty(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"You passed no dish to add");
 		}
-		Category category = repository.findById(request.getId());
-		validatorService.validateEntityNotNull(category);
+		Category category = get(request.getId());
 		for (DishModel model : request.getDishes()) {
-			Dish dish = dishRepository.findById(model.getId());
-			/*
+			Dish dish = dishDao.get(model.getId());
+
 			List<Dish> dishList = category.getDishes();
 			if(dishList.contains(dish)) {
 				//TODO log that this category already contains dish
 			} else {
 				dishList.add(dish);
-			}*/
+			}
 			dish.setCategory(category);
 			dishService.update(dish);
 		}
@@ -157,14 +141,12 @@ public class CategoryServiceImpl implements CategoryService {
 	public Category removeDishFromCategory(CategoryModel request)
 			throws BaseException {
 		validatorService.validateRequestNotNull(request);
-		validatorService.validateRequestIdNotNull(request.getId());
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (Objects.isNull(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"Dishes ID's to remove is not present");
 		}
-		Category category = repository.findById(request.getId());
-		validatorService.validateEntityNotNull(category);
+		Category category = get(request.getId());
 		List<Long> ids = new ArrayList<Long>();
 		for (DishModel dish : request.getDishes()) {
 			ids.add(dish.getId());

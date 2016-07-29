@@ -20,5 +20,5 @@ public interface ValidatorService {
 
     void validateRequestIdNotNull(Long id) throws BaseException;
 
-    void validateEntityNotNull(BaseEntity entity) throws BaseException;
+    void validateEntityNotNull(BaseEntity entity, Class entityClass) throws BaseException;
 }

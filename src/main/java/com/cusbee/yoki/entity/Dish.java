@@ -3,19 +3,7 @@ package com.cusbee.yoki.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,139 +14,152 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
- * 
  * @author Dmytro Khodan
  * @date 09.07.2016
  * @project: yoki
  */
-@Table(name="dish")
+@Table(name = "dish")
 @Entity
-public class Dish implements Serializable{
+public class Dish implements BaseEntity, Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@Column(nullable=false)
-	private String name;
-	
-	@Column
-	private Double weight;
-	
-	@Column
-	private Double price;
-	
-	@Column
-	private String description;
-	
-	@Column
-	@Type(type = "org.hibernate.type.YesNoType")
-	private Boolean enabled;
-	
-	@Column(name="dish_type", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private DishType type;
-	
-	@JsonIgnore
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="dishes")
-	@Fetch(FetchMode.JOIN)
-	private List<Order> order;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="category_id")
-	@Fetch(FetchMode.JOIN)
-	private Category category;
-	
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@Fetch(FetchMode.JOIN)
-	@JoinTable(name="dish_ingredients",
-			   joinColumns={@JoinColumn(name="dish_id")},
-			   inverseJoinColumns={@JoinColumn(name="ingredient_id")})
-	@JsonManagedReference
-	private List<Ingredient> ingredients;
-	
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Double getPrice() {
-		return price;
-	}
-	
-	public Boolean getEnabled() {
-		return enabled;
-	}
+    @Column(nullable = false)
+    private String name;
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    @Column
+    private Double weight;
 
-	public DishType getType() {
-		return type;
-	}
+    @Column
+    private Double price;
 
-	public void setType(DishType type) {
-		this.type = type;
-	}
+    @Column
+    private String description;
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-	public List<Order> getOrder() {
-		return order;
-	}
+    @Column
+    @Type(type = "org.hibernate.type.YesNoType")
+    private Boolean enabled;
 
-	public void setOrder(List<Order> order) {
-		this.order = order;
-	}
+    @Column(name = "dish_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DishType type;
 
-	public String getDescription() {
-		return description;
-	}
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dishes")
+    @Fetch(FetchMode.JOIN)
+    private List<Order> order;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @Fetch(FetchMode.JOIN)
+    private Category category;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "dish_ingredients",
+            joinColumns = {@JoinColumn(name = "dish_id")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient_id")})
+    @JsonManagedReference
+    private List<Ingredient> ingredients;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dish")
+    @Fetch(FetchMode.JOIN)
+    @JsonManagedReference
+    private List<DishImage> images;
 
-	public Double getWeight() {
-		return weight;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setWeight(Double weight) {
-		this.weight = weight;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Category getCategory() {
-		return category;
-	}
+    public Double getPrice() {
+        return price;
+    }
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
-	public List<Ingredient> getIngredients() {
-		return ingredients;
-	}
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public void setIngredients(List<Ingredient> ingredients) {
-		this.ingredients = ingredients;
-	}
-	
+    public DishType getType() {
+        return type;
+    }
+
+    public void setType(DishType type) {
+        this.type = type;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<DishImage> getImages() {
+        return this.images;
+    }
+
+    public void setImages(List<DishImage> images) {
+        this.images = images;
+    }
+
 }

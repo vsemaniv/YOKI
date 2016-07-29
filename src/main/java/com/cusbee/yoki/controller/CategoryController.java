@@ -71,7 +71,7 @@ public class CategoryController {
 	@ApiOperation(value="get all categories")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
 	public List<Category> getAll() throws BaseException {
-		return repository.findAll();
+		return categoryService.getAll();
 	}
 	
 	@ApiOperation(value="get all dishes from category")
@@ -96,8 +96,7 @@ public class CategoryController {
 	@ApiOperation(value="get category by id")
 	@RequestMapping(value="get/{id}", method=RequestMethod.POST)
 	public YokiResult<Category> get(@PathVariable("id")Long id) throws BaseException {
-		nullPointerService.isNull(id);
-		return new YokiResult<Category>(Status.SUCCESS, STATUS, repository.findById(id));
+		return new YokiResult<Category>(Status.SUCCESS, STATUS, categoryService.get(id));
 	}
 	
 	@ApiOperation(value="deactivate category")

@@ -20,101 +20,100 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
- * 
  * @author Dmytro Khodan
  * @date 09.07.2016
  * @project: yoki
  */
 
 @Entity
-@Table(name="ingredient")
-public class Ingredient implements Serializable{
+@Table(name = "ingredient")
+public class Ingredient implements BaseEntity, Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@Column
-	private String name;
-	
-	@JsonBackReference
-	@ManyToMany(mappedBy="ingredients", fetch=FetchType.LAZY)
-	@Fetch(FetchMode.JOIN)
-	private List<Dish> dish;
-	
-	@Column
-	private String description;
-	
-	@Column(name="ingredient_quantity_type")
-	@Enumerated(EnumType.STRING)
-	private IngredientQuantityType type;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Column(name="value")
-	private Double value;
-	
-	@Column(name="enabled")
-	@Type(type = "org.hibernate.type.YesNoType")
-	private Boolean enabled;
-	
-	public Long getId() {
-		return id;
-	}
+    @Column
+    private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Boolean getEnabled() {
-		return enabled;
-	}
+    @JsonBackReference
+    @ManyToMany(mappedBy = "ingredients", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    private List<Dish> dish;
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    @Column
+    private String description;
 
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
+    @Column(name = "ingredient_quantity_type")
+    @Enumerated(EnumType.STRING)
+    private IngredientQuantityType type;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public IngredientQuantityType getType() {
-		return type;
-	}
+    @Column(name = "value")
+    private Double value;
 
-	public void setType(IngredientQuantityType type) {
-		this.type = type;
-	}
+    @Column(name = "enabled")
+    @Type(type = "org.hibernate.type.YesNoType")
+    private Boolean enabled;
 
-	public Double getValue() {
-		return value;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setValue(Double value) {
-		this.value = value;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public List<Dish> getDish() {
-		return dish;
-	}
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
-	public void setDish(List<Dish> dish) {
-		this.dish = dish;
-	}
-	
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public IngredientQuantityType getType() {
+        return type;
+    }
+
+    public void setType(IngredientQuantityType type) {
+        this.type = type;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public List<Dish> getDish() {
+        return dish;
+    }
+
+    public void setDish(List<Dish> dish) {
+        this.dish = dish;
+    }
+
 }

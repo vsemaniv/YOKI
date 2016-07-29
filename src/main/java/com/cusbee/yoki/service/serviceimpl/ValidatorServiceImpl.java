@@ -83,16 +83,16 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     public void validateRequestIdNotNull(Long id) throws BaseException {
-        if(Objects.isNull(id)) {
+        if (Objects.isNull(id)) {
             throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST_ID,
                     "Request id is empty");
         }
     }
 
-    public void validateEntityNotNull(BaseEntity entity) throws BaseException {
+    public void validateEntityNotNull(BaseEntity entity, Class entityClass) throws BaseException {
         if (Objects.isNull(entity)) {
             throw new ApplicationException(ErrorCodes.Common.NOT_EXIST,
-                    "Could not find "+entity.getClass().getSimpleName()+" in database or failed to retrieve it");
+                    "Could not find " + entityClass.getSimpleName() + " in database or failed to retrieve it");
         }
     }
 
@@ -101,34 +101,34 @@ public class ValidatorServiceImpl implements ValidatorService {
         validateRegexAccountEmail(request.getEmail());
         validateRegexAccountFirstLastName(request.getFirstname());
         validateRegexAccountFirstLastName(request.getLastname());
-        if(createOperation || StringUtils.isNotEmpty(request.getNewPassword())) {
+        if (createOperation || StringUtils.isNotEmpty(request.getNewPassword())) {
             validateRegexAccountPassword(request.getNewPassword());
         }
     }
 
     // *** REGEX VALIDATION METHODS ***
-    private boolean validateRegexAccountUsername(String username) throws BaseException{
+    private boolean validateRegexAccountUsername(String username) throws BaseException {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{5,15}$");
         Matcher matcher = pattern.matcher(username);
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME, "Invalid username. Username include only alphabet symbols and numbers and should be at least 5 and at last 15 symbols long");
         }
         return matcher.matches();
     }
 
-    private boolean validateRegexAccountPassword(String password) throws BaseException{
+    private boolean validateRegexAccountPassword(String password) throws BaseException {
         Pattern pattern = Pattern.compile("^.{8,}$");
         Matcher matcher = pattern.matcher(password);
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.User.INVALID_PASSWORD, "Password is too weak. Username should include at least 8 symbols");
         }
         return matcher.matches();
     }
 
-    private boolean validateRegexAccountEmail(String email) throws BaseException{
+    private boolean validateRegexAccountEmail(String email) throws BaseException {
         Pattern pattern = Pattern.compile("^([a-z0-9.-]){1,20}[\\@]([a-z]){2,10}[\\.]([a-z]){2,4}$");
         Matcher matcher = pattern.matcher(email);
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.User.INVALID_EMAIL, "Email is not valid");
         }
         return matcher.matches();
@@ -137,7 +137,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     private boolean validateRegexAccountFirstLastName(String name) throws BaseException {
         Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){1,15}$");
         Matcher matcher = pattern.matcher(name);
-        if(!matcher.matches()) {
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.User.IVALID_FIRST_OR_LAST_NAME, "Invalid first/lastname");
         }
         return matcher.matches();

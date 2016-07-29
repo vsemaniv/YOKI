@@ -90,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
                 return account;
             case UPDATE:
                 account = get(request.getId());
-                validatorService.validateEntityNotNull(account);
+                validatorService.validateEntityNotNull(account, Account.class);
                 if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
                 }
@@ -138,7 +138,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void validateUserEnabled(String username) throws BaseException {
         if (userRepository.availability(username) == null) {
-            throw new ApplicationException(ErrorCodes.User.USER_UNVAILABLE, "User is blocked");
+            throw new ApplicationException(ErrorCodes.User.USER_UNAVAILABLE, "User is blocked");
         }
     }
 

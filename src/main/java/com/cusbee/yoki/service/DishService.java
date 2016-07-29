@@ -27,4 +27,8 @@ public interface DishService {
 	Dish removeIngredients(DishModel request) throws BaseException;
 	
 	Dish activation(Long id, CrudOperation operation) throws BaseException;
+
+	Dish addImages(DishModel request) throws BaseException;
+
+	Dish removeImages(DishModel request) throws BaseException;
 }
