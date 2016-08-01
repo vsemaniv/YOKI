@@ -1,9 +1,9 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import com.cusbee.yoki.service.ActivationService;
+import com.cusbee.yoki.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,6 @@ import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.IngredientService;
@@ -23,125 +22,91 @@ import com.cusbee.yoki.utils.ErrorCodes;
 @Transactional
 public class IngredientServiceImpl implements IngredientService {
 
-	@Autowired
-	private IngredientDao dao;
+    @Autowired
+    private IngredientDao dao;
 
-	@Autowired
-	private IngredientRepository repository;
+    @Autowired
+    private IngredientRepository repository;
 
-	@Override
-	public void add(Ingredient ingredient) {
-		dao.add(ingredient);
-	}
+    @Autowired
+    private ValidatorService validatorService;
 
-	@Override
-	public void update(Ingredient ingredient) {
-		dao.update(ingredient);
-	}
+    @Autowired
+    private ActivationService activationService;
 
-	@Override
-	@Transactional
-	public Ingredient get(Long id) throws BaseException {
-		if(Objects.isNull(id)){
-			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD, "Field ID is empty");
-		}
-		Ingredient ingredient = dao.get(id);
-		if(Objects.isNull(ingredient)){
-			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "Ingredient with is ID are not present");
-		}
-		return ingredient;
-	}
+    @Override
+    @Transactional
+    public Ingredient get(Long id) {
+        validatorService.validateRequestIdNotNull(id);
+        Ingredient ingredient = dao.get(id);
+        validatorService.validateEntityNotNull(ingredient, Ingredient.class);
+        return ingredient;
+    }
 
-	@Transactional
-	public void remove(Long id) throws BaseException {
-		Ingredient ingredient = get(id);
-		List<Dish> dishes = ingredient.getDish();
-		ingredient.getDish().removeAll(dishes);
-		dao.remove(ingredient);
-	}
+    @Transactional
+    public void remove(Long id) {
+        Ingredient ingredient = get(id);
+        List<Dish> dishes = ingredient.getDishes();
+        if (dishes.isEmpty()) {
+            dao.remove(ingredient);
+        } else {
+            StringBuilder message = new StringBuilder("This ingredient is used in at least one dish. Please, remove it from the next dishes: ");
+            boolean flag = false;
+            for (Dish dish : dishes) {
+                if(flag) {
+                    message.append(", ");
+                }
+                message.append(dish.getName());
+                flag = true;
+            }
+            throw new ApplicationException(ErrorCodes.Ingredient.STILL_USED, message.toString());
+        }
+    }
 
-	@Override
-	public List<Ingredient> getAll() {
-		return dao.getAll();
-	}
+    @Override
+    public List<Ingredient> getAll() {
+        return dao.getAll();
+    }
 
-	protected boolean validate(String name) throws BaseException {
-		return repository.findByName(name) == null;
-	}
+    @Override
+    @Transactional
+    public Ingredient saveIngredient(IngredientModel request, CrudOperation status) {
+        validatorService.validateIngredientSaveRequest(request, status);
+        Ingredient ingredient;
+        switch (status) {
+            case CREATE:
+                ingredient = new Ingredient();
 
-	@Override
-	@Transactional
-	public Ingredient parse(IngredientModel request, CrudOperation status)
-			throws BaseException {
+                break;
+            case UPDATE:
+                ingredient = repository.findById(request.getId());
+                validatorService.validateEntityNotNull(ingredient, Ingredient.class);
+                //TODO i think we would not assign any dish to ingredient, therefore we should not touch dishes while updating ingredient
+                /*
+                List<Dish> dishes = ingredient.getDishes();
+                if (CollectionUtils.isEmpty(dishes)) {
+                    ingredient.setDishes(new ArrayList<Dish>());
+                } else {
+                    ingredient.getDishes().addAll(dishes);
+                }*/
+                break;
+            case BLOCK:
 
-		if (Objects.isNull(request)) {
-			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST,
-					"Empty Request");
-		}
-		switch (status) {
-		case CREATE:
-			if (Objects.isNull(request.getName())) {
-				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
-						"Empty field 'name'");
-			}
-			if (Objects.isNull(request.getValue())) {
-				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
-						"Empty field 'weight'");
-			}
-			if(!validate(request.getName())){
-				throw new ApplicationException(ErrorCodes.Ingredient.ALREADY_EXIST, "This ingredient already exists");
-			}
-			Ingredient ingredient = new Ingredient();
-			ingredient.setName(request.getName());
-			ingredient.setValue(request.getValue());
-			ingredient.setDescription(request.getDescription());
-			ingredient.setType(request.getType());
-			return ingredient;
-		case UPDATE:
-			Ingredient ingred = repository.findById(request.getId());
-			if(Objects.isNull(ingred)){
-				throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "Ingredient with this ID is not present");
-			}
-			if(!Objects.isNull(request.getName())) {
-				ingred.setName(request.getName());
-			}
-			if(!Objects.isNull(request.getValue())){
-				ingred.setValue(request.getValue());	
-			}
-			if(!Objects.isNull(request.getDescription())){
-				ingred.setDescription(request.getDescription());
-			}
-			List<Dish> dishes = ingred.getDish();
-			if(Objects.isNull(dishes)){
-				ingred.setDish(new ArrayList<Dish>());
-			}else {
-				ingred.getDish().addAll(dishes);
-			}
-			return ingred;
-		default:
-			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST,
-					"Server resolve your request");
-		}
-	}
-	
-	public Ingredient activation(Long id, CrudOperation operation) throws BaseException {
-		if(Objects.isNull(id)){
-			throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST, "Empty Request");
-		}
-		Ingredient ingredient = repository.findById(id);
-		if(Objects.isNull(ingredient)){
-			throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST, "This ingredient is not present or already blocked");
-		}
-		switch(operation){
-		case BLOCK:
-			ingredient.setEnabled(Boolean.FALSE);
-			return ingredient;
-		case UNBLOCK:
-			ingredient = get(id);
-			ingredient.setEnabled(Boolean.TRUE);
-			return ingredient;
-		default:
-			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST, "Invalid Request");
-		}
-	}
+
+            default:
+                throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_REQUEST,
+                        "Server resolve your request");
+        }
+        ingredient.setName(request.getName());
+        ingredient.setValue(request.getValue());
+        ingredient.setDescription(request.getDescription());
+        ingredient.setType(request.getType());
+        return dao.save(ingredient);
+    }
+
+    public Ingredient processActivation(Long id, boolean activate) {
+        Ingredient ingredient = get(id);
+        activationService.processActivation(ingredient, activate);
+        return dao.save(ingredient);
+    }
 }

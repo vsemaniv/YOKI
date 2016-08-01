@@ -5,6 +5,7 @@ import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.model.CategoryModel;
+import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.model.RequestModel;
 
 /**
@@ -12,13 +13,15 @@ import com.cusbee.yoki.model.RequestModel;
  */
 public interface ValidatorService {
 
-    void validateAccountParseRequest(AccountModel request, CrudOperation operation) throws BaseException;
+    void validateAccountSaveRequest(AccountModel request, CrudOperation operation);
 
-    void validateCategory(CategoryModel request, CrudOperation status) throws BaseException;
+    void validateCategorySaveRequest(CategoryModel request, CrudOperation status);
 
-    void validateRequestNotNull(RequestModel request) throws BaseException;
+    void validateIngredientSaveRequest(IngredientModel request, CrudOperation status);
 
-    void validateRequestIdNotNull(Long id) throws BaseException;
+    void validateRequestNotNull(RequestModel request, Class entityClass);
 
-    void validateEntityNotNull(BaseEntity entity, Class entityClass) throws BaseException;
+    void validateRequestIdNotNull(Long id);
+
+    void validateEntityNotNull(BaseEntity entity, Class entityClass);
 }

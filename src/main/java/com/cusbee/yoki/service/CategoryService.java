@@ -16,7 +16,7 @@ public interface CategoryService {
 
 	void remove(Long id) throws BaseException;
 	
-	Category parseRequest(CategoryModel request, CrudOperation status)
+	Category saveCategory(CategoryModel request, CrudOperation status)
 			throws BaseException;
 	
 	List<Dish> getAllDishes(Long id) throws BaseException;
@@ -25,5 +25,5 @@ public interface CategoryService {
 
 	Category addDishToCategory(CategoryModel request) throws BaseException;
 	
-	Category activation(Long id, CrudOperation operation) throws BaseException;
+	Category processActivation(Long id, boolean activate) throws BaseException;
 }

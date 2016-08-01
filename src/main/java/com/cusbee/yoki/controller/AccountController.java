@@ -14,10 +14,7 @@ import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.CrudOperation;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
-import com.cusbee.yoki.repositories.AccountRepository;
-import com.cusbee.yoki.service.NullPointerService;
 import com.cusbee.yoki.service.AccountService;
 import com.mangofactory.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiClass;
@@ -37,60 +34,45 @@ import com.wordnik.swagger.annotations.ApiParam;
 public class AccountController {
 
 	@Autowired
-	private AccountService userService;
-	
-	@Autowired
-	private NullPointerService nullPointerService;
-	
-	@Autowired
-	private AccountRepository accountRepository;
+	private AccountService service;
 	
 	@ApiOperation(value="Creates user account")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Account> create(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) throws BaseException{
-		Account user = userService.parseRequest(request, CrudOperation.CREATE);
-		userService.add(user);
+	public YokiResult<Account> create(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) {
+		Account user = service.saveAccount(request, CrudOperation.CREATE);
 		return new YokiResult<Account>(Status.SUCCESS, "User created successful", user);
 	}
 	
 	@ApiOperation(value="Updates user account")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) throws BaseException {
-		Account user = userService.parseRequest(request, CrudOperation.UPDATE);
-		userService.add(user);
+	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) {
+		Account user = service.saveAccount(request, CrudOperation.UPDATE);
 		return new YokiResult<Account>(Status.SUCCESS, "User updated successful", user);
 	}
 	
 	@ApiOperation(value="Block user")
 	@RequestMapping(value="block/{id}", method=RequestMethod.POST)
 	public YokiResult<Account> block(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
-	 							  @PathVariable("id") Long id) throws BaseException{
-		nullPointerService.isNull(id);
-		userService.activation(id, CrudOperation.BLOCK);
-		return new YokiResult<Account>(Status.SUCCESS, "User blocked successfully", null);
+	 							  @PathVariable("id") Long id) {
+		return new YokiResult<Account>(Status.SUCCESS, "User blocked successfully", service.processActivation(id, false));
 	}
 	
 	@ApiOperation(value="Unblock user")
 	@RequestMapping(value="unblock/{id}", method=RequestMethod.POST)
 	public YokiResult<Account> unblock(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
-									@PathVariable("id") Long id) throws BaseException {
-		nullPointerService.isNull(id);
-		userService.activation(id, CrudOperation.UNBLOCK);
-		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successfully", null);
+									@PathVariable("id") Long id) {
+		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successfully", service.processActivation(id, true));
 	}
 	
 	@ApiOperation(value="Get all users")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
-	public List<Account> getAll() throws BaseException {
-		//todo Should we return YokiResult just as everywhere?
-		List<Account> users = accountRepository.findAll();
-		return users;
+	public List<Account> getAll() {
+		return service.getAll();
 	}
 	
 	@ApiOperation(value="get account by id")
 	@RequestMapping(value="get/{id}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Account> get(@PathVariable("id") Long id) throws BaseException {
-		nullPointerService.isNull(id);
-		return new YokiResult<Account>(Status.SUCCESS, "Successful request", userService.get(id));
+	public YokiResult<Account> get(@PathVariable("id") Long id) {
+		return new YokiResult<Account>(Status.SUCCESS, "Successful request", service.get(id));
 	}
 }

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="category")
-public class Category implements BaseEntity, Serializable{
+public class Category implements Activatable, Serializable{
 
 	/**
 	 * 

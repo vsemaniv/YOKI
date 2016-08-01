@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "ingredient")
-public class Ingredient implements BaseEntity, Serializable {
+public class Ingredient implements Activatable, Serializable {
 
     /**
      *
@@ -44,7 +44,7 @@ public class Ingredient implements BaseEntity, Serializable {
     @JsonBackReference
     @ManyToMany(mappedBy = "ingredients", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
-    private List<Dish> dish;
+    private List<Dish> dishes;
 
     @Column
     private String description;
@@ -108,12 +108,12 @@ public class Ingredient implements BaseEntity, Serializable {
         this.value = value;
     }
 
-    public List<Dish> getDish() {
-        return dish;
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
-    public void setDish(List<Dish> dish) {
-        this.dish = dish;
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
 }

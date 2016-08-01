@@ -19,8 +19,9 @@ public class AccountDaoImpl implements AccountDao {
 	private EntityManager em;
 	
 	@Override
-	public void add(Account user) {
+	public Account save(Account user) {
 		em.merge(user);
+		return user;
 	}
 	
 	@Override

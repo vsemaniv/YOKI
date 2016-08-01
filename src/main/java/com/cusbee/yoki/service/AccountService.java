@@ -8,20 +8,16 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 
 public interface AccountService {
-
-	void add(Account user);
 	
-	Account parseRequest(AccountModel request, CrudOperation operations) throws BaseException;
+	Account saveAccount(AccountModel request, CrudOperation operations) throws BaseException;
 	
 	List<Account> getAll();
 	
 	Account get(Long id);
 
-	void activation(Long id, CrudOperation operation) throws BaseException;
+	Account processActivation(Long id, boolean activate);
 
-	void validateUserEnabled(String username) throws BaseException;
-	
-	void isNull(Account user) throws BaseException;
+	void validateUserEnabled(String username);
 
 	String encryptPassword(String password);
 }

@@ -1,14 +1,15 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-import com.cusbee.yoki.entity.BaseEntity;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.model.CategoryModel;
+import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.model.RequestModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.repositories.CategoryRepository;
+import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.ValidatorService;
 import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
@@ -27,8 +28,11 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public void validateAccountParseRequest(AccountModel request, CrudOperation operation) throws BaseException {
-        validateRequestNotNull(request);
+    @Autowired
+    private IngredientRepository ingredientRepository;
+
+    public void validateAccountSaveRequest(AccountModel request, CrudOperation operation) {
+        validateRequestNotNull(request, Account.class);
         switch (operation) {
             case CREATE:
                 String username = request.getUsername();
@@ -62,8 +66,8 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
     }
 
-    public void validateCategory(CategoryModel request, CrudOperation status) throws BaseException {
-        validateRequestNotNull(request);
+    public void validateCategorySaveRequest(CategoryModel request, CrudOperation status) {
+        validateRequestNotNull(request, Category.class);
         if (StringUtils.isEmpty(request.getName())) {
             throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
                     "Category name should not be empty!");
@@ -75,28 +79,50 @@ public class ValidatorServiceImpl implements ValidatorService {
         validateRegexCategoryName(request.getName());
     }
 
-    public void validateRequestNotNull(RequestModel request) throws BaseException {
-        if (Objects.isNull(request)) {
-            throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST,
-                    request.getClass().getSimpleName() + " Request is empty");
+    public void validateIngredientSaveRequest(IngredientModel request, CrudOperation status) {
+        validateRequestNotNull(request, Ingredient.class);
+        switch(status) {
+            case CREATE:
+                if (StringUtils.isEmpty(request.getName())) {
+                    throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
+                            "Empty field 'name'");
+                }
+                if (Objects.isNull(request.getValue())) {
+                    throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
+                            "Empty field 'weight'");
+                }
+                if(ingredientRepository.findByName(request.getName()) != null){
+                    throw new ApplicationException(ErrorCodes.Ingredient.ALREADY_EXIST, "This ingredient already exists");
+                }
+                break;
+            case UPDATE:
+
+                break;
         }
     }
 
-    public void validateRequestIdNotNull(Long id) throws BaseException {
+    public void validateRequestNotNull(RequestModel request, Class entityClass) {
+        if (Objects.isNull(request)) {
+            throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST,
+                    entityClass.getSimpleName() + " Request is empty");
+        }
+    }
+
+    public void validateRequestIdNotNull(Long id) {
         if (Objects.isNull(id)) {
             throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST_ID,
                     "Request id is empty");
         }
     }
 
-    public void validateEntityNotNull(BaseEntity entity, Class entityClass) throws BaseException {
+    public void validateEntityNotNull(BaseEntity entity, Class entityClass) {
         if (Objects.isNull(entity)) {
             throw new ApplicationException(ErrorCodes.Common.NOT_EXIST,
                     "Could not find " + entityClass.getSimpleName() + " in database or failed to retrieve it");
         }
     }
 
-    private void validateAccountFields(AccountModel request, boolean createOperation) throws BaseException {
+    private void validateAccountFields(AccountModel request, boolean createOperation) {
         validateRegexAccountUsername(request.getUsername());
         validateRegexAccountEmail(request.getEmail());
         validateRegexAccountFirstLastName(request.getFirstname());
@@ -107,7 +133,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     // *** REGEX VALIDATION METHODS ***
-    private boolean validateRegexAccountUsername(String username) throws BaseException {
+    private boolean validateRegexAccountUsername(String username) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{5,15}$");
         Matcher matcher = pattern.matcher(username);
         if (!matcher.matches()) {
@@ -116,7 +142,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         return matcher.matches();
     }
 
-    private boolean validateRegexAccountPassword(String password) throws BaseException {
+    private boolean validateRegexAccountPassword(String password) {
         Pattern pattern = Pattern.compile("^.{8,}$");
         Matcher matcher = pattern.matcher(password);
         if (!matcher.matches()) {
@@ -125,7 +151,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         return matcher.matches();
     }
 
-    private boolean validateRegexAccountEmail(String email) throws BaseException {
+    private boolean validateRegexAccountEmail(String email) {
         Pattern pattern = Pattern.compile("^([a-z0-9.-]){1,20}[\\@]([a-z]){2,10}[\\.]([a-z]){2,4}$");
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
@@ -134,7 +160,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         return matcher.matches();
     }
 
-    private boolean validateRegexAccountFirstLastName(String name) throws BaseException {
+    private boolean validateRegexAccountFirstLastName(String name) {
         Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){1,15}$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
@@ -143,7 +169,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         return matcher.matches();
     }
 
-    private boolean validateRegexCategoryName(String name) throws BaseException {
+    private boolean validateRegexCategoryName(String name) {
         Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,25}$");
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();

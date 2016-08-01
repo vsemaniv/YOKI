@@ -17,6 +17,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static junitparams.JUnitParamsRunner.$;
@@ -53,14 +55,22 @@ public class AccountServiceParseRequestTest {
         request.setAuthority("normal authority");
         request.setFirstname("normal first name");
         request.setLastname("normal last name");
+        account.setUsername("test account1");
     }
 
     @Test
     public void parseCreateAccountRequestTest() throws BaseException {
         String encodedPassword = "ENCODED";
         when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
-        Account account = service.parseRequest(request, CrudOperation.CREATE);
-        verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.CREATE);
+        when(accountDao.save(any(Account.class))).thenAnswer(new Answer<Account>() {
+            @Override
+            public Account answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                return (Account) args[0];
+            }
+        });
+        Account account = service.saveAccount(request, CrudOperation.CREATE);
+        verify(validatorService, times(1)).validateAccountSaveRequest(request, CrudOperation.CREATE);
         verify(passwordEncoder, times(1)).encode(request.getNewPassword());
         verifyNoMoreInteractions(validatorService, passwordEncoder);
 
@@ -75,10 +85,13 @@ public class AccountServiceParseRequestTest {
 
     @Test
     public void parseUpdateAccountRequestWithoutPasswordTest() throws BaseException {
+        request.setId(18L);
         request.setNewPassword("");
         when(accountDao.get(anyLong())).thenReturn(account);
-        Account account = service.parseRequest(request, CrudOperation.UPDATE);
-        verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
+        when(accountDao.save(account)).thenReturn(account);
+        Account account = service.saveAccount(request, CrudOperation.UPDATE);
+        verify(validatorService, times(1)).validateAccountSaveRequest(request, CrudOperation.UPDATE);
+        verify(validatorService, times(1)).validateRequestIdNotNull(request.getId());
         verify(validatorService, times(1)).validateEntityNotNull(account, Account.class);
         verifyNoMoreInteractions(validatorService);
 
@@ -98,9 +111,9 @@ public class AccountServiceParseRequestTest {
         account.setPassword(oldPassword);
         when(accountDao.get(anyLong())).thenReturn(account);
         when(passwordEncoder.encode(anyString())).thenReturn(oldPassword).thenReturn("ENCODED");
-        Account result = service.parseRequest(request, CrudOperation.UPDATE);
+        Account result = service.saveAccount(request, CrudOperation.UPDATE);
 
-        verify(validatorService, times(1)).validateAccountParseRequest(request, CrudOperation.UPDATE);
+        verify(validatorService, times(1)).validateAccountSaveRequest(request, CrudOperation.UPDATE);
         assertNotNull(result.getPassword());
     }
 
@@ -114,7 +127,7 @@ public class AccountServiceParseRequestTest {
         when(passwordEncoder.encode(anyString())).thenReturn("does not match");
         thrown.expect(ApplicationException.class);
 
-        service.parseRequest(request, CrudOperation.UPDATE);
+        service.saveAccount(request, CrudOperation.UPDATE);
     }
 
     private Object[] getNormalPasswords() {

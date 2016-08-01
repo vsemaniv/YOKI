@@ -40,6 +40,7 @@ public class ErrorCodes {
         int EMPTY_REQUEST = 4000;
         int EMPTY_FIELD = 4001;
         int ALREADY_EXIST = 4002;
+        int STILL_USED = 4003;
     }
 
     public interface Dish {

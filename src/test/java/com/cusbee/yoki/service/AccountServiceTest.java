@@ -33,6 +33,9 @@ public class AccountServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private ValidatorService validatorService;
+
     @InjectMocks
     private AccountServiceImpl service;
 
@@ -43,13 +46,6 @@ public class AccountServiceTest {
     private static final String TEST2 = "TEST2";
 
     private Account account = new Account();
-
-    @Test
-    public void addUserTest() {
-        service.add(account);
-        verify((dao), times(1)).add(account);
-        verifyNoMoreInteractions(dao);
-    }
 
     @Test
     public void getUserTest() {

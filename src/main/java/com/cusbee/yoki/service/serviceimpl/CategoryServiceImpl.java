@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.cusbee.yoki.dao.DishDao;
+import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import com.cusbee.yoki.entity.Category;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.service.CategoryService;
@@ -38,9 +38,12 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private ValidatorService validatorService;
 
+	@Autowired
+	private ActivationService activationService;
+
 	@Override
 	@Transactional
-	public Category get(Long id) throws BaseException {
+	public Category get(Long id) {
 		validatorService.validateRequestIdNotNull(id);
 		Category category = dao.get(id);
 		validatorService.validateEntityNotNull(category, Category.class);
@@ -54,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public void remove(Long id) throws BaseException {
+	public void remove(Long id) {
 		Category category = get(id);
 		List<Dish> dishes = category.getDishes();
 		for (Dish dish : dishes) {
@@ -67,9 +70,8 @@ public class CategoryServiceImpl implements CategoryService {
 	 * Method check for null pointers and if all is right, create or update
 	 * Category
 	 */
-	public Category parseRequest(CategoryModel request, CrudOperation status)
-			throws BaseException {
-		validatorService.validateCategory(request, status);
+	public Category saveCategory(CategoryModel request, CrudOperation status) {
+		validatorService.validateCategorySaveRequest(request, status);
 		Category category;
 		switch (status) {
 		case CREATE:
@@ -92,31 +94,20 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public List<Dish> getAllDishes(Long id) throws BaseException {
+	public List<Dish> getAllDishes(Long id) {
 		Category category = get(id);
 		return category.getDishes();
 	}
 
-	public Category activation(Long id, CrudOperation operation) throws BaseException {
+	public Category processActivation(Long id, boolean activate) {
 		Category category = get(id);
-		switch (operation) {
-		case BLOCK:
-			category.setEnabled(Boolean.FALSE);
-			break;
-		case UNBLOCK:
-			category.setEnabled(Boolean.TRUE);
-			break;
-		default:
-			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
-					"Unsupported operation");
-		}
+		activationService.processActivation(category, activate);
 		return dao.save(category);
 	}
 
 	@Override
-	public Category addDishToCategory(CategoryModel request)
-			throws BaseException {
-		validatorService.validateRequestNotNull(request);
+	public Category addDishToCategory(CategoryModel request) {
+		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (CollectionUtils.isEmpty(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
@@ -138,23 +129,22 @@ public class CategoryServiceImpl implements CategoryService {
 		return category;
 	}
 
-	public Category removeDishFromCategory(CategoryModel request)
-			throws BaseException {
-		validatorService.validateRequestNotNull(request);
+	public Category removeDishFromCategory(CategoryModel request) {
+		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (Objects.isNull(request.getDishes())) {
 			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
 					"Dishes ID's to remove is not present");
 		}
 		Category category = get(request.getId());
-		List<Long> ids = new ArrayList<Long>();
+		List<Long> ids = new ArrayList<>();
 		for (DishModel dish : request.getDishes()) {
 			ids.add(dish.getId());
 		}
 		List<Dish> dishes = category.getDishes();
 		for (Dish dish : dishes) {
 			for (Long id : ids) {
-				if (dish.getId() == id) {
+				if (dish.getId().equals(id)) {
 					Dish dh = dishService.get(id);
 					dh.setCategory(null);
 					dishService.update(dh);

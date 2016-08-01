@@ -7,7 +7,6 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.AccountService;
-import com.cusbee.yoki.service.NullPointerService;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -25,9 +24,6 @@ public class AccountControllerTest {
     private AccountService accountService;
 
     @Mock
-    private NullPointerService npService;
-
-    @Mock
     AccountRepository accountRepository;
 
     @InjectMocks
@@ -42,11 +38,10 @@ public class AccountControllerTest {
     @Test
     public void createAccountTest() throws BaseException {
         account.setUsername("username");
-        when(accountService.parseRequest(request, CrudOperation.CREATE)).thenReturn(account);
+        when(accountService.saveAccount(request, CrudOperation.CREATE)).thenReturn(account);
         YokiResult<Account> result = controller.create(request);
-        verify(accountService, times(1)).parseRequest(request, CrudOperation.CREATE);
-        verify(accountService, times(1)).add(account);
-        verifyNoMoreInteractions(accountService, npService);
+        verify(accountService, times(1)).saveAccount(request, CrudOperation.CREATE);
+        verifyNoMoreInteractions(accountService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), account);
     }
@@ -54,10 +49,9 @@ public class AccountControllerTest {
     @Test
     public void updateAccountTest() throws BaseException {
         account.setUsername("greyjoy");
-        when(accountService.parseRequest(request, CrudOperation.UPDATE)).thenReturn(account);
+        when(accountService.saveAccount(request, CrudOperation.UPDATE)).thenReturn(account);
         YokiResult<Account> result = controller.update(request);
-        verify(accountService, times(1)).parseRequest(request, CrudOperation.UPDATE);
-        verify(accountService, times(1)).add(account);
+        verify(accountService, times(1)).saveAccount(request, CrudOperation.UPDATE);
         verifyNoMoreInteractions(accountService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), account);
@@ -66,21 +60,23 @@ public class AccountControllerTest {
     @Test
     public void blockAccountTest() throws BaseException {
         Long id = 22L;
+        when(accountService.processActivation(id, false)).thenReturn(account);
         YokiResult<Account> result = controller.block(id);
-        verify(npService, times(1)).isNull(id);
-        verify(accountService, times(1)).activation(id, CrudOperation.BLOCK);
-        verifyNoMoreInteractions(accountService, npService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        verify(accountService, times(1)).processActivation(id, false);
+        verifyNoMoreInteractions(accountService);
+        assertEquals(YokiResult.Status.SUCCESS, result.getStatus());
+        assertEquals(account, result.getData());
     }
 
     @Test
     public void unblockAccountTest() throws BaseException {
         Long id = 367L;
+        when(accountService.processActivation(id, true)).thenReturn(account);
         YokiResult<Account> result = controller.unblock(id);
-        verify(npService, times(1)).isNull(id);
-        verify(accountService, times(1)).activation(id, CrudOperation.UNBLOCK);
-        verifyNoMoreInteractions(accountService, npService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        verify(accountService, times(1)).processActivation(id, true);
+        verifyNoMoreInteractions(accountService);
+        assertEquals(YokiResult.Status.SUCCESS, result.getStatus());
+        assertEquals(account, result.getData());
     }
 
     @Test
@@ -91,9 +87,8 @@ public class AccountControllerTest {
         when(accountService.get(id)).thenReturn(account);
 
         YokiResult<Account> result = controller.get(id);
-        verify(npService, times(1)).isNull(id);
         verify(accountService, times(1)).get(id);
-        verifyNoMoreInteractions(accountService, npService);
+        verifyNoMoreInteractions(accountService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), account);
     }
@@ -101,7 +96,7 @@ public class AccountControllerTest {
     @Test
     public void getAllAccountsTest() throws BaseException {
         controller.getAll();
-        verify(accountRepository, times(1)).findAll();
+        verify(accountService, times(1)).getAll();
         verifyNoMoreInteractions(accountService);
     }
 }

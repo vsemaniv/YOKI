@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  */
 @Table(name = "dish")
 @Entity
-public class Dish implements BaseEntity, Serializable {
+public class Dish implements Activatable, Serializable {
 
     /**
      *

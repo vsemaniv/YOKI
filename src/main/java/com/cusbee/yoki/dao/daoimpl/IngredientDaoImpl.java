@@ -19,13 +19,9 @@ public class IngredientDaoImpl implements IngredientDao {
 	private EntityManager em;
 	
 	@Override
-	public void add(Ingredient ingredient) {
+	public Ingredient save(Ingredient ingredient) {
 		em.merge(ingredient);
-	}
-
-	@Override
-	public void update(Ingredient ingredient) {
-		em.merge(ingredient);
+		return ingredient;
 	}
 
 	@Override

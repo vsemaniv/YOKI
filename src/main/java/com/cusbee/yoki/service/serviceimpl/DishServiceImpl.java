@@ -15,7 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cusbee.yoki.dao.CategoryDao;
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.exception.BaseException;
@@ -25,7 +24,6 @@ import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.DishService;
-import com.cusbee.yoki.service.IngredientService;
 import com.cusbee.yoki.service.NullPointerService;
 import com.cusbee.yoki.utils.ErrorCodes;
 
@@ -109,7 +107,7 @@ public class DishServiceImpl implements DishService {
 		List<Ingredient> ingredients = dish.getIngredients();
 		dish.getIngredients().removeAll(ingredients);
 		for(Ingredient ingredient : ingredients) {
-			ingredient.getDish().remove(dish);
+			ingredient.getDishes().remove(dish);
 		}
 		this.dao.remove(dish);
 	}
@@ -250,7 +248,7 @@ public class DishServiceImpl implements DishService {
 		if(Objects.isNull(dish)){
 			throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "This dish is not present or blocked");
 		}
-		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		List<Ingredient> ingredients = new ArrayList<>();
 		for(IngredientModel model : request.getIngredients()){
 			Ingredient ingredient = ingredientRepository.findById(model.getId());
 			if(ingredient!=null)

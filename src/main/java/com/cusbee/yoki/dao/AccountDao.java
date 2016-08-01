@@ -6,7 +6,7 @@ import com.cusbee.yoki.entity.Account;
 
 public interface AccountDao {
 	
-	void add(Account user);
+	Account save(Account user);
 	
 	List<Account> getAll();
 	

@@ -7,7 +7,6 @@ import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.service.CategoryService;
-import com.cusbee.yoki.service.NullPointerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,9 +26,6 @@ public class CategoryControllerTest {
     private CategoryService categoryService;
 
     @Mock
-    private NullPointerService npService;
-
-    @Mock
     private CategoryRepository categoryRepository;
 
     @InjectMocks
@@ -40,9 +36,9 @@ public class CategoryControllerTest {
 
     @Test
     public void addCategoryTest() throws BaseException {
-        when(categoryService.parseRequest(request, CrudOperation.CREATE)).thenReturn(category);
+        when(categoryService.saveCategory(request, CrudOperation.CREATE)).thenReturn(category);
         YokiResult<Category> result = controller.add(request);
-        verify(categoryService, times(1)).parseRequest(request, CrudOperation.CREATE);
+        verify(categoryService, times(1)).saveCategory(request, CrudOperation.CREATE);
         verifyNoMoreInteractions(categoryService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), category);
@@ -50,9 +46,9 @@ public class CategoryControllerTest {
 
     @Test
     public void updateCategoryTest() throws BaseException {
-        when(categoryService.parseRequest(request, CrudOperation.UPDATE)).thenReturn(category);
+        when(categoryService.saveCategory(request, CrudOperation.UPDATE)).thenReturn(category);
         YokiResult<Category> result = controller.update(request);
-        verify(categoryService, times(1)).parseRequest(request, CrudOperation.UPDATE);
+        verify(categoryService, times(1)).saveCategory(request, CrudOperation.UPDATE);
         verifyNoMoreInteractions(categoryService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), category);
@@ -62,9 +58,8 @@ public class CategoryControllerTest {
     public void removeCategoryTest() throws BaseException {
         Long categoryId = 37452L;
         YokiResult<Category> result = controller.remove(categoryId);
-        verify(npService, times(1)).isNull(categoryId);
         verify(categoryService, times(1)).remove(categoryId);
-        verifyNoMoreInteractions(categoryService, npService);
+        verifyNoMoreInteractions(categoryService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
         assertEquals(result.getData(), null);
     }
@@ -95,11 +90,10 @@ public class CategoryControllerTest {
     @Test
     public void activateCategoryTest() throws BaseException {
         Long categoryId = 96187L;
-        when(categoryService.activation(categoryId, CrudOperation.UNBLOCK)).thenReturn(category);
+        when(categoryService.processActivation(categoryId, true)).thenReturn(category);
         YokiResult<Category> result = controller.activate(categoryId);
-        verify(npService, times(1)).isNull(categoryId);
-        verify(categoryService, times(1)).activation(categoryId, CrudOperation.UNBLOCK);
-        verifyNoMoreInteractions(npService, categoryService);
+        verify(categoryService, times(1)).processActivation(categoryId, true);
+        verifyNoMoreInteractions(categoryService);
 
         assertEquals(result.getData(), category);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
@@ -108,11 +102,10 @@ public class CategoryControllerTest {
     @Test
     public void deactivateCategoryTest() throws BaseException {
         Long categoryId = 7544492L;
-        when(categoryService.activation(categoryId, CrudOperation.BLOCK)).thenReturn(category);
+        when(categoryService.processActivation(categoryId, false)).thenReturn(category);
         YokiResult<Category> result = controller.deactivate(categoryId);
-        verify(npService, times(1)).isNull(categoryId);
-        verify(categoryService, times(1)).activation(categoryId, CrudOperation.BLOCK);
-        verifyNoMoreInteractions(npService, categoryService);
+        verify(categoryService, times(1)).processActivation(categoryId, false);
+        verifyNoMoreInteractions(categoryService);
 
         assertEquals(result.getData(), category);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
