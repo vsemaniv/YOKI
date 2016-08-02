@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.model.ImageModel;
 import com.cusbee.yoki.service.ImageService;
+import com.cusbee.yoki.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -82,27 +83,30 @@ public class DishServiceImpl implements DishService {
 
 	@Autowired
 	private ImageService imageService;
+
+	@Autowired
+	private ValidatorService validatorService;
 	
 	@Override
-	public void add(Dish dish) {
-		this.dao.add(dish);
+	public void save(Dish dish) {
+		this.dao.save(dish);
 	}
 
+
+
 	@Override
-	public void update(Dish dish) {
-		this.dao.update(dish);
+	@Transactional
+	public Dish get(Long id) throws BaseException {
+		validatorService.validateRequestIdNotNull(id);
+		Dish dish = dao.get(id);
+		validatorService.validateEntityNotNull(dish, Dish.class);
+		return dish;
 	}
 
 	@Override
 	@Transactional
 	public void remove(Long id) throws BaseException {
-		if(Objects.isNull(id)){
-			throw new ApplicationException(ErrorCodes.Dish.EMPTY_FIELD, ID_NOT_PRESENT);
-		}
 		Dish dish = get(id);
-		if(Objects.isNull(dish)){
-			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, NOT_PRESENT);
-		}
 		dish.setCategory(null);
 		List<Ingredient> ingredients = dish.getIngredients();
 		dish.getIngredients().removeAll(ingredients);
@@ -110,16 +114,6 @@ public class DishServiceImpl implements DishService {
 			ingredient.getDishes().remove(dish);
 		}
 		this.dao.remove(dish);
-	}
-
-	@Override
-	@Transactional
-	public Dish get(Long id) throws BaseException {
-		Dish dish = this.dao.get(id);
-		if(Objects.isNull(dish)){
-			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, ID_NOT_PRESENT);
-		}
-		return dish;
 	}
 
 	@Override
@@ -170,7 +164,7 @@ public class DishServiceImpl implements DishService {
 				category.getDishes().add(dish);
 			}
 			dish.setEnabled(Boolean.TRUE);
-			dao.add(dish);
+			dao.save(dish);
 			return dish;
 		case UPDATE:
 			dish = repository.findById(request.getId());
@@ -203,7 +197,7 @@ public class DishServiceImpl implements DishService {
 				dish.setCategory(category);
 				category.getDishes().add(dish);
 			}
-			dao.update(dish);
+			dao.save(dish);
 			return dish;
 		default:
 			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST, INVALID_REQUEST);
@@ -335,7 +329,7 @@ public class DishServiceImpl implements DishService {
 			images.add(dishImage);
 		}
 		dish.setImages(images);
-		update(dish);
+		save(dish);
 		return dish;
 	}
 

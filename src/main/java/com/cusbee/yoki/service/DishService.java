@@ -9,9 +9,7 @@ import com.cusbee.yoki.model.DishModel;
 
 public interface DishService {
 
-	void add(Dish dish);
-
-	void update(Dish dish);
+	void save(Dish dish);
 
 	void remove(Long id) throws BaseException;
 
