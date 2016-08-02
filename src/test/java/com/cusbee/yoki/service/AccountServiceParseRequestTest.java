@@ -111,6 +111,14 @@ public class AccountServiceParseRequestTest {
         account.setPassword(oldPassword);
         when(accountDao.get(anyLong())).thenReturn(account);
         when(passwordEncoder.encode(anyString())).thenReturn(oldPassword).thenReturn("ENCODED");
+
+        when(accountDao.save(any(Account.class))).thenAnswer(new Answer<Account>() {
+            @Override
+            public Account answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                return (Account) args[0];
+            }
+        });
         Account result = service.saveAccount(request, CrudOperation.UPDATE);
 
         verify(validatorService, times(1)).validateAccountSaveRequest(request, CrudOperation.UPDATE);
