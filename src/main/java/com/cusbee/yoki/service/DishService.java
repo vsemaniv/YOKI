@@ -11,22 +11,22 @@ public interface DishService {
 
 	void save(Dish dish);
 
-	void remove(Long id) throws BaseException;
+	void remove(Long id);
 
-	Dish get(Long id) throws BaseException;
+	Dish get(Long id);
 
 	List<Dish> getAll();
 	
 	Dish parse(DishModel request, CrudOperation operation)
 			throws BaseException;
 	
-	Dish addIngredients(DishModel request) throws BaseException;
+	Dish addIngredients(DishModel request);
 	
-	Dish removeIngredients(DishModel request) throws BaseException;
-	
-	Dish activation(Long id, CrudOperation operation) throws BaseException;
+	Dish removeIngredients(DishModel request);
 
-	Dish addImages(DishModel request) throws BaseException;
+	public Dish processActivation(Long id, boolean activate);
 
-	Dish removeImages(DishModel request) throws BaseException;
+	Dish addImages(DishModel request);
+
+	Dish removeImages(DishModel request);
 }

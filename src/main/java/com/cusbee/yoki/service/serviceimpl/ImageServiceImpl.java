@@ -52,12 +52,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void remove(DishImage dishImage) throws BaseException {
+    public void remove(DishImage dishImage) {
         imageDao.remove(dishImage);
     }
 
     @Override
-    public DishImage get(Long id) throws BaseException {
+    public DishImage get(Long id) {
         return imageDao.get(id);
     }
 
@@ -67,7 +67,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<DishImage> saveImagesToServer(List<MultipartFile> images, Dish dish) throws BaseException, IOException {
+    public List<DishImage> saveImagesToServer(List<MultipartFile> images, Dish dish) throws IOException {
         String imageServerHost = "/home/yoki/images";
         File dir = new File(imageServerHost + File.separator + dish.getId());
         if (!dir.exists())

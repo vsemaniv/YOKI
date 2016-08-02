@@ -10,20 +10,20 @@ import com.cusbee.yoki.model.CategoryModel;
 
 public interface CategoryService {
 
-	Category get(Long id) throws BaseException;
+	Category get(Long id);
 
 	List<Category> getAll();
 
-	void remove(Long id) throws BaseException;
+	void remove(Long id);
 	
 	Category saveCategory(CategoryModel request, CrudOperation status)
 			throws BaseException;
 	
-	List<Dish> getAllDishes(Long id) throws BaseException;
+	List<Dish> getAllDishes(Long id);
 	
-	Category removeDishFromCategory(CategoryModel request) throws BaseException ;
+	Category removeDishFromCategory(CategoryModel request) ;
 
-	Category addDishToCategory(CategoryModel request) throws BaseException;
+	Category addDishToCategory(CategoryModel request);
 	
-	Category processActivation(Long id, boolean activate) throws BaseException;
+	Category processActivation(Long id, boolean activate);
 }

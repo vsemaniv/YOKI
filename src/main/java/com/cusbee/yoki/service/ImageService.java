@@ -13,13 +13,13 @@ public interface ImageService {
 
     void save(DishImage dishImage);
 
-    void remove(DishImage dishImage) throws BaseException;
+    void remove(DishImage dishImage);
 
-    DishImage get(Long id) throws BaseException;
+    DishImage get(Long id);
 
     List<DishImage> getAll();
 
     List<DishImage> saveImagesToServer(List<MultipartFile> images,
-                                       Dish dish) throws BaseException, IOException;
+                                       Dish dish) throws IOException;
 
 }

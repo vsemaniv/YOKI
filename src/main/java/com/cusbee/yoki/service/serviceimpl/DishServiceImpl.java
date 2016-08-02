@@ -8,8 +8,7 @@ import java.util.regex.Pattern;
 
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.model.ImageModel;
-import com.cusbee.yoki.service.ImageService;
-import com.cusbee.yoki.service.ValidatorService;
+import com.cusbee.yoki.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -24,8 +23,6 @@ import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.repositories.IngredientRepository;
-import com.cusbee.yoki.service.DishService;
-import com.cusbee.yoki.service.NullPointerService;
 import com.cusbee.yoki.utils.ErrorCodes;
 
 @Service
@@ -86,6 +83,9 @@ public class DishServiceImpl implements DishService {
 
 	@Autowired
 	private ValidatorService validatorService;
+
+	@Autowired
+	private ActivationService activationService;
 	
 	@Override
 	public void save(Dish dish) {
@@ -96,7 +96,7 @@ public class DishServiceImpl implements DishService {
 
 	@Override
 	@Transactional
-	public Dish get(Long id) throws BaseException {
+	public Dish get(Long id) {
 		validatorService.validateRequestIdNotNull(id);
 		Dish dish = dao.get(id);
 		validatorService.validateEntityNotNull(dish, Dish.class);
@@ -105,7 +105,7 @@ public class DishServiceImpl implements DishService {
 
 	@Override
 	@Transactional
-	public void remove(Long id) throws BaseException {
+	public void remove(Long id) {
 		Dish dish = get(id);
 		dish.setCategory(null);
 		List<Ingredient> ingredients = dish.getIngredients();
@@ -121,7 +121,7 @@ public class DishServiceImpl implements DishService {
 		return this.dao.getAll();
 	}
 
-	protected boolean validate(String name) throws BaseException {
+	protected boolean validate(String name) {
 		return repository.findByName(name) == null;
 	}
 
@@ -204,7 +204,7 @@ public class DishServiceImpl implements DishService {
 		}
 	}
 	
-	public Dish addIngredients(DishModel request) throws BaseException {
+	public Dish addIngredients(DishModel request) {
 		if(Objects.isNull(request)){
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, EMPTY_REQUEST);
 		}
@@ -228,7 +228,7 @@ public class DishServiceImpl implements DishService {
 		return dish;
 	}
 	
-	public Dish removeIngredients(DishModel request) throws BaseException {
+	public Dish removeIngredients(DishModel request) {
 		if(Objects.isNull(request)) {
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "Requets are empty");
 		}
@@ -252,8 +252,15 @@ public class DishServiceImpl implements DishService {
 		dish.getIngredients().removeAll(ingredients);
 		return dish;
 	}
-	
-	public Dish activation(Long id, CrudOperation operation) throws BaseException {
+
+	@Override
+	public Dish processActivation(Long id, boolean activate) {
+		Dish dish = get(id);
+		activationService.processActivation(dish, activate);
+		return dao.save(dish);
+	}
+	/*
+	public Dish activation(Long id, CrudOperation operation) {
 		if(Objects.isNull(id)){
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST, "ID is not present");
 		}
@@ -276,9 +283,9 @@ public class DishServiceImpl implements DishService {
 		default:
 			throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid request");
 		}
-	}
+	}*/
 	
-	protected boolean validateName(String name) throws BaseException {
+	protected boolean validateName(String name) {
 		Pattern patter = Pattern.compile("^([A-Z]{1}[a-z]{1,15}[\\s]{0,1})+$");
 		Matcher matcher = patter.matcher(name);
 		if(!matcher.matches()){
@@ -287,7 +294,7 @@ public class DishServiceImpl implements DishService {
 		return matcher.matches();
 	}
 	
-	protected boolean validatePrice(Double price) throws BaseException {
+	protected boolean validatePrice(Double price) {
 		Pattern pattern = Pattern.compile("^([0-9]{2,4}[\\.,]{0,1}[0-9]{0,4})+$");
 		Matcher matcher = pattern.matcher(price.toString());
 		if(!matcher.matches()){
@@ -296,7 +303,7 @@ public class DishServiceImpl implements DishService {
 		return matcher.matches();
 	}
 	
-	protected boolean validateWeight(Double weight) throws BaseException {
+	protected boolean validateWeight(Double weight) {
 		Pattern pattern = Pattern.compile("^([0-9]{2,4}[\\.,]{0,1}[0-9]{0,4})+$");
 		Matcher matcher = pattern.matcher(weight.toString());
 		if(!matcher.matches()){
@@ -306,7 +313,7 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Dish addImages(DishModel request) throws BaseException {
+	public Dish addImages(DishModel request) {
 		if (Objects.isNull(request)) {
 			throw new ApplicationException(ErrorCodes.Dish.EMPTY_REQUEST,
 					"Empty Request");
@@ -334,7 +341,7 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Dish removeImages(DishModel request) throws BaseException {
+	public Dish removeImages(DishModel request) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -33,7 +33,7 @@ public class PropertyUtils {
 		properties = PropertiesLoaderUtils.loadProperties(resource);
 	}
 	
-	public static String getProperty(int errorCode) throws BaseException {
+	public static String getProperty(int errorCode) {
 		String returnValue = null;
 		if (errorCode <= 0) {
 			throw new ApplicationException("Invalid errorcode");
@@ -50,7 +50,7 @@ public class PropertyUtils {
 		return returnValue;
 	}
 
-	public static String getProperty(String propertyCode) throws BaseException {
+	public static String getProperty(String propertyCode) {
 		String returnValue = null;
 		if (propertyCode == null) {
 			throw new ApplicationException(

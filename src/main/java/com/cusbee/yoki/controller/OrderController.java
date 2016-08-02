@@ -30,7 +30,7 @@ public class OrderController {
 	
 	@ApiOperation(value="create new order")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Order> create(@RequestBody OrderModel request) throws BaseException {
+	public YokiResult<Order> create(@RequestBody OrderModel request) {
 		nullPointerService.isNull(request);
 		Order order = service.parse(request, CrudOperation.CREATE);
 		service.save(order);

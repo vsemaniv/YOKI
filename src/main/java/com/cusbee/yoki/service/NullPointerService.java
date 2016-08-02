@@ -4,6 +4,6 @@ import com.cusbee.yoki.exception.BaseException;
 
 public interface NullPointerService {
 
-	void isNull(Object object) throws BaseException;
+	void isNull(Object object);
 	
 }

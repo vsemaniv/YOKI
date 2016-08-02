@@ -54,7 +54,7 @@ public class AuthenticationController {
 	
 	@ApiIgnore
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest) throws BaseException{
+	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest){
 		
  		Authentication authentication = this.authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(

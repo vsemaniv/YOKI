@@ -55,7 +55,7 @@ public class IngredientController {
 	
 	@ApiOperation(value="get all ingredients")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
-	public List<Ingredient> getAll() throws BaseException {
+	public List<Ingredient> getAll() {
 		return service.getAll();
 	}
 	

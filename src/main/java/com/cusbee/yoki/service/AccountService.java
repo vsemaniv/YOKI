@@ -9,7 +9,7 @@ import com.cusbee.yoki.model.AccountModel;
 
 public interface AccountService {
 	
-	Account saveAccount(AccountModel request, CrudOperation operations) throws BaseException;
+	Account saveAccount(AccountModel request, CrudOperation operations);
 	
 	List<Account> getAll();
 	

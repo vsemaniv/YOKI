@@ -44,7 +44,7 @@ public class ImageController {
     public
     @ResponseBody
     YokiResult uploadDishImages(
-            @ApiParam(required = true, name = "request") DishImagesModel request) throws BaseException, IOException {
+            @ApiParam(required = true, name = "request") DishImagesModel request) throws IOException {
 
         if (Objects.isNull(request)) {
             throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST, "Invalid Request.");

@@ -34,7 +34,7 @@ public class ApplicationException extends BaseException implements Serializable 
 		super(code, msg);
 	}
 
-	public ApplicationException(int code) throws BaseException {
+	public ApplicationException(int code) {
 		super(code, PropertyUtils.getProperty(code));
 	}
 
@@ -44,13 +44,13 @@ public class ApplicationException extends BaseException implements Serializable 
 	}
 
 	public ApplicationException(int code, String[] dynamicErrorMessage,
-			IssueType issueType) throws BaseException {
+			IssueType issueType) {
 		super(code, PropertyUtils.getProperty(code, dynamicErrorMessage),
 				issueType);
 	}
 
 	public ApplicationException(int code, Throwable e,
-			String[] dynamicErrorMessage) throws BaseException {
+			String[] dynamicErrorMessage) {
 		super(code, PropertyUtils.getProperty(code, dynamicErrorMessage), e);
 	}
 

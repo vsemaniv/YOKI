@@ -11,7 +11,7 @@ public interface ClientDao {
 	
 	void update(Client client);
 	
-	Client get(Long id) throws BaseException;
+	Client get(Long id);
 	
 	List<Client> getAll();
 }

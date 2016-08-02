@@ -29,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Client get(Long id) throws BaseException {
+	public Client get(Long id) {
 		return this.dao.get(id);
 	}
 

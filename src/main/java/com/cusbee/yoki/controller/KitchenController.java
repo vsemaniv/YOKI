@@ -30,19 +30,19 @@ public class KitchenController {
     NullPointerService npService;
 
     @RequestMapping(value = "getAll", method = RequestMethod.GET)
-    public List<Order> getKitchenOrders() throws BaseException {
+    public List<Order> getKitchenOrders() {
         return kitchenService.getKitchenOrders();
     }
 
     @RequestMapping(value = "deliver/{id}", method = RequestMethod.POST)
-    public YokiResult<Order> passToDriver(@PathVariable("id")Long id) throws BaseException {
+    public YokiResult<Order> passToDriver(@PathVariable("id")Long id) {
         npService.isNull(id);
         Order order = kitchenService.passToDriver(id);
         return new YokiResult<>(YokiResult.Status.SUCCESS, "Order status was successfully changed", order);
     }
 
     @RequestMapping(value = "return/{id}", method = RequestMethod.POST)
-    public YokiResult<Order> canNotPrepare(@RequestParam(value = "message") String message, @PathVariable("id")Long id) throws BaseException {
+    public YokiResult<Order> canNotPrepare(@RequestParam(value = "message") String message, @PathVariable("id")Long id) {
         npService.isNull(id);
         Order order = kitchenService.canNotPrepare(id);
         return new YokiResult<>(YokiResult.Status.SUCCESS, "Order status was successfully changed", order);

@@ -30,7 +30,7 @@ public class ClientDaoImpl implements ClientDao{
 	}
 
 	@Override
-	public Client get(Long id) throws BaseException {
+	public Client get(Long id) {
 		return em.find(Client.class, id);
 	}
 

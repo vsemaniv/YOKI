@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Order parse(OrderModel request, CrudOperation operation)
-            throws BaseException {
+            {
         Order order;
         switch (operation) {
             case CREATE:
