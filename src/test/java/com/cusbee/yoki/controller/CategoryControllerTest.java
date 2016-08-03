@@ -35,7 +35,7 @@ public class CategoryControllerTest {
     private CategoryModel request = new CategoryModel();
 
     @Test
-    public void addCategoryTest() throws BaseException {
+    public void addCategoryTest() {
         when(categoryService.saveCategory(request, CrudOperation.CREATE)).thenReturn(category);
         YokiResult<Category> result = controller.add(request);
         verify(categoryService, times(1)).saveCategory(request, CrudOperation.CREATE);
@@ -45,7 +45,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void updateCategoryTest() throws BaseException {
+    public void updateCategoryTest() {
         when(categoryService.saveCategory(request, CrudOperation.UPDATE)).thenReturn(category);
         YokiResult<Category> result = controller.update(request);
         verify(categoryService, times(1)).saveCategory(request, CrudOperation.UPDATE);
@@ -55,7 +55,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void removeCategoryTest() throws BaseException {
+    public void removeCategoryTest() {
         Long categoryId = 37452L;
         YokiResult<Category> result = controller.remove(categoryId);
         verify(categoryService, times(1)).remove(categoryId);
@@ -65,7 +65,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void getCategoryByIdTest() throws BaseException {
+    public void getCategoryByIdTest() {
         Long categoryId = 14572L;
         when(categoryService.get(categoryId)).thenReturn(category);
         YokiResult<Category> result = controller.get(categoryId);
@@ -76,7 +76,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void getAllCategoriesTest() throws BaseException {
+    public void getAllCategoriesTest() {
         List<Category> categories = new ArrayList<>();
         categories.add(new Category());
         categories.add(category);
@@ -88,7 +88,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void activateCategoryTest() throws BaseException {
+    public void activateCategoryTest() {
         Long categoryId = 96187L;
         when(categoryService.processActivation(categoryId, true)).thenReturn(category);
         YokiResult<Category> result = controller.activate(categoryId);
@@ -100,7 +100,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void deactivateCategoryTest() throws BaseException {
+    public void deactivateCategoryTest() {
         Long categoryId = 7544492L;
         when(categoryService.processActivation(categoryId, false)).thenReturn(category);
         YokiResult<Category> result = controller.deactivate(categoryId);

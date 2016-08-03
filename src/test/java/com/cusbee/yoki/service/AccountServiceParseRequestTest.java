@@ -59,7 +59,7 @@ public class AccountServiceParseRequestTest {
     }
 
     @Test
-    public void parseCreateAccountRequestTest() throws BaseException {
+    public void parseCreateAccountRequestTest() {
         String encodedPassword = "ENCODED";
         when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
         when(accountDao.save(any(Account.class))).thenAnswer(new Answer<Account>() {
@@ -84,7 +84,7 @@ public class AccountServiceParseRequestTest {
     }
 
     @Test
-    public void parseUpdateAccountRequestWithoutPasswordTest() throws BaseException {
+    public void parseUpdateAccountRequestWithoutPasswordTest() {
         request.setId(18L);
         request.setNewPassword("");
         when(accountDao.get(anyLong())).thenReturn(account);
@@ -105,7 +105,7 @@ public class AccountServiceParseRequestTest {
 
     @Test
     @Parameters(method = "getNormalPasswords")
-    public void updateAccountPasswordTest(String oldPassword, String newPassword) throws BaseException {
+    public void updateAccountPasswordTest(String oldPassword, String newPassword) {
         request.setNewPassword(newPassword);
         request.setOldPassword(oldPassword);
         account.setPassword(oldPassword);
@@ -126,7 +126,7 @@ public class AccountServiceParseRequestTest {
     }
 
     @Test
-    public void oldPasswordDoesntMatchTest() throws BaseException {
+    public void oldPasswordDoesntMatchTest() {
         String oldPassword = "oldpasswordFromDb123";
         request.setNewPassword("NEW");
         account.setPassword(oldPassword);

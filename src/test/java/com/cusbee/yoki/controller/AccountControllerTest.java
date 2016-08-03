@@ -36,7 +36,7 @@ public class AccountControllerTest {
     private Account account = new Account();
 
     @Test
-    public void createAccountTest() throws BaseException {
+    public void createAccountTest() {
         account.setUsername("username");
         when(accountService.saveAccount(request, CrudOperation.CREATE)).thenReturn(account);
         YokiResult<Account> result = controller.create(request);
@@ -47,7 +47,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void updateAccountTest() throws BaseException {
+    public void updateAccountTest() {
         account.setUsername("greyjoy");
         when(accountService.saveAccount(request, CrudOperation.UPDATE)).thenReturn(account);
         YokiResult<Account> result = controller.update(request);
@@ -58,7 +58,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void blockAccountTest() throws BaseException {
+    public void blockAccountTest() {
         Long id = 22L;
         when(accountService.processActivation(id, false)).thenReturn(account);
         YokiResult<Account> result = controller.block(id);
@@ -69,7 +69,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void unblockAccountTest() throws BaseException {
+    public void unblockAccountTest() {
         Long id = 367L;
         when(accountService.processActivation(id, true)).thenReturn(account);
         YokiResult<Account> result = controller.unblock(id);
@@ -80,7 +80,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void getAccountByIdTest() throws BaseException {
+    public void getAccountByIdTest() {
         Long id = 373367L;
         account.setUsername("No_way");
         account.setEmail("way@hard.com");
@@ -94,7 +94,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void getAllAccountsTest() throws BaseException {
+    public void getAllAccountsTest() {
         controller.getAll();
         verify(accountService, times(1)).getAll();
         verifyNoMoreInteractions(accountService);

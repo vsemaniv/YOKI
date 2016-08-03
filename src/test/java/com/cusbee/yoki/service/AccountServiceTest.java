@@ -78,7 +78,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void isAccountEnabledTest() throws BaseException {
+    public void isAccountEnabledTest() {
         when(repository.availability(TEST)).thenReturn(account);
         service.validateUserEnabled(TEST);
         verify((repository), times(1)).availability(TEST);
@@ -86,7 +86,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void isAccountEnabledExceptionTest() throws BaseException {
+    public void isAccountEnabledExceptionTest() {
         when(repository.availability(TEST)).thenReturn(null);
         thrown.expect(ApplicationException.class);
         service.validateUserEnabled(TEST);

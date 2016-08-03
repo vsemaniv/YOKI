@@ -16,7 +16,6 @@ import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.service.DishService;
@@ -45,13 +44,13 @@ public class DishController {
 	@ApiOperation(value="create new dish")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> add(@RequestBody DishModel request) {
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.parse(request, CrudOperation.CREATE));
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.CREATE));
 	}
 	
 	@ApiOperation(value="update dish") 
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> update(@RequestBody DishModel request) {
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.parse(request, CrudOperation.UPDATE));
+		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.UPDATE));
 	}
 	
 	@ApiOperation(value="remove dish")
@@ -64,7 +63,7 @@ public class DishController {
 	@ApiOperation(value="add ingredients to dish")
 	@RequestMapping(value="addIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> addIngredint(@RequestBody DishModel request) {
-		Dish dish = dishService.addIngredients(request);
+		//Dish dish = dishService.addIngredients(request);
 		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
 	}
 	
@@ -84,7 +83,7 @@ public class DishController {
 	@ApiOperation(value="remove ingredients from dish")
 	@RequestMapping(value="removeIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> removeIngredients(@RequestBody DishModel request) {
-		Dish dish = dishService.removeIngredients(request);
+		//Dish dish = dishService.removeIngredients(request);
 		return new YokiResult<Dish>(Status.SUCCESS, "Ingredients successful removed from dish", dish);
 	}
 	

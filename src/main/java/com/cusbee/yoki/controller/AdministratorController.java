@@ -19,10 +19,10 @@ import java.util.List;
  * @project: yoki
  */
 
-@ApiClass("Kitchen operations")
+@ApiClass("Administrator operations")
 @RestController
 @RequestMapping(value="kitchen")
-public class KitchenController {
+public class AdministratorController {
     @Autowired
     KitchenService kitchenService;
 

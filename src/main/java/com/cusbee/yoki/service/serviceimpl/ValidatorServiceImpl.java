@@ -2,13 +2,10 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.exception.BaseException;
-import com.cusbee.yoki.model.AccountModel;
-import com.cusbee.yoki.model.CategoryModel;
-import com.cusbee.yoki.model.IngredientModel;
-import com.cusbee.yoki.model.RequestModel;
+import com.cusbee.yoki.model.*;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.repositories.CategoryRepository;
+import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.ValidatorService;
 import com.cusbee.yoki.utils.ErrorCodes;
@@ -31,6 +28,10 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Autowired
     private IngredientRepository ingredientRepository;
 
+    @Autowired
+    private DishRepository dishRepository;
+
+    @Override
     public void validateAccountSaveRequest(AccountModel request, CrudOperation operation) {
         validateRequestNotNull(request, Account.class);
         switch (operation) {
@@ -66,6 +67,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
     }
 
+    @Override
     public void validateCategorySaveRequest(CategoryModel request, CrudOperation status) {
         validateRequestNotNull(request, Category.class);
         if (StringUtils.isEmpty(request.getName())) {
@@ -79,6 +81,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         validateRegexCategoryName(request.getName());
     }
 
+    @Override
     public void validateIngredientSaveRequest(IngredientModel request, CrudOperation status) {
         validateRequestNotNull(request, Ingredient.class);
         switch(status) {
@@ -101,6 +104,43 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
     }
 
+    @Override
+    public void validateDishSaveRequest(DishModel request, CrudOperation operation) {
+        validateRequestNotNull(request, Dish.class);
+        switch(operation) {
+            case CREATE:
+                if(dishRepository.findByName(request.getName()) != null){
+                    throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Dish with such name already exists");
+                }
+                break;
+            case UPDATE:
+
+                break;
+        }
+        validateDishFields(request);
+    }
+
+    @Override
+    public void validateOrderSaveRequest(OrderModel request, CrudOperation operation) {
+        validateRequestNotNull(request, Order.class);
+        switch(operation) {
+            case CREATE:
+                if (Objects.isNull(request.getDishes())) {
+                    throw new ApplicationException(
+                            ErrorCodes.Order.EMPTY_LIST_OF_DISHES,
+                            "List of ordered dishes are empty");
+                }
+                if (Objects.isNull(request.getClient())) {
+                    throw new ApplicationException(ErrorCodes.Order.INVALID_REQUEST, "Object Client are empty");
+                }
+                break;
+            case UPDATE:
+
+                break;
+        }
+    }
+
+    @Override
     public void validateRequestNotNull(RequestModel request, Class entityClass) {
         if (Objects.isNull(request)) {
             throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST,
@@ -108,6 +148,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
     }
 
+    @Override
     public void validateRequestIdNotNull(Long id) {
         if (Objects.isNull(id)) {
             throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST_ID,
@@ -115,6 +156,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
     }
 
+    @Override
     public void validateEntityNotNull(BaseEntity entity, Class entityClass) {
         if (Objects.isNull(entity)) {
             throw new ApplicationException(ErrorCodes.Common.NOT_EXIST,
@@ -130,6 +172,12 @@ public class ValidatorServiceImpl implements ValidatorService {
         if (createOperation || StringUtils.isNotEmpty(request.getNewPassword())) {
             validateRegexAccountPassword(request.getNewPassword());
         }
+    }
+
+    private void validateDishFields(DishModel request) {
+        validateRegexDishName(request.getName());
+        validateRegexDishPrice(request.getPrice());
+        validateRegexDishWeight(request.getWeight());
     }
 
     // *** REGEX VALIDATION METHODS ***
@@ -172,6 +220,33 @@ public class ValidatorServiceImpl implements ValidatorService {
     private boolean validateRegexCategoryName(String name) {
         Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,25}$");
         Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
+    }
+
+    private boolean validateRegexDishName(String name) {
+        Pattern patter = Pattern.compile("^([A-Z]{1}[a-z]{1,15}[\\s]{0,1})+$");
+        Matcher matcher = patter.matcher(name);
+        if(!matcher.matches()){
+            throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish name");
+        }
+        return matcher.matches();
+    }
+
+    private boolean validateRegexDishPrice(Double price) {
+        Pattern pattern = Pattern.compile("^([0-9]{2,4}[\\.,]{0,1}[0-9]{0,4})+$");
+        Matcher matcher = pattern.matcher(price.toString());
+        if(!matcher.matches()){
+            throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish price");
+        }
+        return matcher.matches();
+    }
+
+    private boolean validateRegexDishWeight(Double weight) {
+        Pattern pattern = Pattern.compile("^([0-9]{2,4}[\\.,]{0,1}[0-9]{0,4})+$");
+        Matcher matcher = pattern.matcher(weight.toString());
+        if(!matcher.matches()){
+            throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");
+        }
         return matcher.matches();
     }
 }

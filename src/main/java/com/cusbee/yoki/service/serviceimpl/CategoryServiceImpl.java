@@ -124,7 +124,7 @@ public class CategoryServiceImpl implements CategoryService {
 				dishList.add(dish);
 			}
 			dish.setCategory(category);
-			dishService.save(dish);
+			dishDao.save(dish);
 		}
 		return category;
 	}
@@ -147,7 +147,7 @@ public class CategoryServiceImpl implements CategoryService {
 				if (dish.getId().equals(id)) {
 					Dish dh = dishService.get(id);
 					dh.setCategory(null);
-					dishService.save(dh);
+					dishDao.save(dh);
 				}
 			}
 		}
