@@ -321,7 +321,7 @@
 					<update>true</update>
 					<url>http://localhost:8080/manager/text</url>
 					<username>yoki</username>
-					<password>Say%5Times</password>
+					<password>root</password>
 				</configuration>
 			</plugin>
 			<plugin>

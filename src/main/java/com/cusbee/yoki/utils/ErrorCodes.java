@@ -22,7 +22,7 @@ public class ErrorCodes {
         int EMPTY_FIELDS = 2001;
         int ALREADY_EXIST = 2002;
         int BAD_REQUEST = 2003;
-        int USER_UNVAILABLE = 2004;
+        int USER_UNAVAILABLE = 2004;
         int INVALID_EMAIL = 2005;
         int IVALID_FIRST_OR_LAST_NAME = 2006;
         int INVALID_USERNAME = 2007;
@@ -40,6 +40,7 @@ public class ErrorCodes {
         int EMPTY_REQUEST = 4000;
         int EMPTY_FIELD = 4001;
         int ALREADY_EXIST = 4002;
+        int STILL_USED = 4003;
     }
 
     public interface Dish {
@@ -59,5 +60,9 @@ public class ErrorCodes {
 
     public interface Operator {
 
+    }
+
+    public interface Image {
+        int INVALID_REQUEST = 8000;
     }
 }

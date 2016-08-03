@@ -12,13 +12,13 @@ public interface AccountRepository extends JpaRepository<Account, Long>{
 	
 	Account findByUsername(String username);
 	
-	@Query(value="SELECT * FROM Account a WHERE a.email=?1 AND enabled='Y'", nativeQuery=true)
+	@Query(value="SELECT * FROM account a WHERE a.email=?1 AND enabled='Y'", nativeQuery=true)
 	Account validateAccount(String email);
 	
-	@Query(value="SELECT * FROM Account a WHERE a.username=?1 AND enabled='Y'", nativeQuery=true)
+	@Query(value="SELECT * FROM account a WHERE a.username=?1 AND enabled='Y'", nativeQuery=true)
 	Account availability(String username);
 	
 	@Transactional
-	@Query(value="SELECT * FROM Account WHERE enabled='Y'", nativeQuery=true)
+	@Query(value="SELECT * FROM account WHERE enabled='Y'", nativeQuery=true)
 	List<Account> findAll();
 }

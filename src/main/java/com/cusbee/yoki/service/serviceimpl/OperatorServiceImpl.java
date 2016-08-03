@@ -34,7 +34,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public Order processOrder(OrderModel request, boolean accept) throws BaseException {
+    public Order processOrder(OrderModel request, boolean accept) {
         Order order = orderRepository.findById(request.getId());
         if(order != null) {
             if(accept) {

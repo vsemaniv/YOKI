@@ -6,9 +6,7 @@ import com.cusbee.yoki.entity.Ingredient;
 
 public interface IngredientDao {
 
-	void add(Ingredient ingredient);
-	
-	void update(Ingredient ingredient);
+	Ingredient save(Ingredient ingredient);
 	
 	Ingredient get(Long id);
 	

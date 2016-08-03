@@ -13,5 +13,5 @@ public interface OperatorService {
 
     List<Order> getAllNonProcessedOrders();
 
-    Order processOrder(OrderModel request, boolean accept) throws BaseException;
+    Order processOrder(OrderModel request, boolean accept);
 }

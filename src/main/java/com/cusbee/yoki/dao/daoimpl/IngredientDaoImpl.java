@@ -19,13 +19,9 @@ public class IngredientDaoImpl implements IngredientDao {
 	private EntityManager em;
 	
 	@Override
-	public void add(Ingredient ingredient) {
+	public Ingredient save(Ingredient ingredient) {
 		em.merge(ingredient);
-	}
-
-	@Override
-	public void update(Ingredient ingredient) {
-		em.merge(ingredient);
+		return ingredient;
 	}
 
 	@Override
@@ -42,7 +38,7 @@ public class IngredientDaoImpl implements IngredientDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ingredient> getAll() {
-		return (List<Ingredient>) em.createQuery("SELECT i FROM Ingredient i WHERE i.enabled=true").getResultList();
+		return (List<Ingredient>) em.createQuery("SELECT i FROM Ingredient i").getResultList();
 	}
 
 }

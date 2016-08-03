@@ -2,6 +2,7 @@ package com.cusbee.yoki.controller;
 
 import java.util.List;
 
+import com.cusbee.yoki.service.ActivationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +17,7 @@ import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.IngredientModel;
-import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.IngredientService;
-import com.cusbee.yoki.service.NullPointerService;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -29,65 +28,56 @@ public class IngredientController {
 
 	@Autowired
 	private IngredientService service;
-	
+
 	@Autowired
-	private IngredientRepository repository;
-	
-	@Autowired
-	private NullPointerService nullPointerService;
+	private ActivationService activationService;
 	
 	@ApiOperation(value="create new ingredient")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Ingredient> add(@RequestBody IngredientModel request) throws BaseException {
-		Ingredient ingredient = service.parse(request, CrudOperation.CREATE);
-		service.add(ingredient);
+	public YokiResult<Ingredient> add(@RequestBody IngredientModel request) {
+		Ingredient ingredient = service.saveIngredient(request, CrudOperation.CREATE);
 		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient addes successful ", ingredient);
 	}
 	
 	@ApiOperation(value="update ingredients")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Ingredient> update(@RequestBody IngredientModel request) throws BaseException {
-		Ingredient ingredient = service.parse(request, CrudOperation.UPDATE);
-		service.update(ingredient);
+	public YokiResult<Ingredient> update(@RequestBody IngredientModel request) {
+		Ingredient ingredient = service.saveIngredient(request, CrudOperation.UPDATE);
 		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient updated successful", ingredient);
 	}
 	
 	@ApiOperation(value="remove ingredient")
 	@RequestMapping(value="remove/{id}", method=RequestMethod.POST)
-	public YokiResult<Ingredient> remove(@PathVariable("id") Long id) throws BaseException {
-		nullPointerService.isNull(id);
+	public YokiResult<Ingredient> remove(@PathVariable("id") Long id) {
 		service.remove(id);
 		return new YokiResult<Ingredient>(Status.SUCCESS,"Ingredient successful removed", null);
 	}
 	
 	@ApiOperation(value="get all ingredients")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
-	public List<Ingredient> getAll() throws BaseException {
-		List<Ingredient> ingredients = service.getAll();
-		return ingredients; 
+	public List<Ingredient> getAll() {
+		return service.getAll();
 	}
 	
 	@ApiOperation(value="get ingredient by id")
 	@RequestMapping(value="get/{id}", method=RequestMethod.GET)
-	public YokiResult<Ingredient> get(@PathVariable("id")Long id) throws BaseException {
-		nullPointerService.isNull(id);
-		Ingredient ingredient = repository.findById(id);
-		return new YokiResult<Ingredient>(Status.SUCCESS, "Successful request", ingredient);
+	public YokiResult<Ingredient> get(@PathVariable("id")Long id) {
+		return new YokiResult<Ingredient>(Status.SUCCESS, "Successful request", service.get(id));
 	}
 	
 	@ApiOperation(value="activate ingredient")
 	@RequestMapping(value="activate/{id}", method=RequestMethod.POST)
-	public YokiResult<Ingredient> activate(@PathVariable("id")Long id) throws BaseException {
-		Ingredient ingredient = service.activation(id, CrudOperation.UNBLOCK);
-		service.update(ingredient);
-		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient successful unblocked", ingredient);
+	public YokiResult<Ingredient> activate(@PathVariable("id")Long id) {
+		Ingredient ingredient = service.get(id);
+		activationService.processActivation(ingredient, true);
+		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient was successfully enabled", service.processActivation(id, true));
 	}
 	
 	@ApiOperation(value="deactivate ingredient")
 	@RequestMapping(value="deactivate/{id}", method=RequestMethod.POST)
-	public YokiResult<Ingredient> deactivate(@PathVariable("id")Long id) throws BaseException {
-		Ingredient ingredient = service.activation(id, CrudOperation.BLOCK);
-		service.update(ingredient);
-		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient successful blocked", ingredient);
+	public YokiResult<Ingredient> deactivate(@PathVariable("id")Long id) {
+		Ingredient ingredient = service.get(id);
+		activationService.processActivation(ingredient, false);
+		return new YokiResult<Ingredient>(Status.SUCCESS, "Ingredient was successfully disabled", service.processActivation(id, false));
 	}
 }

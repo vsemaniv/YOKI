@@ -10,107 +10,105 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 
-
 /**
- * 
  * @author Dmytro Khodan
  * @date 09.07.2016
  * @project: yoki
  */
 
 
-@Table(name="orders")
+@Table(name = "orders")
 @Entity
-public class Order implements Serializable {
+public class Order implements BaseEntity, Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinTable(name="ordered_dish",
-			   joinColumns={@JoinColumn(name="order_id")},
-			   inverseJoinColumns={@JoinColumn(name="dish_id")})
-	@Fetch(FetchMode.JOIN)
-	private List<Dish> dishes;
-	
-	@Column(name="order_date")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar orderDate;
-	
-	@Column(name="order_status", nullable=false)
-	@Enumerated(EnumType.STRING)
-	private OrderStatus status;
-	
-	@Column(name="amount")
-	private Double amount;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="client_id")
-	@Fetch(FetchMode.JOIN)
-	private Client client;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Column(name = "message")
-	private String message;
-	
-	public Client getClient() {
-		return client;
-	}
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "ordered_dish",
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dish_id")})
+    @Fetch(FetchMode.JOIN)
+    private List<Dish> dishes;
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
+    @Column(name = "order_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar orderDate;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "order_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Double getAmount() {
-		return amount;
-	}
+    @Column(name = "amount")
+    private Double amount;
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    @Fetch(FetchMode.JOIN)
+    private Client client;
 
-	public List<Dish> getDishes() {
-		return dishes;
-	}
+    @Column(name = "message")
+    private String message;
 
-	public void setDishes(List<Dish> dishes) {
-		this.dishes = dishes;
-	}
+    public Client getClient() {
+        return client;
+    }
 
-	public Calendar getOrderDate() {
-		return orderDate;
-	}
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
-	public void setOrderDate(Calendar orderDate) {
-		this.orderDate = orderDate;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public OrderStatus getStatus() {
-		return status;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setStatus(OrderStatus status) {
-		this.status = status;
-	}
+    public Double getAmount() {
+        return amount;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
+    }
+
+    public Calendar getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Calendar orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

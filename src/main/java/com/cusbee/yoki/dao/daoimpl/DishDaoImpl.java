@@ -18,13 +18,9 @@ public class DishDaoImpl implements DishDao {
 	@PersistenceContext
 	private EntityManager em;
 	
-	public void add(Dish dish) {
+	public Dish save(Dish dish) {
 		em.merge(dish);
-	}
-
-	@Override
-	public void update(Dish dish) {
-		em.merge(dish);
+		return dish;
 	}
 
 	@Override
@@ -41,7 +37,7 @@ public class DishDaoImpl implements DishDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Dish> getAll() {
-		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled=true").getResultList();
+		return (List<Dish>) em.createQuery("SELECT d FROM Dish d").getResultList();
 	}
 
 }

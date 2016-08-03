@@ -14,7 +14,7 @@ import com.cusbee.yoki.logging.LogFactory;
  * @date 28.06.2016
  * @project: yoki
  */
-public class BaseException extends Exception implements Serializable {
+public class BaseException extends RuntimeException implements Serializable {
 
 	private static final Logger log = LogFactory.getLog(BaseException.class);
 
@@ -32,9 +32,6 @@ public class BaseException extends Exception implements Serializable {
 		this.message = message;
 	}
 
-	/**
-	 * @param e
-	 */
 	public BaseException(final Throwable e) {
 		super(e.getMessage(), e);
 	}
@@ -54,22 +51,13 @@ public class BaseException extends Exception implements Serializable {
 		issues.add(new Issue(code, message, issueType));
 	}
 
-	/**
-	 * @param string
-	 * @param e
-	 */
 	public BaseException(final String msg, final Throwable exception) {
 		super(msg, exception);
 		this.message = msg;
 	}
 
-	/**
-	 * @param string
-	 * @param e
-	 */
 	public BaseException(final int errorCode, final String message,
 			final Throwable exception) {
-
 		super(message, exception);
 		this.errorCode = errorCode;
 		this.message = message;

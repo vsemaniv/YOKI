@@ -14,69 +14,69 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="client")
-public class Client implements Serializable{
+@Table(name = "client")
+public class Client implements BaseEntity, Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@Column(name="first_name", length=35, nullable=false)
-	private String firstName;
-	
-	@Column(name="phone_number", length=35, nullable=false)
-	private String phoneNumber;
-	
-	@Column(name="location", length=35, nullable=false)
-	private String location;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
-	@JsonIgnore
-	private List<Order> order;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "first_name", length = 35, nullable = false)
+    private String firstName;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "phone_number", length = 35, nullable = false)
+    private String phoneNumber;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    @Column(name = "location", length = 35, nullable = false)
+    private String location;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    @JsonIgnore
+    private List<Order> order;
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public List<Order> getOrder() {
-		return order;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setOrder(List<Order> order) {
-		this.order = order;
-	}
-	
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
 }

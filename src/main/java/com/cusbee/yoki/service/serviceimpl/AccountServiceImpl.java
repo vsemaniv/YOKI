@@ -3,7 +3,8 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.List;
 import java.util.Objects;
 
-import com.cusbee.yoki.utils.Validator;
+import com.cusbee.yoki.service.ActivationService;
+import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +15,6 @@ import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.AccountService;
@@ -30,7 +30,7 @@ import com.cusbee.yoki.utils.ErrorCodes;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    private AccountDao userDao;
+    private AccountDao dao;
 
     @Autowired
     private AccountRepository userRepository;
@@ -38,16 +38,11 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Validator validator = Validator.getValidator();
+    @Autowired
+    private ValidatorService validatorService;
 
-    /**
-     * Add new account to database
-     */
-    @Override
-    @Transactional
-    public void add(Account user) {
-        this.userDao.add(user);
-    }
+    @Autowired
+    private ActivationService activationService;
 
     /**
      * Return the list with all accounts
@@ -63,7 +58,10 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Account get(Long id) {
-        return this.userDao.get(id);
+        validatorService.validateRequestIdNotNull(id);
+        Account account = dao.get(id);
+        validatorService.validateEntityNotNull(account, Account.class);
+        return account;
     }
 
     /**
@@ -72,37 +70,32 @@ public class AccountServiceImpl implements AccountService {
      * choose what will do(CREATE account or UPDATE account)
      */
     @Transactional
-    public Account parseRequest(AccountModel request, CrudOperation operation)
-            throws BaseException {
-        validator.validateAccountParseRequest(request, operation);
+    public Account saveAccount(AccountModel request, CrudOperation operation) {
+        validatorService.validateAccountSaveRequest(request, operation);
         Account account;
         switch (operation) {
             case CREATE:
                 account = new Account();
-                account.setUsername(request.getUsername());
                 account.setPassword(encryptPassword(request.getNewPassword()));
                 account.setAuthority(request.getAuthority());
-                account.setEmail(request.getEmail());
-                account.setFirstname(request.getFirstname());
-                account.setLastname(request.getLastname());
                 account.setEnabled(Boolean.TRUE);
-                return account;
+                break;
             case UPDATE:
                 account = get(request.getId());
-                validator.validateEntityNotNull(account);
                 if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
                 }
-                account.setAuthority(request.getAuthority());
-                account.setEmail(request.getEmail());
-                account.setFirstname(request.getFirstname());
-                account.setLastname(request.getLastname());
-                account.setUsername(request.getUsername());
-                return account;
+                break;
             default:
                 throw new ApplicationException(ErrorCodes.User.BAD_REQUEST,
                         "Unknown user operation");
         }
+        account.setUsername(request.getUsername());
+        account.setEmail(request.getEmail());
+        account.setFirstname(request.getFirstname());
+        account.setLastname(request.getLastname());
+        account.setAuthority(request.getAuthority());
+        return dao.save(account);
     }
 
     /**
@@ -110,45 +103,19 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     @Transactional
-    public void activation(Long id, CrudOperation operation)
-            throws BaseException {
-        Account user = get(id);
-        if (Objects.isNull(user)) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "User is not present");
-        }
-        switch (operation) {
-            case BLOCK:
-                user.setEnabled(Boolean.FALSE);
-                userDao.add(user);
-                break;
-            case UNBLOCK:
-                user.setEnabled(Boolean.TRUE);
-                userDao.add(user);
-                break;
-            default:
-                throw new ApplicationException(ErrorCodes.User.BAD_REQUEST,
-                        "Method undefined your move");
-        }
+    public Account processActivation(Long id, boolean activate) {
+        Account account = get(id);
+        activationService.processActivation(account, activate);
+        return dao.save(account);
     }
 
     /**
      * Method check if existing user is enabled(active/unblocked) in database
      */
     @Override
-    public void validateUserEnabled(String username) throws BaseException {
+    public void validateUserEnabled(String username) {
         if (userRepository.availability(username) == null) {
-            throw new ApplicationException(ErrorCodes.User.USER_UNVAILABLE, "User is blocked");
-        }
-    }
-
-    //TODO How is this method supposed to be used? Could not find usages.
-
-    /**
-     * Check if reference is not null
-     */
-    public void isNull(Account user) throws BaseException {
-        if (Objects.isNull(user)) {
-            throw new ApplicationException(ErrorCodes.User.EMPTY_REQUEST, "This user is missing");
+            throw new ApplicationException(ErrorCodes.User.USER_UNAVAILABLE, "User is blocked");
         }
     }
 
@@ -171,7 +138,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      * @throws ApplicationException
      */
-    public boolean oldPasswordIsCorrect(String passwordFromDB, String enteredPassword) throws ApplicationException {
+    public boolean oldPasswordIsCorrect(String passwordFromDB, String enteredPassword) {
         String encodedPassword = passwordEncoder.encode(enteredPassword);
         if(passwordFromDB.equals(encodedPassword)) {
             return true;

@@ -18,7 +18,7 @@ public interface OrderService {
 
 	Order get(Long id);
 	
-	Order parse(OrderModel request, CrudOperation operation)
+	Order saveOrder(OrderModel request, CrudOperation operation)
 			throws BaseException;
 
 	public List<Dish> getDishesFromOrderModel(OrderModel request);

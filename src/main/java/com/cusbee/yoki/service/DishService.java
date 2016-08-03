@@ -9,22 +9,17 @@ import com.cusbee.yoki.model.DishModel;
 
 public interface DishService {
 
-	void add(Dish dish);
+	void remove(Long id);
 
-	void update(Dish dish);
-
-	void remove(Long id) throws BaseException;
-
-	Dish get(Long id) throws BaseException;
+	Dish get(Long id);
 
 	List<Dish> getAll();
 	
-	Dish parse(DishModel request, CrudOperation operation)
-			throws BaseException;
-	
-	Dish addIngredients(DishModel request) throws BaseException;
-	
-	Dish removeIngredients(DishModel request) throws BaseException;
-	
-	Dish activation(Long id, CrudOperation operation) throws BaseException;
+	Dish saveDish(DishModel request, CrudOperation operation);
+
+	Dish processActivation(Long id, boolean activate);
+
+	Dish addImages(DishModel request);
+
+	Dish removeImages(DishModel request);
 }

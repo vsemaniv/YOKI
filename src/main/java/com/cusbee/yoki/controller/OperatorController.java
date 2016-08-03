@@ -28,12 +28,12 @@ public class OperatorController {
 	OperatorService operatorService;
 
 	@RequestMapping(value = "getAll", method = RequestMethod.GET)
-	public List<Order> getAvailableOrders() throws BaseException {
+	public List<Order> getAvailableOrders() {
 		return operatorService.getAllNonProcessedOrders();
 	}
 
 	@RequestMapping(value = "processOrder", method = RequestMethod.POST)
-	public YokiResult<Order> processOrder(@RequestBody OrderModel request, @RequestParam boolean accept) throws BaseException {
+	public YokiResult<Order> processOrder(@RequestBody OrderModel request, @RequestParam boolean accept) {
 		Order order = operatorService.processOrder(request, accept);
 		return new YokiResult<>(YokiResult.Status.SUCCESS, "Order was successfully processed", order);
 	}

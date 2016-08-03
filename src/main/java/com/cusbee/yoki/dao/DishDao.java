@@ -6,9 +6,7 @@ import com.cusbee.yoki.entity.Dish;
 
 public interface DishDao {
 
-	void add(Dish dish);
-	
-	void update(Dish dish);
+	Dish save(Dish dish);
 	
 	void remove(Dish dish);
 	
