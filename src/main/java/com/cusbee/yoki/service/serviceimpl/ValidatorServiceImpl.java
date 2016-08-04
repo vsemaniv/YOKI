@@ -84,7 +84,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateIngredientSaveRequest(IngredientModel request, CrudOperation status) {
         validateRequestNotNull(request, Ingredient.class);
-        switch(status) {
+        switch (status) {
             case CREATE:
                 if (StringUtils.isEmpty(request.getName())) {
                     throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
@@ -94,7 +94,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                     throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
                             "Empty field 'weight'");
                 }
-                if(ingredientRepository.findByName(request.getName()) != null){
+                if (ingredientRepository.findByName(request.getName()) != null) {
                     throw new ApplicationException(ErrorCodes.Ingredient.ALREADY_EXIST, "This ingredient already exists");
                 }
                 break;
@@ -107,9 +107,9 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateDishSaveRequest(DishModel request, CrudOperation operation) {
         validateRequestNotNull(request, Dish.class);
-        switch(operation) {
+        switch (operation) {
             case CREATE:
-                if(dishRepository.findByName(request.getName()) != null){
+                if (dishRepository.findByName(request.getName()) != null) {
                     throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Dish with such name already exists");
                 }
                 break;
@@ -123,7 +123,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateOrderSaveRequest(OrderModel request, CrudOperation operation) {
         validateRequestNotNull(request, Order.class);
-        switch(operation) {
+        switch (operation) {
             case CREATE:
                 if (Objects.isNull(request.getDishes())) {
                     throw new ApplicationException(
@@ -162,6 +162,16 @@ public class ValidatorServiceImpl implements ValidatorService {
             throw new ApplicationException(ErrorCodes.Common.NOT_EXIST,
                     "Could not find " + entityClass.getSimpleName() + " in database or failed to retrieve it");
         }
+    }
+
+    public <E extends Enum<E>> boolean isEnumValid(String type, Class<E> enumClass) {
+        if (StringUtils.isEmpty(type)) return false;
+        for (E e : enumClass.getEnumConstants()) {
+            if (e.name().equals(type)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void validateAccountFields(AccountModel request, boolean createOperation) {
@@ -226,7 +236,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     private boolean validateRegexDishName(String name) {
         Pattern patter = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,25}$");
         Matcher matcher = patter.matcher(name);
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish name");
         }
         return matcher.matches();
@@ -235,7 +245,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     private boolean validateRegexDishPrice(Double price) {
         Pattern pattern = Pattern.compile("^[0-9]{1,4}[\\.,]{0,1}[0-9]{0,4}$");
         Matcher matcher = pattern.matcher(price.toString());
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish price");
         }
         return matcher.matches();
@@ -244,7 +254,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     private boolean validateRegexDishWeight(Double weight) {
         Pattern pattern = Pattern.compile("^\\d{1,5}$");
         Matcher matcher = pattern.matcher(weight.toString());
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");
         }
         return matcher.matches();

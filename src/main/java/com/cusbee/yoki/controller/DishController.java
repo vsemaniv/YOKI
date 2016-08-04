@@ -23,84 +23,86 @@ import com.cusbee.yoki.service.NullPointerService;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-@ApiClass(value="operations with dish entity")
+@ApiClass(value = "operations with dish entity")
 @RestController
-@RequestMapping(value="dish")
-@PropertySource("classpath:ErrorMessages.properties")	
+@RequestMapping(value = "dish")
+@PropertySource("classpath:ErrorMessages.properties")
 public class DishController {
-	
-	@Value("${success_request}")
-	public String STATUS;
-	
-	@Autowired
-	private DishService dishService;
 
-	@Autowired
-	private NullPointerService nullPointerService;
-	
-	@Autowired
-	private DishRepository repository;
-	
-	@ApiOperation(value="create new dish")
-	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Dish> add(@RequestBody DishModel request) {
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.CREATE));
-	}
-	
-	@ApiOperation(value="update dish") 
-	@RequestMapping(value="update", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Dish> update(@RequestBody DishModel request) {
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.UPDATE));
-	}
-	
-	@ApiOperation(value="remove dish")
-	@RequestMapping(value="remove/{id}", method=RequestMethod.POST)
-	public YokiResult<Dish> remove(@PathVariable("id") Long id) {
-		dishService.remove(id);
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, null);
-	}
-	
-	@ApiOperation(value="add ingredients to dish")
+    @Value("${success_request}")
+    public String STATUS;
+
+    @Autowired
+    private DishService dishService;
+
+    @Autowired
+    private NullPointerService nullPointerService;
+
+    @Autowired
+    private DishRepository repository;
+
+    @ApiOperation(value = "create new dish")
+    @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public YokiResult<Dish> add(@RequestBody DishModel request) {
+        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.CREATE));
+    }
+
+    @ApiOperation(value = "update dish")
+    @RequestMapping(value = "update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public YokiResult<Dish> update(@RequestBody DishModel request) {
+        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.UPDATE));
+    }
+
+    @ApiOperation(value = "remove dish")
+    @RequestMapping(value = "remove/{id}", method = RequestMethod.POST)
+    public YokiResult<Dish> remove(@PathVariable("id") Long id) {
+        dishService.remove(id);
+        return new YokiResult<Dish>(Status.SUCCESS, STATUS, null);
+    }
+
+    @ApiOperation(value = "get dish")
+    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
+    public YokiResult<Dish> get(@PathVariable("id") Long id) {
+        nullPointerService.isNull(id);
+        return new YokiResult<Dish>(Status.SUCCESS, STATUS, repository.findById(id));
+    }
+
+    @ApiOperation(value = "get all dishes")
+    @RequestMapping(value = "getAll", method = RequestMethod.GET)
+    public List<Dish> getAll() {
+        return repository.findAll();
+    }
+
+    @ApiOperation(value = "deactive dish")
+    @RequestMapping(value = "deactivate/{id}", method = RequestMethod.POST)
+    public YokiResult<Dish> deactivate(@PathVariable("id") Long id) {
+        nullPointerService.isNull(id);
+        Dish dish = dishService.processActivation(id, false);
+
+        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
+    }
+
+    @ApiOperation(value = "activate dish")
+    @RequestMapping(value = "activate/{id}", method = RequestMethod.POST)
+    public YokiResult<Dish> activate(@PathVariable("id") Long id) {
+        nullPointerService.isNull(id);
+        Dish dish = dishService.processActivation(id, true);
+        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
+    }
+
+	/*
+    @ApiOperation(value="add ingredients to dish")
 	@RequestMapping(value="addIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> addIngredint(@RequestBody DishModel request) {
 		//Dish dish = dishService.addIngredients(request);
 		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
 	}
-	
-	@ApiOperation(value="get dish")
-	@RequestMapping(value="get/{id}", method=RequestMethod.GET)
-	public YokiResult<Dish> get(@PathVariable("id") Long id) {
-		nullPointerService.isNull(id);
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, repository.findById(id));
-	}
-	
-	@ApiOperation(value="get all dishes")
-	@RequestMapping(value="getAll", method=RequestMethod.GET)
-	public List<Dish> getAll() {
-		return repository.findAll();
-	}
-	
+
+
 	@ApiOperation(value="remove ingredients from dish")
 	@RequestMapping(value="removeIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Dish> removeIngredients(@RequestBody DishModel request) {
 		//Dish dish = dishService.removeIngredients(request);
 		return new YokiResult<Dish>(Status.SUCCESS, "Ingredients successful removed from dish", dish);
-	}
-	
-	@ApiOperation(value="deactive dish")
-	@RequestMapping(value="deactivate/{id}", method=RequestMethod.POST)
-	public YokiResult<Dish> deactivate(@PathVariable("id")Long id) {
-		nullPointerService.isNull(id);
-		Dish dish = dishService.processActivation(id, false);
-		
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
-	}
-	
-	@ApiOperation(value="activate dish")
-	@RequestMapping(value="activate/{id}", method=RequestMethod.POST)
-	public YokiResult<Dish> activate(@PathVariable("id")Long id) {
-		nullPointerService.isNull(id);
-		Dish dish = dishService.processActivation(id, true);
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
-	}
+	}*/
 }

@@ -89,7 +89,7 @@ public class DishServiceImpl implements DishService {
         dish.setPrice(request.getPrice());
         dish.setWeight(request.getWeight());
         dish.setDescription(request.getDescription());
-        dish.setType(DishType.valueOf(request.getType().toUpperCase()));
+        dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
         return dao.save(dish);
@@ -127,5 +127,11 @@ public class DishServiceImpl implements DishService {
     public Dish removeImages(DishModel request) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    private DishType getDishType(DishModel request) {
+        String type = request.getType();
+        return validatorService.isEnumValid(type, DishType.class) ?
+                DishType.valueOf(type.toUpperCase()) : DishType.ORDINARY;
     }
 }

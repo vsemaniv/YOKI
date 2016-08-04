@@ -24,4 +24,6 @@ public interface ValidatorService {
     void validateRequestIdNotNull(Long id);
 
     void validateEntityNotNull(BaseEntity entity, Class entityClass);
+
+    <E extends Enum<E>> boolean isEnumValid(String type, Class<E> enumClass);
 }
