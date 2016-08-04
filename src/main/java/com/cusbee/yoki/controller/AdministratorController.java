@@ -21,7 +21,7 @@ import java.util.List;
 
 @ApiClass("Administrator operations")
 @RestController
-@RequestMapping(value="kitchen")
+@RequestMapping(value="admin")
 public class AdministratorController {
     @Autowired
     KitchenService kitchenService;
