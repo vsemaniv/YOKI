@@ -224,7 +224,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexDishName(String name) {
-        Pattern patter = Pattern.compile("^([A-Z]{1}[a-z]{1,15}[\\s]{0,1})+$");
+        Pattern patter = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,25}$");
         Matcher matcher = patter.matcher(name);
         if(!matcher.matches()){
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish name");
@@ -233,7 +233,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexDishPrice(Double price) {
-        Pattern pattern = Pattern.compile("^([0-9]{2,4}[\\.,]{0,1}[0-9]{0,4})+$");
+        Pattern pattern = Pattern.compile("^[0-9]{1,4}[\\.,]{0,1}[0-9]{0,4}$");
         Matcher matcher = pattern.matcher(price.toString());
         if(!matcher.matches()){
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish price");
@@ -242,7 +242,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexDishWeight(Double weight) {
-        Pattern pattern = Pattern.compile("^([0-9]{2,4}[\\.,]{0,1}[0-9]{0,4})+$");
+        Pattern pattern = Pattern.compile("^\\d{1,5}$");
         Matcher matcher = pattern.matcher(weight.toString());
         if(!matcher.matches()){
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");
