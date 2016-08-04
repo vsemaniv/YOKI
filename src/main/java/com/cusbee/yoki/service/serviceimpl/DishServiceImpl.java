@@ -87,7 +87,7 @@ public class DishServiceImpl implements DishService {
         }
         dish.setName(request.getName());
         dish.setPrice(request.getPrice());
-        dish.setWeight(request.getWeight());
+        dish.setWeight(request.getWeight().doubleValue());
         dish.setDescription(request.getDescription());
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();

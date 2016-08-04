@@ -12,7 +12,7 @@ public class DishModel implements RequestModel, Serializable {
 
 	private Long id;
 	private String name;
-	private Double weight;
+	private Integer weight;
 	private Double price;
 	private String description;
 	private Long categoryId;
@@ -22,7 +22,7 @@ public class DishModel implements RequestModel, Serializable {
 	
 	public DishModel(){}
 	
-	public DishModel(Long id, String name, Double weight, Double price, String description, Long category_id,
+	public DishModel(Long id, String name, Integer weight, Double price, String description, Long category_id,
 						List<IngredientModel> ingreds, String type, List<ImageModel> images) {
 		super();
 		this.id = id;
@@ -60,11 +60,11 @@ public class DishModel implements RequestModel, Serializable {
 		this.name = name;
 	}
 
-	public Double getWeight() {
+	public Integer getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Double weight) {
+	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
 

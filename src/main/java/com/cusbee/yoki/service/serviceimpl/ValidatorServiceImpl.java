@@ -251,8 +251,8 @@ public class ValidatorServiceImpl implements ValidatorService {
         return matcher.matches();
     }
 
-    private boolean validateRegexDishWeight(Double weight) {
-        Pattern pattern = Pattern.compile("^\\d{1,5}\\.00$");
+    private boolean validateRegexDishWeight(Integer weight) {
+        Pattern pattern = Pattern.compile("^\\d{1,5}$");
         Matcher matcher = pattern.matcher(weight.toString());
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");
