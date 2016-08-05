@@ -21,9 +21,6 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 public class Order implements BaseEntity, Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -51,6 +48,11 @@ public class Order implements BaseEntity, Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     @Fetch(FetchMode.JOIN)
+    private Courier courier;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "courier_id")
+    @Fetch(FetchMode.JOIN)
     private Client client;
 
     @Column(name = "message")
@@ -62,6 +64,14 @@ public class Order implements BaseEntity, Serializable {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Courier getCourier() {
+        return courier;
+    }
+
+    public void setCourier(Courier courier) {
+        this.courier = courier;
     }
 
     public Long getId() {

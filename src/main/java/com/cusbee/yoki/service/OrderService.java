@@ -16,10 +16,15 @@ public interface OrderService {
 
 	List<Order> getAll();
 
+	List<Order> getAvailableOrders();
+
 	Order get(Long id);
 	
-	Order saveOrder(OrderModel request, CrudOperation operation)
-			throws BaseException;
+	Order saveOrder(OrderModel request, CrudOperation operation);
 
-	public List<Dish> getDishesFromOrderModel(OrderModel request);
+	Order declineOrder(OrderModel request);
+
+	Order assignCourier(OrderModel request);
+
+	List<Dish> getDishesFromOrderModel(OrderModel request);
 }

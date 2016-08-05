@@ -6,18 +6,15 @@ import java.util.List;
 import java.util.Objects;
 
 import com.cusbee.yoki.dao.DishDao;
+import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.repositories.ClientRepositories;
 import com.cusbee.yoki.service.ClientService;
+import com.cusbee.yoki.service.CourierService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.dao.OrderDao;
-import com.cusbee.yoki.entity.Client;
-import com.cusbee.yoki.entity.CrudOperation;
-import com.cusbee.yoki.entity.Dish;
-import com.cusbee.yoki.entity.Order;
-import com.cusbee.yoki.entity.OrderStatus;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishQuantity;
 import com.cusbee.yoki.model.OrderModel;
@@ -35,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private CourierService courierService;
 
     @Autowired
     private ValidatorService validatorService;
@@ -58,8 +58,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAvailableOrders() {
+        return dao.getAvailableOrders();
+    }
+
+    @Override
     public Order get(Long id) {
-        return dao.get(id);
+        validatorService.validateRequestIdNotNull(id);
+        Order order = dao.get(id);
+        validatorService.validateEntityNotNull(order, Order.class);
+        return order;
     }
 
     public Order saveOrder(OrderModel request, CrudOperation operation) {
@@ -67,25 +75,59 @@ public class OrderServiceImpl implements OrderService {
         Order order;
         switch (operation) {
             case CREATE:
-
                 order = new Order();
-                order.setDishes(getDishesFromOrderModel(request));
                 order.setOrderDate(Calendar.getInstance());
-                order.setAmount(countAmount(request.getDishes()));
-                order.setStatus(OrderStatus.FRESH);
                 order.setClient(addClient(request.getClient()));
-                clientService.add(order.getClient());
-                return order;
+                order.setStatus(OrderStatus.FRESH);
+                break;
             case UPDATE:
                 order = get(request.getId());
-                return order;
+                break;
             default:
                 throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
                         "Invalid Request");
         }
+        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+
+        }
+        order.setDishes(getDishesFromOrderModel(request));
+        order.setAmount(countAmount(request.getDishes()));
+        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+            order.setStatus(OrderStatus.valueOf(request.getStatus()));
+        }
+
+        clientService.add(order.getClient());
+        return dao.save(order);
     }
 
-    protected Client addClient(Client request) {
+    public Order declineOrder(OrderModel request) {
+        validatorService.validateRequestNotNull(request, Order.class);
+        Order order = get(request.getId());
+        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+            order.setStatus(OrderStatus.valueOf(request.getStatus()));
+        }
+        order.setMessage(order.getMessage());
+        return dao.save(order);
+    }
+
+    public Order assignCourier(OrderModel request) {
+        validatorService.validateRequestNotNull(request, Order.class);
+        Order order = get(request.getId());
+        order.setCourier(courierService.get(request.getCourierId()));
+        return dao.save(order);
+    }
+
+    public List<Dish> getDishesFromOrderModel(OrderModel request) {
+        List<Dish> dishes = new ArrayList<>();
+        for (DishQuantity model : request.getDishes()) {
+            Dish dish = dishDao.get(model.getDish().getId());
+            if (dish != null)
+                dishes.add(dish);
+        }
+        return dishes;
+    }
+
+    private Client addClient(Client request) {
         Client client = clientRepositories.findByPhoneNumber(request.getPhoneNumber());
         if (!Objects.isNull(client)) {
             return client;
@@ -99,17 +141,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    public List<Dish> getDishesFromOrderModel(OrderModel request) {
-        List<Dish> dishes = new ArrayList<>();
-        for (DishQuantity model : request.getDishes()) {
-            Dish dish = dishDao.get(model.getDish().getId());
-            if (dish != null)
-                dishes.add(dish);
-        }
-        return dishes;
-    }
-
-    protected Double countAmount(List<DishQuantity> request) {
+    private Double countAmount(List<DishQuantity> request) {
         Double amount = 0.0;
         for (DishQuantity dish : request) {
             amount += dishDao.get(dish.getDish().getId()).getPrice() * dish.getQuantity();

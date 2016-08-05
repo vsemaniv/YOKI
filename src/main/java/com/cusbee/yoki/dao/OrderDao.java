@@ -9,6 +9,8 @@ public interface OrderDao {
 	Order save(Order order);
 	
 	void remove(Order order);
+
+	List<Order> getAvailableOrders();
 	
 	List<Order> getAll();
 	
