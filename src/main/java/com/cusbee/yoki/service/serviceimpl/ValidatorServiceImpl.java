@@ -1,6 +1,8 @@
 package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.entity.*;
+import com.cusbee.yoki.entity.enums.AuthorityName;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.*;
 import com.cusbee.yoki.repositories.AccountRepository;
@@ -34,6 +36,10 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateAccountSaveRequest(AccountModel request, CrudOperation operation) {
         validateRequestNotNull(request, Account.class);
+        if(!isEnumValid(request.getAuthority(), AuthorityName.class)) {
+            throw new ApplicationException(ErrorCodes.User.INVALID_AUTHORITY,
+                    "Incorrect authority type");
+        }
         switch (operation) {
             case CREATE:
                 String username = request.getUsername();
@@ -51,11 +57,11 @@ public class ValidatorServiceImpl implements ValidatorService {
                 //email validation
                 if (StringUtils.isEmpty(email)) {
                     throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
-                            "Field Email can't be empty");
+                            "Email field can't be empty");
                 }
                 if (accountRepository.validateAccount(email) != null) {
                     throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
-                            "This email already used");
+                            "This email is already in use");
                 }
                 validateAccountFields(request, true);
                 break;
@@ -123,19 +129,22 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateOrderSaveRequest(OrderModel request, CrudOperation operation) {
         validateRequestNotNull(request, Order.class);
+        if(request.getClient() == null) {
+            throw new ApplicationException(
+                    ErrorCodes.Order.NO_CLIENT_ASSIGNED,
+                    "There is no client assigned for this order!");
+        }
+        validateClientFields(request.getClient());
         switch (operation) {
             case CREATE:
                 if (Objects.isNull(request.getDishes())) {
                     throw new ApplicationException(
                             ErrorCodes.Order.EMPTY_LIST_OF_DISHES,
-                            "List of ordered dishes are empty");
-                }
-                if (Objects.isNull(request.getClient())) {
-                    throw new ApplicationException(ErrorCodes.Order.INVALID_REQUEST, "Object Client are empty");
+                            "List of ordered dishes is empty");
                 }
                 break;
             case UPDATE:
-
+                validateRequestIdNotNull(request.getId());
                 break;
         }
     }
@@ -190,9 +199,19 @@ public class ValidatorServiceImpl implements ValidatorService {
         validateRegexDishWeight(request.getWeight());
     }
 
+    private void validateClientFields(ClientModel request) {
+        String clientPhone = request.getPhone();
+        if(StringUtils.isEmpty(clientPhone)) {
+            throw new ApplicationException(
+                    ErrorCodes.Client.EMPTY_PHONE_NUMBER,
+                    "You should specify client's phone number!");
+        }
+        validateRegexClientPhoneNumber(clientPhone);
+    }
+
     // *** REGEX VALIDATION METHODS ***
     private boolean validateRegexAccountUsername(String username) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{5,15}$");
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}-_\\d]{5,25}$");
         Matcher matcher = pattern.matcher(username);
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME, "Invalid username. Username include only alphabet symbols and numbers and should be at least 5 and at last 15 symbols long");
@@ -219,7 +238,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexAccountFirstLastName(String name) {
-        Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){1,15}$");
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}-]{2,25}$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.User.IVALID_FIRST_OR_LAST_NAME, "Invalid first/lastname");
@@ -228,13 +247,13 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexCategoryName(String name) {
-        Pattern pattern = Pattern.compile("^([A-Z]){1}([a-z]){5,25}$");
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,35}$");
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
 
     private boolean validateRegexDishName(String name) {
-        Pattern patter = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,25}$");
+        Pattern patter = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,35}$");
         Matcher matcher = patter.matcher(name);
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish name");
@@ -256,6 +275,15 @@ public class ValidatorServiceImpl implements ValidatorService {
         Matcher matcher = pattern.matcher(weight.toString());
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");
+        }
+        return matcher.matches();
+    }
+
+    private boolean validateRegexClientPhoneNumber(String phone) {
+        Pattern pattern = Pattern.compile("^\\d{10}$");
+        Matcher matcher = pattern.matcher(phone);
+        if (!matcher.matches()) {
+            throw new ApplicationException(ErrorCodes.Client.INVALID_PHONE_NUMBER, "Invalid phone number. It should consist of 10 digits.");
         }
         return matcher.matches();
     }

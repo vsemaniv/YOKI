@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.repositories.DishRepository;

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.cusbee.yoki.entity.enums.OrderStatus;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -42,8 +43,8 @@ public class Order implements BaseEntity, Serializable {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "cost")
+    private Double cost;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
@@ -82,12 +83,12 @@ public class Order implements BaseEntity, Serializable {
         this.id = id;
     }
 
-    public Double getAmount() {
-        return amount;
+    public Double getCost() {
+        return cost;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public List<Dish> getDishes() {

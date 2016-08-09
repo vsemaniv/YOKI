@@ -2,9 +2,8 @@ package com.cusbee.yoki.service;
 
 import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.service.serviceimpl.AccountServiceImpl;
 import junitparams.JUnitParamsRunner;

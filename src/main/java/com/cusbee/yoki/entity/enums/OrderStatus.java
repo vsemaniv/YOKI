@@ -1,4 +1,4 @@
-package com.cusbee.yoki.entity;
+package com.cusbee.yoki.entity.enums;
 
 public enum OrderStatus {
 

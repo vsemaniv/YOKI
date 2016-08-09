@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.CategoryDao;
 import com.cusbee.yoki.entity.Category;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.CategoryModel;

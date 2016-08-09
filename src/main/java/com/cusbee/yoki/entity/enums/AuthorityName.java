@@ -1,4 +1,4 @@
-package com.cusbee.yoki.entity;
+package com.cusbee.yoki.entity.enums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +11,7 @@ import java.util.Map;
  */
 public enum AuthorityName {
 
-	ADMINISTRATOR("Administrator"), OPERATOR("Operator"), 
-	KITCHEN("Kitchen"), DRIVER("Driver"), USER("User");
+	ADMINISTRATOR("Administrator"), OPERATOR("Operator"), COURIER("Courier");
 	
 	private String value;
 

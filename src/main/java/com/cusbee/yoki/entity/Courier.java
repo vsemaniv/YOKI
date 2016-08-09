@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Set;
 
 @Entity
@@ -22,6 +23,13 @@ public class Courier implements Activatable, Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courier")
     @JsonIgnore
     private Set<Order> orders;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar assignmentTime;
+
+    @Column
+    private CourierStatus status;
 
     @Override
     public Boolean getEnabled() {
@@ -47,5 +55,25 @@ public class Courier implements Activatable, Serializable {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public Calendar getAssignmentTime() {
+        return assignmentTime;
+    }
+
+    public void setAssignmentTime(Calendar assignmentTime) {
+        this.assignmentTime = assignmentTime;
+    }
+
+    public CourierStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CourierStatus status) {
+        this.status = status;
+    }
+
+    public enum CourierStatus {
+        FREE, BUSY, OUT
     }
 }

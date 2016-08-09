@@ -3,10 +3,12 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.*;
+import com.cusbee.yoki.entity.enums.CrudOperation;
+import com.cusbee.yoki.entity.enums.OrderStatus;
+import com.cusbee.yoki.model.ClientModel;
 import com.cusbee.yoki.repositories.ClientRepositories;
 import com.cusbee.yoki.service.ClientService;
 import com.cusbee.yoki.service.CourierService;
@@ -77,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
             case CREATE:
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
-                order.setClient(addClient(request.getClient()));
                 order.setStatus(OrderStatus.FRESH);
                 break;
             case UPDATE:
@@ -87,16 +88,12 @@ public class OrderServiceImpl implements OrderService {
                 throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
                         "Invalid Request");
         }
-        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
-
-        }
         order.setDishes(getDishesFromOrderModel(request));
-        order.setAmount(countAmount(request.getDishes()));
+        order.setCost(countAmount(request.getDishes()));
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         }
-
-        clientService.add(order.getClient());
+        order.setClient(parseClient(request.getClient()));
         return dao.save(order);
     }
 
@@ -127,17 +124,25 @@ public class OrderServiceImpl implements OrderService {
         return dishes;
     }
 
-    private Client addClient(Client request) {
-        Client client = clientRepositories.findByPhoneNumber(request.getPhoneNumber());
-        if (!Objects.isNull(client)) {
+    /**
+     * Takes data about customer from order and tries to find
+     * a client with such phone number in the database. If there
+     * is no such client we create and return new one with the data
+     * passed from order.
+     *
+     * @param customerData - information from order about customer.
+     * @return client instance.
+     */
+    private Client parseClient(ClientModel customerData) {
+        Client client = clientRepositories.findByPhoneNumber(customerData.getPhone());
+        if (client != null) {
             return client;
         } else {
             client = new Client();
-            client.setFirstName(request.getFirstName());
-            client.setLocation(request.getLocation());
-            client.setPhoneNumber(request.getPhoneNumber());
-            clientService.add(client);
-            return clientRepositories.findByPhoneNumber(request.getPhoneNumber());
+            client.setName(customerData.getName());
+            client.setAddress(customerData.getAddress());
+            client.setPhoneNumber(customerData.getPhone());
+            return clientService.save(client);
         }
     }
 

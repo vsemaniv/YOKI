@@ -1,7 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.AccountDao;
 import com.cusbee.yoki.entity.Account;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.AccountRepository;

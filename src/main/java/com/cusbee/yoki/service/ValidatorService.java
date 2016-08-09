@@ -1,7 +1,7 @@
 package com.cusbee.yoki.service;
 
 import com.cusbee.yoki.entity.BaseEntity;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.*;
 
 /**

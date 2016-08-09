@@ -2,7 +2,7 @@ package com.cusbee.yoki.service;
 
 import java.util.List;
 
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.model.IngredientModel;
 

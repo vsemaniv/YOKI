@@ -2,7 +2,7 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.dao.OrderDao;
 import com.cusbee.yoki.entity.Order;
-import com.cusbee.yoki.entity.OrderStatus;
+import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.repositories.OrderRepository;
 import com.cusbee.yoki.service.KitchenService;
 import org.springframework.beans.factory.annotation.Autowired;

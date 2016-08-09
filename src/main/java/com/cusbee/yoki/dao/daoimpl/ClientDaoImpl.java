@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.ClientDao;
 import com.cusbee.yoki.entity.Client;
-import com.cusbee.yoki.exception.BaseException;
 
 @Repository
 @Transactional 
@@ -20,13 +19,9 @@ public class ClientDaoImpl implements ClientDao{
 	private EntityManager em;
 	
 	@Override
-	public void add(Client client) {
+	public Client save(Client client) {
 		em.merge(client);
-	}
-
-	@Override
-	public void update(Client client) {
-		em.merge(client);
+		return client;
 	}
 
 	@Override

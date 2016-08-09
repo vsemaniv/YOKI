@@ -12,7 +12,7 @@ public class OrderModel implements RequestModel, Serializable {
     private Long id;
     private List<DishQuantity> dishes;
     private Double amount;
-    private Long clientId;
+    private ClientModel client;
     private Long courierId;
     private String status;
     private String message;
@@ -49,12 +49,12 @@ public class OrderModel implements RequestModel, Serializable {
         this.courierId = courierId;
     }
 
-    public Long getClientId() {
-        return clientId;
+    public ClientModel getClient() {
+        return client;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setClient(ClientModel client) {
+        this.client = client;
     }
 
     public String getStatus() {

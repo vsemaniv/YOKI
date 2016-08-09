@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Account;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.service.AccountService;
 import com.mangofactory.swagger.annotations.ApiModel;

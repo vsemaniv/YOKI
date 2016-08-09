@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Ingredient;
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.service.IngredientService;
 import com.wordnik.swagger.annotations.ApiClass;

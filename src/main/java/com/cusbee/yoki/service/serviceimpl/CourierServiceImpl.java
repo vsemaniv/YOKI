@@ -2,7 +2,7 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.dao.CourierDao;
 import com.cusbee.yoki.entity.Courier;
-import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.CourierModel;
 import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.CourierService;
@@ -51,4 +51,10 @@ public class CourierServiceImpl implements CourierService {
     public Courier processActivation(Long id, boolean activate) {
         return null;
     }
+
+    public void checkForAssignment() {
+
+    }
+
+
 }

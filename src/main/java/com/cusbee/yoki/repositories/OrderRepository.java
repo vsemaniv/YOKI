@@ -1,6 +1,6 @@
 package com.cusbee.yoki.repositories;
 
-import com.cusbee.yoki.entity.OrderStatus;
+import com.cusbee.yoki.entity.enums.OrderStatus;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;

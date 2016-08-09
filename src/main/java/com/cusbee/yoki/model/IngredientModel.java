@@ -3,7 +3,7 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.cusbee.yoki.entity.IngredientQuantityType;
+import com.cusbee.yoki.entity.enums.IngredientQuantityType;
 
 public class IngredientModel implements RequestModel, Serializable {
 

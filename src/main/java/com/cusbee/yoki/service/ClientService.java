@@ -7,9 +7,7 @@ import com.cusbee.yoki.exception.BaseException;
 
 public interface ClientService {
 
-	void add(Client client);
-
-	void update(Client client);
+	Client save(Client client);
 
 	Client get(Long id);
 

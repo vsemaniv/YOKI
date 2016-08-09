@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,36 +22,25 @@ public class Client implements BaseEntity, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "first_name", length = 35, nullable = false)
-    private String firstName;
-
-    @Column(name = "phone_number", length = 35, nullable = false)
+    @Column(name = "phone_number", length = 10, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "location", length = 35, nullable = false)
-    private String location;
+    @Column(name = "name", length = 35, nullable = false)
+    private String name;
+
+    @Column(name = "address", length = 100, nullable = false)
+    private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     @JsonIgnore
     private List<Order> order;
 
-    public Long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhoneNumber() {
@@ -63,12 +51,12 @@ public class Client implements BaseEntity, Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<Order> getOrder() {

@@ -2,8 +2,7 @@ package com.cusbee.yoki.controller;
 
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.entity.Account;
-import com.cusbee.yoki.entity.CrudOperation;
-import com.cusbee.yoki.exception.BaseException;
+import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.AccountService;
