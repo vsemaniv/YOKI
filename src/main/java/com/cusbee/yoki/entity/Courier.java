@@ -30,10 +30,6 @@ public class Courier implements Activatable, Serializable {
     private Set<Order> orders;
 
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar assignmentTime;
-
-    @Column
     private CourierStatus status;
 
     @Override
