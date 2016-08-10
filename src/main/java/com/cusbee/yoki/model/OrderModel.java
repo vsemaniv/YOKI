@@ -3,7 +3,6 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.cusbee.yoki.entity.Client;
 
 public class OrderModel implements RequestModel, Serializable {
 

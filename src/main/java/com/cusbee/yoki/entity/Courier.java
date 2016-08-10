@@ -14,6 +14,11 @@ public class Courier implements Activatable, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue
+    private Long id;
+    
+    @Column
     private String name;
 
     @Column
@@ -41,7 +46,15 @@ public class Courier implements Activatable, Serializable {
         this.enabled = enabled;
     }
 
-    public String getName() {
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
         return name;
     }
 

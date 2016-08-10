@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,6 +23,9 @@ public class Client implements BaseEntity, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue
+    private Long id;
+    
     @Column(name = "phone_number", length = 10, nullable = false)
     private String phoneNumber;
 
@@ -35,7 +39,16 @@ public class Client implements BaseEntity, Serializable {
     @JsonIgnore
     private List<Order> order;
 
-    public String getName() {
+    
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
         return name;
     }
 
