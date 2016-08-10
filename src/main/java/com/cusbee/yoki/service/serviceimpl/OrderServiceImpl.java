@@ -45,11 +45,6 @@ public class OrderServiceImpl implements OrderService {
     private ClientRepositories clientRepositories;
 
     @Override
-    public void save(Order order) {
-        dao.save(order);
-    }
-
-    @Override
     public void remove(Order order) {
         dao.remove(order);
     }

@@ -62,14 +62,6 @@ public class Dish implements Activatable, Serializable {
     @Fetch(FetchMode.JOIN)
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-    @JoinTable(name = "dish_ingredients",
-            joinColumns = {@JoinColumn(name = "dish_id")},
-            inverseJoinColumns = {@JoinColumn(name = "ingredient_id")})
-    @JsonManagedReference
-    private List<Ingredient> ingredients;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "dish")
     @Fetch(FetchMode.JOIN)
     @JsonManagedReference
@@ -145,14 +137,6 @@ public class Dish implements Activatable, Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
     }
 
     public List<DishImage> getImages() {

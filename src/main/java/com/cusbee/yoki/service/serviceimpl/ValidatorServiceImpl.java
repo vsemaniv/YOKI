@@ -8,7 +8,6 @@ import com.cusbee.yoki.model.*;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.repositories.DishRepository;
-import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.ValidatorService;
 import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
@@ -26,9 +25,6 @@ public class ValidatorServiceImpl implements ValidatorService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private IngredientRepository ingredientRepository;
 
     @Autowired
     private DishRepository dishRepository;
@@ -85,29 +81,6 @@ public class ValidatorServiceImpl implements ValidatorService {
                     "This category already exists");
         }
         validateRegexCategoryName(request.getName());
-    }
-
-    @Override
-    public void validateIngredientSaveRequest(IngredientModel request, CrudOperation status) {
-        validateRequestNotNull(request, Ingredient.class);
-        switch (status) {
-            case CREATE:
-                if (StringUtils.isEmpty(request.getName())) {
-                    throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
-                            "Empty field 'name'");
-                }
-                if (Objects.isNull(request.getValue())) {
-                    throw new ApplicationException(ErrorCodes.Ingredient.EMPTY_FIELD,
-                            "Empty field 'weight'");
-                }
-                if (ingredientRepository.findByName(request.getName()) != null) {
-                    throw new ApplicationException(ErrorCodes.Ingredient.ALREADY_EXIST, "This ingredient already exists");
-                }
-                break;
-            case UPDATE:
-
-                break;
-        }
     }
 
     @Override

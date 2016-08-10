@@ -17,7 +17,7 @@ public class Courier implements Activatable, Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @Column
     private String name;
 
@@ -68,14 +68,6 @@ public class Courier implements Activatable, Serializable {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
-    }
-
-    public Calendar getAssignmentTime() {
-        return assignmentTime;
-    }
-
-    public void setAssignmentTime(Calendar assignmentTime) {
-        this.assignmentTime = assignmentTime;
     }
 
     public CourierStatus getStatus() {

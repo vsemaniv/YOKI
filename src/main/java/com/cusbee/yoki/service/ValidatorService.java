@@ -13,8 +13,6 @@ public interface ValidatorService {
 
     void validateCategorySaveRequest(CategoryModel request, CrudOperation operation);
 
-    void validateIngredientSaveRequest(IngredientModel request, CrudOperation operation);
-
     void validateDishSaveRequest(DishModel request, CrudOperation operation);
 
     void validateOrderSaveRequest(OrderModel request, CrudOperation operation);

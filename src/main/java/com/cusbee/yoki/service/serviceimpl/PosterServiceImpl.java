@@ -20,4 +20,8 @@ public class PosterServiceImpl implements StorageService {
     private List<String> getDishes(Order order) {
         return null;
     }
+
+    private String getToken() {
+        return "4f665e3e5c5f15ab92749a46b0c904ab";
+    }
 }

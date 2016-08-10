@@ -89,20 +89,4 @@ public class DishController {
         Dish dish = dishService.processActivation(id, true);
         return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
     }
-
-	/*
-    @ApiOperation(value="add ingredients to dish")
-	@RequestMapping(value="addIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Dish> addIngredint(@RequestBody DishModel request) {
-		//Dish dish = dishService.addIngredients(request);
-		return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
-	}
-
-
-	@ApiOperation(value="remove ingredients from dish")
-	@RequestMapping(value="removeIngredients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Dish> removeIngredients(@RequestBody DishModel request) {
-		//Dish dish = dishService.removeIngredients(request);
-		return new YokiResult<Dish>(Status.SUCCESS, "Ingredients successful removed from dish", dish);
-	}*/
 }

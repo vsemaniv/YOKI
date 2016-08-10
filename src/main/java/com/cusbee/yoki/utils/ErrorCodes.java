@@ -37,13 +37,6 @@ public class ErrorCodes {
         int ALREADY_EXIST = 3002;
     }
 
-    public interface Ingredient {
-        int EMPTY_REQUEST = 4000;
-        int EMPTY_FIELD = 4001;
-        int ALREADY_EXIST = 4002;
-        int STILL_USED = 4003;
-    }
-
     public interface Dish {
         int EMPTY_REQUEST = 5000;
         int EMPTY_FIELD = 5001;

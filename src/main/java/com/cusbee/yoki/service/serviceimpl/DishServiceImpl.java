@@ -56,12 +56,7 @@ public class DishServiceImpl implements DishService {
     public void remove(Long id) {
         Dish dish = get(id);
         dish.setCategory(null);
-        List<Ingredient> ingredients = dish.getIngredients();
-        dish.getIngredients().removeAll(ingredients);
-        for (Ingredient ingredient : ingredients) {
-            ingredient.getDishes().remove(dish);
-        }
-        this.dao.remove(dish);
+        dao.remove(dish);
     }
 
 
