@@ -29,7 +29,8 @@ public class Courier implements Activatable, Serializable {
     @JsonIgnore
     private Set<Order> orders;
 
-    @Column
+    @Column(name = "courier_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private CourierStatus status;
 
     @Override
