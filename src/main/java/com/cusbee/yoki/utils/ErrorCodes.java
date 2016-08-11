@@ -48,6 +48,7 @@ public class ErrorCodes {
         int NO_CLIENT_ASSIGNED = 6001;
         int EMPTY_LIST_OF_DISHES = 6002;
         int COULD_NOT_WRITEOFF_DISH = 6003;
+        int ERROR_DURING_WRITEOFF = 6004;
     }
 
     public interface Client {

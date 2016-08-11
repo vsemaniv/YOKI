@@ -134,6 +134,13 @@ public class OrderServiceImpl implements OrderService {
         return dishes;
     }
 
+    @Override
+    public Order setOrderInProgress(Long id) {
+        Order order = get(id);
+        order.setStatus(OrderStatus.IN_PROGRESS);
+        return dao.save(order);
+    }
+
     /**
      * Takes data about customer from order and tries to find
      * a client with such phone number in the database. If there
@@ -163,12 +170,4 @@ public class OrderServiceImpl implements OrderService {
         }
         return amount;
     }
-
-    @Override
-    public Order setOrderInProgress(Long id) {
-    	Order order = get(id);
-    	order.setStatus(OrderStatus.IN_PROGRESS);
-    	return dao.save(order);
-    }
-    
 }

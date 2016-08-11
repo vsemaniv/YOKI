@@ -60,14 +60,14 @@ public class AdministratorController {
     // new
     @RequestMapping(value="sendOrderCooking/{id}", method=RequestMethod.POST)
     public String sendToCooking(@PathVariable("id") Long id) {
-    	service.setStatusCoocking(id);
+        service.processIncomingKitchenOrder(id, true);
     	return "Status success updated";
     }
     
     //new
     @RequestMapping(value="rejectOrder/{id}", method=RequestMethod.POST)
     public String rejectOrderFromKitchen(@PathVariable("id") Long id) throws BaseException {
-    	service.rejectOrderFromKitchen(id);
+    	service.processIncomingKitchenOrder(id, false);
     	return "Order rejected successful";
     }
     
@@ -75,7 +75,7 @@ public class AdministratorController {
     public YokiResult<Order> setOrderToCourier(OrderModel request) throws BaseException {
     	//push - notification
     	Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
-    	return new YokiResult<Order> (Status.SUCCESS, "Order setted to courier successful", order );
+    	return new YokiResult<> (Status.SUCCESS, "Order setted to courier successful", order );
     }
     
     public YokiResult passOrderToCourier() throws BaseException {
