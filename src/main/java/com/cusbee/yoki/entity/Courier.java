@@ -5,7 +5,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Set;
 
 @Entity

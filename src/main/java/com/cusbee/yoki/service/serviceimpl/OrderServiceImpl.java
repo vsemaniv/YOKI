@@ -3,6 +3,7 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.*;
@@ -13,6 +14,7 @@ import com.cusbee.yoki.repositories.ClientRepositories;
 import com.cusbee.yoki.service.ClientService;
 import com.cusbee.yoki.service.CourierService;
 import com.cusbee.yoki.service.ValidatorService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +80,19 @@ public class OrderServiceImpl implements OrderService {
                 break;
             case UPDATE:
                 order = get(request.getId());
+                order.setCourier(courierService.get(request.getCourierId()));
+                if(!Objects.isNull(request.getTimeToTake())){
+                	order.setTimeToTake(request.getTimeToTake());
+                }
+                if(!Objects.isNull(request.getTimeTaken())){
+                	order.setTimeTaken(request.getTimeTaken());
+                }
+                if(!Objects.isNull(request.getTimeToDeliver())){
+                	order.setTimeToDeliver(request.getTimeToDeliver());
+                }
+                if(!Objects.isNull(request.getTimeDelivered())){
+                	order.setTimeDelivered(request.getTimeDelivered());
+                }
                 break;
             default:
                 throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
@@ -149,4 +164,11 @@ public class OrderServiceImpl implements OrderService {
         return amount;
     }
 
+    @Override
+    public Order setOrderInProgress(Long id) {
+    	Order order = get(id);
+    	order.setStatus(OrderStatus.IN_PROGRESS);
+    	return dao.save(order);
+    }
+    
 }
