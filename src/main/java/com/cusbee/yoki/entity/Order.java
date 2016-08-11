@@ -58,6 +58,22 @@ public class Order implements BaseEntity, Serializable {
 
     @Column(name = "message")
     private String message;
+    
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar timeToTake;
+    
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar timeTaken;
+    
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar timeToDeliver;
+    
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar timeDelivered;
 
     public Client getClient() {
         return client;
@@ -66,8 +82,40 @@ public class Order implements BaseEntity, Serializable {
     public void setClient(Client client) {
         this.client = client;
     }
+    
+    public Calendar getTimeToTake() {
+		return timeToTake;
+	}
 
-    public Courier getCourier() {
+	public void setTimeToTake(Calendar timeToTake) {
+		this.timeToTake = timeToTake;
+	}
+
+	public Calendar getTimeTaken() {
+		return timeTaken;
+	}
+
+	public void setTimeTaken(Calendar timeTaken) {
+		this.timeTaken = timeTaken;
+	}
+
+	public Calendar getTimeToDeliver() {
+		return timeToDeliver;
+	}
+
+	public void setTimeToDeliver(Calendar timeToDeliver) {
+		this.timeToDeliver = timeToDeliver;
+	}
+
+	public Calendar getTimeDelivered() {
+		return timeDelivered;
+	}
+
+	public void setTimeDelivered(Calendar timeDelivered) {
+		this.timeDelivered = timeDelivered;
+	}
+
+	public Courier getCourier() {
         return courier;
     }
 

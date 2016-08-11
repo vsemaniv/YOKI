@@ -24,4 +24,7 @@ public interface OrderService {
 	Order assignCourier(OrderModel request);
 
 	List<Dish> getDishesFromOrderModel(OrderModel request);
+	
+	Order setOrderInProgress(Long id);
+	
 }

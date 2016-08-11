@@ -1,20 +1,31 @@
 package com.cusbee.yoki.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 public class OrderModel implements RequestModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     private Long id;
     private List<DishQuantity> dishes;
+    @JsonIgnore
     private Double amount;
     private ClientModel client;
     private Long courierId;
+    @JsonIgnore
     private String status;
     private String message;
+    private Calendar timeToTake;
+    private Calendar timeTaken;
+    private Calendar timeToDeliver;
+    private Calendar timeDelivered;
 
     public Long getId() {
         return id;
@@ -23,8 +34,40 @@ public class OrderModel implements RequestModel, Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    public Calendar getTimeToTake() {
+		return timeToTake;
+	}
 
-    public Double getAmount() {
+	public void setTimeToTake(Calendar timeToTake) {
+		this.timeToTake = timeToTake;
+	}
+
+	public Calendar getTimeTaken() {
+		return timeTaken;
+	}
+
+	public void setTimeTaken(Calendar timeTaken) {
+		this.timeTaken = timeTaken;
+	}
+
+	public Calendar getTimeToDeliver() {
+		return timeToDeliver;
+	}
+
+	public void setTimeToDeliver(Calendar timeToDeliver) {
+		this.timeToDeliver = timeToDeliver;
+	}
+
+	public Calendar getTimeDelivered() {
+		return timeDelivered;
+	}
+
+	public void setTimeDelivered(Calendar timeDelivered) {
+		this.timeDelivered = timeDelivered;
+	}
+
+	public Double getAmount() {
         return amount;
     }
 

@@ -8,6 +8,8 @@ public interface CourierDao {
     Courier save(Courier courier);
 
     List<Courier> getAll();
+    
+    List<Courier> getAllAvailableCourier();
 
     Courier get(Long id);
 }

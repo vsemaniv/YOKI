@@ -7,6 +7,7 @@ import com.cusbee.yoki.model.CourierModel;
 import java.util.List;
 
 public interface CourierService {
+	
     void remove(Long id);
 
     Courier get(Long id);
@@ -15,5 +16,7 @@ public interface CourierService {
 
     Courier saveCourier (CourierModel request, CrudOperation operation);
 
-    Courier processActivation(Long id, boolean activate);
+    Courier processActivation(Long id, Courier.CourierStatus status);
+    
+    List<Courier> getAllAvailableCourier();
 }
