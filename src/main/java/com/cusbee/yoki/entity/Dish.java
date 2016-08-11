@@ -147,4 +147,30 @@ public class Dish implements Activatable, Serializable {
         this.images = images;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dish dish = (Dish) o;
+
+        if (!id.equals(dish.id)) return false;
+        if (!name.equals(dish.name)) return false;
+        if (description != null ? !description.equals(dish.description) : dish.description != null) return false;
+        if (!enabled.equals(dish.enabled)) return false;
+        if (type != dish.type) return false;
+        return !(category != null ? !category.equals(dish.category) : dish.category != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + enabled.hashCode();
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        return result;
+    }
 }

@@ -47,8 +47,7 @@ public class ErrorCodes {
     public interface Order {
         int NO_CLIENT_ASSIGNED = 6001;
         int EMPTY_LIST_OF_DISHES = 6002;
-        int EMPTY_FIELD = 6003;
-        int ORDER_NOT_EXIST = 6004;
+        int COULD_NOT_WRITEOFF_DISH = 6003;
     }
 
     public interface Client {
