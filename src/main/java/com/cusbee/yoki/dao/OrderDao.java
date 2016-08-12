@@ -7,6 +7,7 @@ import com.cusbee.yoki.entity.Order;
 public interface OrderDao {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Order save(Order order);
 	
 	void remove(Order order);
@@ -19,6 +20,13 @@ public interface OrderDao {
 	
 	void remove(Order order);
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	Order save(Order order);
+	
+	void remove(Order order);
+
+	List<Order> getAvailableOrders();
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	
 	List<Order> getAll();
 	

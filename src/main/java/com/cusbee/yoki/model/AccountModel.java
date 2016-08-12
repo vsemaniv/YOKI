@@ -4,14 +4,19 @@ import java.util.Collection;
 import java.util.Date;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
 =======
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+import com.fasterxml.jackson.annotation.JsonProperty;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 public class AccountModel implements RequestModel {
 
@@ -26,6 +31,14 @@ public class AccountModel {
 	private String username;
 	private String password;
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+public class AccountModel implements RequestModel {
+
+	private Long id;
+	private String username;
+	private String oldPassword;
+	private String newPassword;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	private String email;
 	@JsonIgnore
 	private Date lastPasswordReset;
@@ -84,6 +97,9 @@ public class AccountModel {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	@JsonIgnore
 	public String getOldPassword() {
 		return oldPassword;
@@ -97,6 +113,7 @@ public class AccountModel {
 	@JsonIgnore
 	public String getNewPassword() {
 		return newPassword;
+<<<<<<< HEAD
 	}
 
 	@JsonProperty
@@ -110,6 +127,13 @@ public class AccountModel {
 	public void setPassword(String password) {
 		this.password = password;
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	}
+
+	@JsonProperty
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	}
 
 	public String getEmail() {

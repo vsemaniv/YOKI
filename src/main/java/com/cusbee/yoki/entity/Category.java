@@ -29,10 +29,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="category")
 <<<<<<< HEAD
+<<<<<<< HEAD
 public class Category implements Activatable, Serializable{
 =======
 public class Category implements Serializable{
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+public class Category implements Activatable, Serializable{
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 
 	/**
 	 * 

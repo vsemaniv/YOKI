@@ -55,10 +55,14 @@ public class AuthenticationController {
 	@ApiIgnore
 	@RequestMapping(method = RequestMethod.POST)
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest){
 =======
 	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest) throws BaseException{
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest){
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		
  		Authentication authentication = this.authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
@@ -66,6 +70,9 @@ public class AuthenticationController {
 						authenticationRequest.getPassword()
 					)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 				);
 		String username = authenticationRequest.getUsername();
 		if(username != null && !username.isEmpty() && username.length() < 25) {
@@ -77,6 +84,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(new AuthenticationResponse(token));
 		}
 		return null;
+<<<<<<< HEAD
 =======
 				); 
  		//Method checks if user is not blocked
@@ -86,6 +94,8 @@ public class AuthenticationController {
 		String token = this.tokenUtils.generateToken(userDetails);
 		return ResponseEntity.ok(new AuthenticationResponse(token));
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	}
 	
 	@ApiIgnore

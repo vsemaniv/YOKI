@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 public class DishModel implements RequestModel, Serializable {
 =======
 public class DishModel implements Serializable {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+public class DishModel implements RequestModel, Serializable {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 
 	/**
 	 * 
@@ -17,14 +21,19 @@ public class DishModel implements Serializable {
 	private Long id;
 	private String name;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private Integer weight;
 =======
 	private Double weight;
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	private Integer weight;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	private Double price;
 	private String description;
 	private Long categoryId;
 	private String type;
+<<<<<<< HEAD
 	private List<IngredientModel> ingredients;
 <<<<<<< HEAD
 	private List<ImageModel> images;
@@ -40,6 +49,14 @@ public class DishModel implements Serializable {
 	public DishModel(Long id, String name, Double weight, Double price, String description, Long category_id,
 						List<IngredientModel> ingreds, String type) {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	private List<ImageModel> images;
+	
+	public DishModel(){}
+	
+	public DishModel(Long id, String name, Integer weight, Double price, String description, Long category_id,
+					 String type, List<ImageModel> images) {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		super();
 		this.id = id;
 		this.name = name;
@@ -47,9 +64,11 @@ public class DishModel implements Serializable {
 		this.price = price;
 		this.description = description;
 		this.categoryId = category_id;
-		this.ingredients = ingreds;
 		this.type = type;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		this.images = images;
 	}
 
@@ -59,8 +78,11 @@ public class DishModel implements Serializable {
 
 	public void setImages(List<ImageModel> images){
 		this.images=images;
+<<<<<<< HEAD
 =======
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	}
 
 	public Long getId() {
@@ -80,6 +102,7 @@ public class DishModel implements Serializable {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Integer getWeight() {
 		return weight;
 	}
@@ -92,6 +115,13 @@ public class DishModel implements Serializable {
 
 	public void setWeight(Double weight) {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	public Integer getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Integer weight) {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		this.weight = weight;
 	}
 
@@ -117,14 +147,6 @@ public class DishModel implements Serializable {
 
 	public void setCategoryId(Long category_id) {
 		this.categoryId = category_id;
-	}
-
-	public List<IngredientModel> getIngredients() {
-		return ingredients;
-	}
-
-	public void setIngredients(List<IngredientModel> ingredients) {
-		this.ingredients = ingredients;
 	}
 
 	public String getType() {

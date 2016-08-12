@@ -3,6 +3,7 @@ package com.cusbee.yoki.service;
 import java.util.List;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Order;
@@ -11,10 +12,16 @@ import com.cusbee.yoki.entity.CrudOperation;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.exception.BaseException;
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+import com.cusbee.yoki.entity.enums.CrudOperation;
+import com.cusbee.yoki.entity.Dish;
+import com.cusbee.yoki.entity.Order;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import com.cusbee.yoki.model.OrderModel;
 
 public interface OrderService {
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	void save(Order order);
 =======
@@ -23,10 +30,13 @@ public interface OrderService {
 	void update(Order order);
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	void remove(Order order);
 
 	List<Order> getAll();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	List<Order> getAvailableOrders();
 
@@ -45,4 +55,20 @@ public interface OrderService {
 	Order parse(OrderModel request, CrudOperation operation)
 			throws BaseException;
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	List<Order> getAvailableOrders();
+
+	Order get(Long id);
+	
+	Order saveOrder(OrderModel request, CrudOperation operation);
+
+	Order declineOrder(OrderModel request);
+
+	Order assignCourier(OrderModel request);
+
+	List<Dish> getDishesFromOrderModel(OrderModel request);
+	
+	Order setOrderInProgress(Long id);
+	
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 }

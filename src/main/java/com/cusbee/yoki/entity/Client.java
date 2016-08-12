@@ -15,6 +15,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 @Table(name = "client")
 public class Client implements BaseEntity, Serializable {
 
@@ -42,6 +45,7 @@ public class Client implements BaseEntity, Serializable {
 
     
     public Long getId() {
+<<<<<<< HEAD
 =======
 @Table(name="client")
 public class Client implements Serializable{
@@ -70,6 +74,8 @@ public class Client implements Serializable{
 
 	public Long getId() {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		return id;
 	}
 
@@ -77,6 +83,7 @@ public class Client implements Serializable{
 		this.id = id;
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public String getName() {
         return name;
@@ -114,34 +121,46 @@ public class Client implements Serializable{
 	public String getFirstName() {
 		return firstName;
 	}
+=======
+	public String getName() {
+        return name;
+    }
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public List<Order> getOrder() {
-		return order;
-	}
+    public List<Order> getOrder() {
+        return order;
+    }
 
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
+<<<<<<< HEAD
 	public void setOrder(List<Order> order) {
 		this.order = order;
 	}
 	
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 }

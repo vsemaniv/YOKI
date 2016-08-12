@@ -3,6 +3,10 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+<<<<<<< HEAD
+=======
+import java.util.Objects;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.*;
@@ -13,6 +17,10 @@ import com.cusbee.yoki.repositories.ClientRepositories;
 import com.cusbee.yoki.service.ClientService;
 import com.cusbee.yoki.service.CourierService;
 import com.cusbee.yoki.service.ValidatorService;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +53,14 @@ public class OrderServiceImpl implements OrderService {
     private ClientRepositories clientRepositories;
 
     @Override
+<<<<<<< HEAD
     public void save(Order order) {
         dao.save(order);
     }
 
     @Override
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     public void remove(Order order) {
         dao.remove(order);
     }
@@ -83,6 +94,22 @@ public class OrderServiceImpl implements OrderService {
                 break;
             case UPDATE:
                 order = get(request.getId());
+<<<<<<< HEAD
+=======
+                order.setCourier(courierService.get(request.getCourierId()));
+                if(!Objects.isNull(request.getTimeToTake())){
+                	order.setTimeToTake(request.getTimeToTake());
+                }
+                if(!Objects.isNull(request.getTimeTaken())){
+                	order.setTimeTaken(request.getTimeTaken());
+                }
+                if(!Objects.isNull(request.getTimeToDeliver())){
+                	order.setTimeToDeliver(request.getTimeToDeliver());
+                }
+                if(!Objects.isNull(request.getTimeDelivered())){
+                	order.setTimeDelivered(request.getTimeDelivered());
+                }
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
                 break;
             default:
                 throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
@@ -124,6 +151,16 @@ public class OrderServiceImpl implements OrderService {
         return dishes;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public Order setOrderInProgress(Long id) {
+        Order order = get(id);
+        order.setStatus(OrderStatus.IN_PROGRESS);
+        return dao.save(order);
+    }
+
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     /**
      * Takes data about customer from order and tries to find
      * a client with such phone number in the database. If there
@@ -153,5 +190,8 @@ public class OrderServiceImpl implements OrderService {
         }
         return amount;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 }

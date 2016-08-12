@@ -8,7 +8,10 @@ import com.cusbee.yoki.model.*;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.repositories.DishRepository;
+<<<<<<< HEAD
 import com.cusbee.yoki.repositories.IngredientRepository;
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import com.cusbee.yoki.service.ValidatorService;
 import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
@@ -28,9 +31,12 @@ public class ValidatorServiceImpl implements ValidatorService {
     private CategoryRepository categoryRepository;
 
     @Autowired
+<<<<<<< HEAD
     private IngredientRepository ingredientRepository;
 
     @Autowired
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     private DishRepository dishRepository;
 
     @Override
@@ -88,6 +94,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     @Override
+<<<<<<< HEAD
     public void validateIngredientSaveRequest(IngredientModel request, CrudOperation status) {
         validateRequestNotNull(request, Ingredient.class);
         switch (status) {
@@ -111,6 +118,8 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     @Override
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     public void validateDishSaveRequest(DishModel request, CrudOperation operation) {
         validateRequestNotNull(request, Dish.class);
         switch (operation) {
@@ -247,7 +256,11 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexCategoryName(String name) {
+<<<<<<< HEAD
         Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,35}$");
+=======
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s\\d]{2,35}$");
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
@@ -260,6 +273,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
         return matcher.matches();
     }
+<<<<<<< HEAD
    
 
     private boolean validateRegexDishPrice(Double price) {
@@ -267,6 +281,11 @@ public class ValidatorServiceImpl implements ValidatorService {
         if(price==null){
         	throw new ApplicationException(ErrorCodes.Dish.EMPTY_FIELD, "Empty dish price");
         }
+=======
+
+    private boolean validateRegexDishPrice(Double price) {
+        Pattern pattern = Pattern.compile("^[0-9]{1,4}[\\.,]{0,1}[0-9]{0,4}$");
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
         Matcher matcher = pattern.matcher(price.toString());
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish price");
@@ -276,9 +295,12 @@ public class ValidatorServiceImpl implements ValidatorService {
 
     private boolean validateRegexDishWeight(Integer weight) {
         Pattern pattern = Pattern.compile("^\\d{1,5}$");
+<<<<<<< HEAD
         if(weight==null){
         	throw new ApplicationException(ErrorCodes.Dish.EMPTY_FIELD, "Empty dish weight");
         }
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
         Matcher matcher = pattern.matcher(weight.toString());
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");

@@ -13,9 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.cusbee.yoki.entity.enums.AuthorityName;
 =======
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+import com.cusbee.yoki.entity.enums.AuthorityName;
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**

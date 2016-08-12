@@ -56,12 +56,16 @@ public class DishServiceImpl implements DishService {
     public void remove(Long id) {
         Dish dish = get(id);
         dish.setCategory(null);
+<<<<<<< HEAD
         List<Ingredient> ingredients = dish.getIngredients();
         dish.getIngredients().removeAll(ingredients);
         for (Ingredient ingredient : ingredients) {
             ingredient.getDishes().remove(dish);
         }
         this.dao.remove(dish);
+=======
+        dao.remove(dish);
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     }
 
 
@@ -73,12 +77,15 @@ public class DishServiceImpl implements DishService {
         switch (operation) {
             case CREATE:
                 dish = new Dish();
+<<<<<<< HEAD
                 /*if (!Objects.isNull(request.getCategoryId())) {
                     Category category = categoryRepository.findById(request.getCategoryId());
                     nullPointerService.isNull(category);
                     dish.setCategory(category);
                     category.getDishes().add(dish);
                 }*/
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
                 dish.setEnabled(Boolean.TRUE);
                 break;
             case UPDATE:
@@ -89,7 +96,10 @@ public class DishServiceImpl implements DishService {
         }
         dish.setName(request.getName());
         dish.setPrice(request.getPrice());
+<<<<<<< HEAD
         dish.setWeight(request.getWeight().doubleValue());
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
         dish.setDescription(request.getDescription());
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();

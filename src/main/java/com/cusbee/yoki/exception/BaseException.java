@@ -15,10 +15,14 @@ import com.cusbee.yoki.logging.LogFactory;
  * @project: yoki
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 public class BaseException extends RuntimeException implements Serializable {
 =======
 public class BaseException extends Exception implements Serializable {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+public class BaseException extends RuntimeException implements Serializable {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 
 	private static final Logger log = LogFactory.getLog(BaseException.class);
 
@@ -37,11 +41,14 @@ public class BaseException extends Exception implements Serializable {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	/**
 	 * @param e
 	 */
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	public BaseException(final Throwable e) {
 		super(e.getMessage(), e);
 	}
@@ -62,17 +69,21 @@ public class BaseException extends Exception implements Serializable {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	/**
 	 * @param string
 	 * @param e
 	 */
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 	public BaseException(final String msg, final Throwable exception) {
 		super(msg, exception);
 		this.message = msg;
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public BaseException(final int errorCode, final String message,
 			final Throwable exception) {
@@ -85,6 +96,10 @@ public class BaseException extends Exception implements Serializable {
 			final Throwable exception) {
 
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	public BaseException(final int errorCode, final String message,
+			final Throwable exception) {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		super(message, exception);
 		this.errorCode = errorCode;
 		this.message = message;

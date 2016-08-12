@@ -2,11 +2,19 @@ package com.cusbee.yoki.dao.daoimpl;
 
 import com.cusbee.yoki.dao.CourierDao;
 import com.cusbee.yoki.entity.Courier;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import java.util.List;
 
 @Repository
@@ -32,4 +40,13 @@ public class CourierDaoImpl implements CourierDao {
     public Courier get(Long id) {
         return em.find(Courier.class, id);
     }
+<<<<<<< HEAD
+=======
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Courier> getAllAvailableCourier() {
+		return (List<Courier>) em.createQuery("SELECT c FROM Courier c WHERE c.status='FREE'").getResultList();
+	}
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 }

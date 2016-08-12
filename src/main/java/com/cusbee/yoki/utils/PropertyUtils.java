@@ -34,10 +34,14 @@ public class PropertyUtils {
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public static String getProperty(int errorCode) {
 =======
 	public static String getProperty(int errorCode) throws BaseException {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	public static String getProperty(int errorCode) {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		String returnValue = null;
 		if (errorCode <= 0) {
 			throw new ApplicationException("Invalid errorcode");
@@ -55,10 +59,14 @@ public class PropertyUtils {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public static String getProperty(String propertyCode) {
 =======
 	public static String getProperty(String propertyCode) throws BaseException {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+	public static String getProperty(String propertyCode) {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 		String returnValue = null;
 		if (propertyCode == null) {
 			throw new ApplicationException(

@@ -7,10 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 public class CategoryModel implements RequestModel, Serializable {
 =======
 public class CategoryModel implements Serializable {
 >>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
+=======
+public class CategoryModel implements RequestModel, Serializable {
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 
 	/**
 	 * 

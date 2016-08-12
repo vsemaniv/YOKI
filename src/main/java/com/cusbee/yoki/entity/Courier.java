@@ -5,7 +5,10 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.util.Calendar;
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
 import java.util.Set;
 
 @Entity
@@ -17,7 +20,11 @@ public class Courier implements Activatable, Serializable {
     @Id
     @GeneratedValue
     private Long id;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     @Column
     private String name;
 
@@ -29,11 +36,16 @@ public class Courier implements Activatable, Serializable {
     @JsonIgnore
     private Set<Order> orders;
 
+<<<<<<< HEAD
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar assignmentTime;
 
     @Column
+=======
+    @Column(name = "courier_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     private CourierStatus status;
 
     @Override
@@ -70,6 +82,7 @@ public class Courier implements Activatable, Serializable {
         this.orders = orders;
     }
 
+<<<<<<< HEAD
     public Calendar getAssignmentTime() {
         return assignmentTime;
     }
@@ -78,6 +91,8 @@ public class Courier implements Activatable, Serializable {
         this.assignmentTime = assignmentTime;
     }
 
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     public CourierStatus getStatus() {
         return status;
     }

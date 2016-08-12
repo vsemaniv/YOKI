@@ -13,8 +13,11 @@ public interface ValidatorService {
 
     void validateCategorySaveRequest(CategoryModel request, CrudOperation operation);
 
+<<<<<<< HEAD
     void validateIngredientSaveRequest(IngredientModel request, CrudOperation operation);
 
+=======
+>>>>>>> a1ca618150c7cc0f0bc579c0c4285aea328e9e79
     void validateDishSaveRequest(DishModel request, CrudOperation operation);
 
     void validateOrderSaveRequest(OrderModel request, CrudOperation operation);
