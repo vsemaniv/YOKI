@@ -68,12 +68,6 @@ public class DishServiceImpl implements DishService {
         switch (operation) {
             case CREATE:
                 dish = new Dish();
-                /*if (!Objects.isNull(request.getCategoryId())) {
-                    Category category = categoryRepository.findById(request.getCategoryId());
-                    nullPointerService.isNull(category);
-                    dish.setCategory(category);
-                    category.getDishes().add(dish);
-                }*/
                 dish.setEnabled(Boolean.TRUE);
                 break;
             case UPDATE:
@@ -84,7 +78,6 @@ public class DishServiceImpl implements DishService {
         }
         dish.setName(request.getName());
         dish.setPrice(request.getPrice());
-        dish.setWeight(request.getWeight().doubleValue());
         dish.setDescription(request.getDescription());
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
