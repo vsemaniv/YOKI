@@ -36,9 +36,6 @@ public class Dish implements Activatable, Serializable {
     private String name;
 
     @Column
-    private Double weight;
-
-    @Column
     private Double price;
 
     @Column
@@ -123,14 +120,6 @@ public class Dish implements Activatable, Serializable {
         this.name = name;
     }
 
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
     public Category getCategory() {
         return category;
     }
@@ -160,7 +149,6 @@ public class Dish implements Activatable, Serializable {
         if (!enabled.equals(dish.enabled)) return false;
         if (type != dish.type) return false;
         return !(category != null ? !category.equals(dish.category) : dish.category != null);
-
     }
 
     @Override
