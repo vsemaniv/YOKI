@@ -5,15 +5,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.ClientModel;
 import com.cusbee.yoki.repositories.ClientRepositories;
-import com.cusbee.yoki.service.ClientService;
-import com.cusbee.yoki.service.CourierService;
-import com.cusbee.yoki.service.ValidatorService;
+import com.cusbee.yoki.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,6 @@ import com.cusbee.yoki.dao.OrderDao;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishQuantity;
 import com.cusbee.yoki.model.OrderModel;
-import com.cusbee.yoki.service.OrderService;
 import com.cusbee.yoki.utils.ErrorCodes;
 
 @Service
@@ -32,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao dao;
 
     @Autowired
-    private DishDao dishDao;
+    private DishService dishService;
 
     @Autowired
     private ClientService clientService;
@@ -82,16 +78,16 @@ public class OrderServiceImpl implements OrderService {
                 order = get(request.getId());
                 order.setCourier(courierService.get(request.getCourierId()));
                 if(!Objects.isNull(request.getTimeToTake())){
-                	order.setTimeToTake(request.getTimeToTake());
-                }
-                if(!Objects.isNull(request.getTimeTaken())){
-                	order.setTimeTaken(request.getTimeTaken());
+                	order.getTimeToTake().setTime(request.getTimeToTake());
                 }
                 if(!Objects.isNull(request.getTimeToDeliver())){
-                	order.setTimeToDeliver(request.getTimeToDeliver());
+                	order.getTimeToDeliver().setTime(request.getTimeToDeliver());
+                }
+                if(!Objects.isNull(request.getTimeTaken())){
+                    order.getTimeTaken().setTime(request.getTimeTaken());
                 }
                 if(!Objects.isNull(request.getTimeDelivered())){
-                	order.setTimeDelivered(request.getTimeDelivered());
+                	order.getTimeDelivered().setTime(request.getTimeDelivered());
                 }
                 break;
             default:
@@ -127,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Dish> getDishesFromOrderModel(OrderModel request) {
         List<Dish> dishes = new ArrayList<>();
         for (DishQuantity model : request.getDishes()) {
-            Dish dish = dishDao.get(model.getDish().getId());
+            Dish dish = dishService.get(model.getDishId());
             if (dish != null)
                 dishes.add(dish);
         }
@@ -165,8 +161,8 @@ public class OrderServiceImpl implements OrderService {
 
     private Double countAmount(List<DishQuantity> request) {
         Double amount = 0.0;
-        for (DishQuantity dish : request) {
-            amount += dishDao.get(dish.getDish().getId()).getPrice() * dish.getQuantity();
+        for (DishQuantity dishPosition : request) {
+            amount += dishService.get(dishPosition.getDishId()).getPrice() * dishPosition.getQuantity();
         }
         return amount;
     }

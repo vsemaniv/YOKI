@@ -12,21 +12,20 @@ public class DishModel implements RequestModel, Serializable {
 
 	private Long id;
 	private String name;
-	private Integer weight;
-	private Double price;
 	private String description;
-	private Long categoryId;
 	private String type;
+	private Double price;
+	private Long categoryId;
+
 	private List<ImageModel> images;
 	
 	public DishModel(){}
 	
-	public DishModel(Long id, String name, Integer weight, Double price, String description, Long category_id,
+	public DishModel(Long id, String name, Double price, String description, Long category_id,
 					 String type, List<ImageModel> images) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.weight = weight;
 		this.price = price;
 		this.description = description;
 		this.categoryId = category_id;
@@ -34,14 +33,7 @@ public class DishModel implements RequestModel, Serializable {
 		this.images = images;
 	}
 
-	public List<ImageModel> getImages(){
-		return images;
-	}
-
-	public void setImages(List<ImageModel> images){
-		this.images=images;
-	}
-
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -58,12 +50,20 @@ public class DishModel implements RequestModel, Serializable {
 		this.name = name;
 	}
 
-	public Integer getWeight() {
-		return weight;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setWeight(Integer weight) {
-		this.weight = weight;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Double getPrice() {
@@ -74,27 +74,19 @@ public class DishModel implements RequestModel, Serializable {
 		this.price = price;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public Long getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(Long category_id) {
-		this.categoryId = category_id;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public String getType() {
-		return type;
+	public List<ImageModel> getImages(){
+		return images;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setImages(List<ImageModel> images){
+		this.images=images;
 	}
 }

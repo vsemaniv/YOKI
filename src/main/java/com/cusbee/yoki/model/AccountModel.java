@@ -16,10 +16,13 @@ public class AccountModel implements RequestModel {
 	private String oldPassword;
 	private String newPassword;
 	private String email;
-	@JsonIgnore
-	private Date lastPasswordReset;
 	private String firstname;
 	private String lastname;
+	@JsonIgnore
+	private Boolean enabled;
+	private String authority;
+	@JsonIgnore
+	private Date lastPasswordReset;
 	@JsonIgnore
 	private Collection<? extends GrantedAuthority> authorities;
 	@JsonIgnore
@@ -28,34 +31,8 @@ public class AccountModel implements RequestModel {
 	private Boolean accountNonLocked;
 	@JsonIgnore
 	private Boolean credentialsNonExpired = true;
-	@JsonIgnore
-	private Boolean enabled;
-	private String authority;
 
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
-
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -100,12 +77,36 @@ public class AccountModel implements RequestModel {
 		this.email = email;
 	}
 
-	public Date getLastPasswordReset() {
-		return lastPasswordReset;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setLastPasswordReset(Date lastPasswordReset) {
-		this.lastPasswordReset = lastPasswordReset;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -115,6 +116,14 @@ public class AccountModel implements RequestModel {
 	public void setAuthorities(
 			Collection<? extends GrantedAuthority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public Date getLastPasswordReset() {
+		return lastPasswordReset;
+	}
+
+	public void setLastPasswordReset(Date lastPasswordReset) {
+		this.lastPasswordReset = lastPasswordReset;
 	}
 
 	public Boolean getAccountNonExpired() {
@@ -140,13 +149,4 @@ public class AccountModel implements RequestModel {
 	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
 }

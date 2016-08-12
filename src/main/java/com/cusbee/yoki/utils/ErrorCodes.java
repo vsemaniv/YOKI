@@ -38,7 +38,6 @@ public class ErrorCodes {
     }
 
     public interface Dish {
-        int EMPTY_REQUEST = 5000;
         int EMPTY_FIELD = 5001;
         int ALREADY_EXISTS = 5002;
         int INVALID_REQUEST = 5003;

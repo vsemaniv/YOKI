@@ -2,16 +2,16 @@ package com.cusbee.yoki.model;
 
 public class DishQuantity {
 	
-	private DishModel dish;
+	private Long dishId;
 	
 	private Integer quantity;
 
-	public DishModel getDish() {
-		return dish;
+	public Long getDishId() {
+		return dishId;
 	}
 
-	public void setDish(DishModel dish) {
-		this.dish = dish;
+	public void setDishId(Long dishId) {
+		this.dishId = dishId;
 	}
 
 	public Integer getQuantity() {

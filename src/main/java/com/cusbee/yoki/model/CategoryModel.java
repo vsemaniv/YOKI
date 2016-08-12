@@ -8,46 +8,44 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class CategoryModel implements RequestModel, Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private Long id;
-	private String name;
-	private List<DishModel> dishes;
-	
-	public CategoryModel() {}
-	
-	public CategoryModel(Long id, String name, List<DishModel> dishes, MultipartFile[] images){
-		super();
-		this.id=id;
-		this.name=name;
-		this.dishes = dishes;
-	}
-	
-	public List<DishModel> getDishes() {
-		return dishes;
-	}
+    private static final long serialVersionUID = 1L;
 
-	public void setDishes(List<DishModel> dishes) {
-		this.dishes = dishes;
-	}
+    private Long id;
+    private String name;
+    private List<DishModel> dishes;
 
-	public Long getId() {
-		return id;
-	}
+    public CategoryModel() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public CategoryModel(Long id, String name, List<DishModel> dishes, MultipartFile[] images) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.dishes = dishes;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<DishModel> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<DishModel> dishes) {
+        this.dishes = dishes;
+    }
+
 }

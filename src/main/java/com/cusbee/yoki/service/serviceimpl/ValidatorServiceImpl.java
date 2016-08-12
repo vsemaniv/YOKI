@@ -169,7 +169,6 @@ public class ValidatorServiceImpl implements ValidatorService {
     private void validateDishFields(DishModel request) {
         validateRegexDishName(request.getName());
         validateRegexDishPrice(request.getPrice());
-        validateRegexDishWeight(request.getWeight());
     }
 
     private void validateClientFields(ClientModel request) {
@@ -239,15 +238,6 @@ public class ValidatorServiceImpl implements ValidatorService {
         Matcher matcher = pattern.matcher(price.toString());
         if (!matcher.matches()) {
             throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish price");
-        }
-        return matcher.matches();
-    }
-
-    private boolean validateRegexDishWeight(Integer weight) {
-        Pattern pattern = Pattern.compile("^\\d{1,5}$");
-        Matcher matcher = pattern.matcher(weight.toString());
-        if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish weight");
         }
         return matcher.matches();
     }
