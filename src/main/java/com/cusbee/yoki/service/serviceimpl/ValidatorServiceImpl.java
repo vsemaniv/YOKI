@@ -220,7 +220,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     private boolean validateRegexCategoryName(String name) {
-        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,35}$");
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s\\d]{2,35}$");
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
