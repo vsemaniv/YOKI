@@ -1,9 +1,16 @@
 /.project
+<<<<<<< HEAD
 /target
 /.idea
 /.settings
 /.classpath
 /yoki.iml
 .idea
+=======
+/target/
+/.idea
+/.settings
+/.classpath
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 *.iml
 /bin/

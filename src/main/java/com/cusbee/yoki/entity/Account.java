@@ -20,7 +20,11 @@ import com.cusbee.yoki.utils.DomainBase;
 
 @Table(name="account")
 @Entity
+<<<<<<< HEAD
 public class Account extends DomainBase implements Activatable, Serializable {
+=======
+public class Account extends DomainBase implements Serializable {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 
 	/**
 	 * 

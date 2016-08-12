@@ -13,7 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+<<<<<<< HEAD
 import com.cusbee.yoki.entity.enums.IngredientQuantityType;
+=======
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
@@ -21,12 +24,17 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
+<<<<<<< HEAD
+=======
+ * 
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
  * @author Dmytro Khodan
  * @date 09.07.2016
  * @project: yoki
  */
 
 @Entity
+<<<<<<< HEAD
 @Table(name = "ingredient")
 public class Ingredient implements Activatable, Serializable {
 
@@ -117,4 +125,96 @@ public class Ingredient implements Activatable, Serializable {
         this.dishes = dishes;
     }
 
+=======
+@Table(name="ingredient")
+public class Ingredient implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue
+	private Long id;
+	
+	@Column
+	private String name;
+	
+	@JsonBackReference
+	@ManyToMany(mappedBy="ingredients", fetch=FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
+	private List<Dish> dish;
+	
+	@Column
+	private String description;
+	
+	@Column(name="ingredient_quantity_type")
+	@Enumerated(EnumType.STRING)
+	private IngredientQuantityType type;
+
+	@Column(name="value")
+	private Double value;
+	
+	@Column(name="enabled")
+	@Type(type = "org.hibernate.type.YesNoType")
+	private Boolean enabled;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public IngredientQuantityType getType() {
+		return type;
+	}
+
+	public void setType(IngredientQuantityType type) {
+		this.type = type;
+	}
+
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
+	}
+
+	public List<Dish> getDish() {
+		return dish;
+	}
+
+	public void setDish(List<Dish> dish) {
+		this.dish = dish;
+	}
+	
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 }

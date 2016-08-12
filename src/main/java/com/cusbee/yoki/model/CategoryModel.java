@@ -6,7 +6,11 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 
+<<<<<<< HEAD
 public class CategoryModel implements RequestModel, Serializable {
+=======
+public class CategoryModel implements Serializable {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 
 	/**
 	 * 

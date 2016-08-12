@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+<<<<<<< HEAD
 import com.cusbee.yoki.entity.enums.AuthorityName;
+=======
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**

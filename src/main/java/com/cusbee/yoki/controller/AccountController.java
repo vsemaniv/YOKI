@@ -13,8 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Account;
+<<<<<<< HEAD
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.AccountModel;
+=======
+import com.cusbee.yoki.entity.CrudOperation;
+import com.cusbee.yoki.exception.BaseException;
+import com.cusbee.yoki.model.AccountModel;
+import com.cusbee.yoki.repositories.AccountRepository;
+import com.cusbee.yoki.service.NullPointerService;
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 import com.cusbee.yoki.service.AccountService;
 import com.mangofactory.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiClass;
@@ -34,45 +42,92 @@ import com.wordnik.swagger.annotations.ApiParam;
 public class AccountController {
 
 	@Autowired
+<<<<<<< HEAD
 	private AccountService service;
 	
 	@ApiOperation(value="Creates user account")
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> create(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) {
 		Account user = service.saveAccount(request, CrudOperation.CREATE);
+=======
+	private AccountService userService;
+	
+	@Autowired
+	private NullPointerService nullPointerService;
+	
+	@Autowired
+	private AccountRepository accountRepository;
+	
+	@ApiOperation(value="Creates user account")
+	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Account> login(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) throws BaseException{
+		Account user = userService.parse(request, CrudOperation.CREATE);
+		userService.add(user);
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		return new YokiResult<Account>(Status.SUCCESS, "User created successful", user);
 	}
 	
 	@ApiOperation(value="Updates user account")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+<<<<<<< HEAD
 	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) {
 		Account user = service.saveAccount(request, CrudOperation.UPDATE);
+=======
+	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) throws BaseException {
+		Account user = userService.parse(request, CrudOperation.UPDATE);
+		userService.add(user);
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		return new YokiResult<Account>(Status.SUCCESS, "User updated successful", user);
 	}
 	
 	@ApiOperation(value="Block user")
 	@RequestMapping(value="block/{id}", method=RequestMethod.POST)
 	public YokiResult<Account> block(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
+<<<<<<< HEAD
 	 							  @PathVariable("id") Long id) {
 		return new YokiResult<Account>(Status.SUCCESS, "User blocked successfully", service.processActivation(id, false));
+=======
+	 							  @PathVariable("id") Long id) throws BaseException{
+		nullPointerService.isNull(id);
+		userService.activation(id, CrudOperation.BLOCK);
+		return new YokiResult<Account>(Status.SUCCESS, "User blocked successful", null);
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	}
 	
 	@ApiOperation(value="Unblock user")
 	@RequestMapping(value="unblock/{id}", method=RequestMethod.POST)
 	public YokiResult<Account> unblock(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
+<<<<<<< HEAD
 									@PathVariable("id") Long id) {
 		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successfully", service.processActivation(id, true));
+=======
+									@PathVariable("id") Long id) throws BaseException {
+		nullPointerService.isNull(id);
+		userService.activation(id, CrudOperation.UNBLOCK);
+		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successful", null);
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	}
 	
 	@ApiOperation(value="Get all users")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
+<<<<<<< HEAD
 	public List<Account> getAll() {
 		return service.getAll();
+=======
+	public List<Account> getAll() throws BaseException {
+		List<Account> users = accountRepository.findAll();
+		return users;
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	}
 	
 	@ApiOperation(value="get account by id")
 	@RequestMapping(value="get/{id}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+<<<<<<< HEAD
 	public YokiResult<Account> get(@PathVariable("id") Long id) {
 		return new YokiResult<Account>(Status.SUCCESS, "Successful request", service.get(id));
+=======
+	public YokiResult<Account> get(@PathVariable("id") Long id) throws BaseException {
+		return new YokiResult<Account>(Status.SUCCESS, "Successful request", userService.get(id));
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	}
 }

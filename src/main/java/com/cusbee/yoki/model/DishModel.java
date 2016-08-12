@@ -3,7 +3,11 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
+<<<<<<< HEAD
 public class DishModel implements RequestModel, Serializable {
+=======
+public class DishModel implements Serializable {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 
 	/**
 	 * 
@@ -12,18 +16,30 @@ public class DishModel implements RequestModel, Serializable {
 
 	private Long id;
 	private String name;
+<<<<<<< HEAD
 	private Integer weight;
+=======
+	private Double weight;
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	private Double price;
 	private String description;
 	private Long categoryId;
 	private String type;
 	private List<IngredientModel> ingredients;
+<<<<<<< HEAD
 	private List<ImageModel> images;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Integer weight, Double price, String description, Long category_id,
 						List<IngredientModel> ingreds, String type, List<ImageModel> images) {
+=======
+	
+	public DishModel(){}
+	
+	public DishModel(Long id, String name, Double weight, Double price, String description, Long category_id,
+						List<IngredientModel> ingreds, String type) {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		super();
 		this.id = id;
 		this.name = name;
@@ -33,6 +49,7 @@ public class DishModel implements RequestModel, Serializable {
 		this.categoryId = category_id;
 		this.ingredients = ingreds;
 		this.type = type;
+<<<<<<< HEAD
 		this.images = images;
 	}
 
@@ -42,6 +59,8 @@ public class DishModel implements RequestModel, Serializable {
 
 	public void setImages(List<ImageModel> images){
 		this.images=images;
+=======
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	}
 
 	public Long getId() {
@@ -60,11 +79,19 @@ public class DishModel implements RequestModel, Serializable {
 		this.name = name;
 	}
 
+<<<<<<< HEAD
 	public Integer getWeight() {
 		return weight;
 	}
 
 	public void setWeight(Integer weight) {
+=======
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		this.weight = weight;
 	}
 

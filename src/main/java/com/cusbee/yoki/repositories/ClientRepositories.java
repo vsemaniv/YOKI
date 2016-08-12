@@ -10,7 +10,12 @@ import com.cusbee.yoki.entity.Client;
 public interface ClientRepositories extends JpaRepository<Client, Long>{
 
 	Client findById(Long id);
+<<<<<<< HEAD
 
 	@Query(value="SELECT c.* FROM client c WHERE c.phone_number=?1", nativeQuery=true)
+=======
+	
+	@Query(value="SELECT c.* FROM Client c WHERE c.phone_number=?1", nativeQuery=true)
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 	Client findByPhoneNumber(String phone);
 }

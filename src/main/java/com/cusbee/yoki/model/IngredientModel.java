@@ -3,9 +3,15 @@ package com.cusbee.yoki.model;
 import java.io.Serializable;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.cusbee.yoki.entity.enums.IngredientQuantityType;
 
 public class IngredientModel implements RequestModel, Serializable {
+=======
+import com.cusbee.yoki.entity.IngredientQuantityType;
+
+public class IngredientModel implements Serializable {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 
 	/**
 	 * 

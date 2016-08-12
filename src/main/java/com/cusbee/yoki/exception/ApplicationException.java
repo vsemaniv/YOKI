@@ -34,7 +34,11 @@ public class ApplicationException extends BaseException implements Serializable 
 		super(code, msg);
 	}
 
+<<<<<<< HEAD
 	public ApplicationException(int code) {
+=======
+	public ApplicationException(int code) throws BaseException {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		super(code, PropertyUtils.getProperty(code));
 	}
 
@@ -44,13 +48,21 @@ public class ApplicationException extends BaseException implements Serializable 
 	}
 
 	public ApplicationException(int code, String[] dynamicErrorMessage,
+<<<<<<< HEAD
 			IssueType issueType) {
+=======
+			IssueType issueType) throws BaseException {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		super(code, PropertyUtils.getProperty(code, dynamicErrorMessage),
 				issueType);
 	}
 
 	public ApplicationException(int code, Throwable e,
+<<<<<<< HEAD
 			String[] dynamicErrorMessage) {
+=======
+			String[] dynamicErrorMessage) throws BaseException {
+>>>>>>> 6a48b8fc48bc66f95c794342b107c92154dce280
 		super(code, PropertyUtils.getProperty(code, dynamicErrorMessage), e);
 	}
 
