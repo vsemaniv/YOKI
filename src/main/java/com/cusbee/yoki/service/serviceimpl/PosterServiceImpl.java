@@ -101,37 +101,4 @@ public class PosterServiceImpl implements StorageService {
         }
         return orderMap;
     }
-
-
-    public static void main(String[] args) {
-        test2();
-    }
-
-    private static void test2() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "application/form-data");
-        List<WriteOffDish> list = new ArrayList<>();
-        WriteOffDish dish = new WriteOffDish();
-        dish.setId(3);
-        dish.setType("2");
-        dish.setQuantity(1);
-        list.add(dish);
-        PosterWriteOffModel model = new PosterWriteOffModel(1, list);
-        HttpEntity<PosterWriteOffModel> entity = new HttpEntity<>(model, headers);
-        String uriWithParams = UriComponentsBuilder.fromHttpUrl(API + "storage.createWriteOff")
-                .queryParam("format", "json")
-                .queryParam("token", token)
-                .toUriString();
-        String result = restTemplate.postForObject(uriWithParams, entity, String.class);
-        System.out.println(result);
-    }
-/*
-    private static void test1() {
-        String uriWithParams = UriComponentsBuilder.fromHttpUrl(API + "menu.getProducts")
-                .queryParam("format", "json")
-                .queryParam("token", token)
-                .toUriString();
-        PosterDishResponse posterDishList = restTemplate.getForObject(uriWithParams, PosterDishResponse.class);
-        System.out.println(posterDishList.getPosterDishes().get(1));
-    }*/
 }
