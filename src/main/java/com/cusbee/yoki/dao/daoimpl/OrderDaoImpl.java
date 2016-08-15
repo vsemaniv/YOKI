@@ -39,6 +39,10 @@ public class OrderDaoImpl implements OrderDao {
 		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.status NOT IN('CLOSED', 'DONE')");
 	}
 
+	public List<Order> getKitchenOrders() {
+		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.status IN('COOKING')");
+	}
+
 	@Override
 	public Order get(Long id) {
 		return em.find(Order.class, id);

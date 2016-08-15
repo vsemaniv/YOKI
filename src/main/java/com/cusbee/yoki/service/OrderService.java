@@ -5,6 +5,7 @@ import java.util.List;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Order;
+import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.OrderModel;
 
 public interface OrderService {
@@ -25,6 +26,6 @@ public interface OrderService {
 
 	List<Dish> getDishesFromOrderModel(OrderModel request);
 	
-	Order setOrderInProgress(Long id);
+	Order updateOrderStatus(Long id, OrderStatus status);
 	
 }

@@ -9,7 +9,7 @@ public interface CourierDao {
 
     List<Courier> getAll();
     
-    List<Courier> getAllAvailableCourier();
+    List<Courier> getAllAvailableCouriers();
 
     Courier get(Long id);
 }

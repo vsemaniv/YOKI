@@ -6,8 +6,9 @@ import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Courier;
 import com.cusbee.yoki.entity.Order;
-import com.cusbee.yoki.exception.BaseException;
+import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.service.CourierService;
+import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +25,17 @@ public class CourierController {
     @Autowired
     CourierService courierService;
 
-    /**
-     * Looks up if there is an
-     *
-     * @param courierId - chosen courier id.
-     * @return
-     */
-    @RequestMapping(value = "checkOrders", method = RequestMethod.GET)
-    public YokiResult<Order> checkAssignment(Long courierId) {
-        return null;
-    }
-    
+    @Autowired
+    OrderService orderService;
+
     @RequestMapping(value="getAllFreeCourier", method=RequestMethod.GET)
-    public List<Courier> getAllAvailableCourier() {
-    	return courierService.getAllAvailableCourier();
+    public List<Courier> getAllAvailableCouriers() {
+    	return courierService.getAllAvailableCouriers();
     }
-    
-    
-    public YokiResult orderDone() throws BaseException {
+
+    @RequestMapping(value="done", method=RequestMethod.POST)
+    public YokiResult<Order> orderDelivered(@PathVariable("id")Long orderId) {
     	// status DONE and time when courier done this order and status courier in free
-    	return null;
-    }
-    
-    @RequestMapping(value="setCourierStatus/{id}", method=RequestMethod.POST)
-    public YokiResult<Courier> setCourierAvailableStatus(@PathVariable("id") Long id, Courier.CourierStatus status) throws BaseException {
-    	Courier courier = courierService.processActivation(id, status);
-    	return new YokiResult<Courier>(Status.SUCCESS, "Courier status successful changed", courier);
+    	return new YokiResult<Order>(Status.SUCCESS, "Order is done", courierService.orderDelivered(orderId));
     }
  }

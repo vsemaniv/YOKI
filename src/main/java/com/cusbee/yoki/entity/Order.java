@@ -46,6 +46,9 @@ public class Order implements BaseEntity, Serializable {
     @Column(name = "cost")
     private Double cost;
 
+    @Column(name = "written_off")
+    private boolean writtenOff;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     @Fetch(FetchMode.JOIN)
@@ -169,5 +172,13 @@ public class Order implements BaseEntity, Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isWrittenOff() {
+        return writtenOff;
+    }
+
+    public void setWrittenOff(boolean writtenOff) {
+        this.writtenOff = writtenOff;
     }
 }

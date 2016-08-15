@@ -37,7 +37,7 @@ public class CourierDaoImpl implements CourierDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Courier> getAllAvailableCourier() {
+	public List<Courier> getAllAvailableCouriers() {
 		return (List<Courier>) em.createQuery("SELECT c FROM Courier c WHERE c.status='FREE'").getResultList();
 	}
 }

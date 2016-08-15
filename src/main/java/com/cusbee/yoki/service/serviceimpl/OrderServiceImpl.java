@@ -131,9 +131,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order setOrderInProgress(Long id) {
+    public Order updateOrderStatus(Long id, OrderStatus status) {
         Order order = get(id);
-        order.setStatus(OrderStatus.IN_PROGRESS);
+        order.setStatus(status);
         return dao.save(order);
     }
 

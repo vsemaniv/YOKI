@@ -16,10 +16,10 @@ import com.wordnik.swagger.annotations.ApiClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
- * 
  * @author Dmytro Khodan
  * @date 25.07.2016
  * @project: yoki
@@ -27,18 +27,14 @@ import java.util.List;
 
 @ApiClass("Administrator operations")
 @RestController
-@RequestMapping(value="admin")
+@RequestMapping(value = "admin")
 public class AdministratorController {
-	
+
     @Autowired
     private OrderService orderService;
-    
+
     @Autowired
     private AdministratorService service;
-    
-    @Autowired
-    private CourierService courierService;
-    
 
     @RequestMapping(value = "getAllOrders", method = RequestMethod.GET)
     public List<Order> getAllOrders() {
@@ -55,32 +51,43 @@ public class AdministratorController {
         Order order = orderService.declineOrder(request);
         return new YokiResult<>(YokiResult.Status.SUCCESS, "Order status was successfully changed", order);
     }
-    
-    
+
     // new
-    @RequestMapping(value="sendOrderCooking/{id}", method=RequestMethod.POST)
+    @RequestMapping(value = "sendOrderCooking/{id}", method = RequestMethod.POST)
     public String sendToCooking(@PathVariable("id") Long id) {
         service.processIncomingKitchenOrder(id, true);
-    	return "Status success updated";
+        return "Status success updated";
     }
-    
+
     //new
-    @RequestMapping(value="rejectOrder/{id}", method=RequestMethod.POST)
-    public String rejectOrderFromKitchen(@PathVariable("id") Long id) throws BaseException {
-    	service.processIncomingKitchenOrder(id, false);
-    	return "Order rejected successful";
+    @RequestMapping(value = "rejectOrder/{id}", method = RequestMethod.POST)
+    public String rejectOrderFromKitchen(@PathVariable("id") Long id) {
+        service.processIncomingKitchenOrder(id, false);
+        return "Order rejected successful";
     }
-    
-    @RequestMapping(value="setOrderToCourier", method=RequestMethod.POST)
-    public YokiResult<Order> setOrderToCourier(OrderModel request) throws BaseException {
-    	//push - notification
-    	Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
-    	return new YokiResult<> (Status.SUCCESS, "Order setted to courier successful", order );
+
+    @RequestMapping(value = "setOrderToCourier", method = RequestMethod.POST)
+    public YokiResult<Order> setOrderToCourier(OrderModel request) {
+        //push - notification
+        Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
+        return new YokiResult<>(Status.SUCCESS, "Courier was successfully assigned to order", order);
     }
-    
-    public YokiResult passOrderToCourier() throws BaseException {
-    	// set status delivery and update order time when courier get order and set courier is busy
-    	return null;
+
+    @RequestMapping(value = "passOrderToCourier", method = RequestMethod.POST)
+    public YokiResult passOrderToCourier(@PathVariable("orderId") Long orderId, @PathVariable("courierId") Long courierId) {
+        // set status delivery and update order time when courier get order and set courier is busy
+        Order order = service.passOrderToCourier(orderId, courierId);
+        return new YokiResult<>(Status.SUCCESS, "Order was successfully passed to courier", order);
     }
-    
+
+    @RequestMapping(value = "releaseCourier", method = RequestMethod.POST)
+    public YokiResult releaseCourier(@PathVariable("courierId") Long courierId) {
+        return new YokiResult<>(Status.SUCCESS, "Courier is now out of work", service.manageCourierWorkTime(courierId, false));
+    }
+
+    @RequestMapping(value = "courierOnPlace", method = RequestMethod.POST)
+    public YokiResult courierOnPlace(@PathVariable("courierId") Long courierId) {
+        return new YokiResult<>(Status.SUCCESS, "Courier is now working", service.manageCourierWorkTime(courierId, true));
+    }
+
 }

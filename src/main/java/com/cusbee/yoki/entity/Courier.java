@@ -7,9 +7,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+//TODO remove
 @Entity
 @Table(name = "courier")
-public class Courier implements Activatable, Serializable {
+public class Courier implements BaseEntity, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,12 +18,13 @@ public class Courier implements Activatable, Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private String name;
+    @Column(name = "account_id")
+    //TODO HOW TO DO THIS?
+    //@OneToOne(fetch = FetchType.LAZY, mappedBy = "courier")
+    private Long accountId;
 
     @Column
-    @Type(type = "org.hibernate.type.YesNoType")
-    private Boolean enabled;
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courier")
     @JsonIgnore
@@ -31,16 +33,6 @@ public class Courier implements Activatable, Serializable {
     @Column(name = "courier_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private CourierStatus status;
-
-    @Override
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public Long getId() {
 		return id;
@@ -56,6 +48,14 @@ public class Courier implements Activatable, Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public Set<Order> getOrders() {

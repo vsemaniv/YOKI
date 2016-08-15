@@ -12,28 +12,13 @@ import java.util.List;
 
 @Service
 public class KitchenServiceImpl implements KitchenService {
-    @Autowired
-    OrderRepository orderRepository;
 
     @Autowired
     OrderDao orderDao;
 
     @Override
     public List<Order> getKitchenOrders() {
-        return orderRepository.getAvailableOrders(OrderStatus.KITCHEN);
+        return orderDao.getKitchenOrders();
     }
 
-    @Override
-    public Order passToDriver(Long id) {
-        Order order = orderDao.get(id);
-        order.setStatus(OrderStatus.DELIVERY);
-        return orderDao.save(order);
-    }
-
-    @Override
-    public Order canNotPrepare(Long id) {
-        Order order = orderDao.get(id);
-        order.setStatus(OrderStatus.CANT_PREPARE);
-        return orderDao.save(order);
-    }
 }
