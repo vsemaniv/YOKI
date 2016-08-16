@@ -18,10 +18,10 @@ public class Courier implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "account_id")
-    //TODO HOW TO DO THIS?
-    //@OneToOne(fetch = FetchType.LAZY, mappedBy = "courier")
-    private Long accountId;
+    /*@Column(name = "account_id")
+    TODO HOW TO DO THIS?
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "courier")
+    private Long accountId;*/
 
     @Column
     private String name;
@@ -49,14 +49,14 @@ public class Courier implements BaseEntity, Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
+    /*
     public Long getAccountId() {
         return accountId;
     }
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
-    }
+    }*/
 
     public Set<Order> getOrders() {
         return orders;

@@ -76,7 +76,9 @@ public class OrderServiceImpl implements OrderService {
                 break;
             case UPDATE:
                 order = get(request.getId());
-                order.setCourier(courierService.get(request.getCourierId()));
+                if(!Objects.isNull(request.getCourierId())) {
+                    order.setCourier(courierService.get(request.getCourierId()));
+                }
                 if(!Objects.isNull(request.getTimeToTake())){
                 	order.getTimeToTake().setTime(request.getTimeToTake());
                 }
