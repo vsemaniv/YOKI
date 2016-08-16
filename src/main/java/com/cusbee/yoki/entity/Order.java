@@ -28,12 +28,14 @@ public class Order implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    /*@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "ordered_dish",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "dish_id")})
+    @Fetch(FetchMode.JOIN)*/
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
-    private List<Dish> dishes;
+    private List<DishQuantity> dishes;
 
     @Column(name = "order_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -142,11 +144,11 @@ public class Order implements BaseEntity, Serializable {
         this.cost = cost;
     }
 
-    public List<Dish> getDishes() {
+    public List<DishQuantity> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<Dish> dishes) {
+    public void setDishes(List<DishQuantity> dishes) {
         this.dishes = dishes;
     }
 

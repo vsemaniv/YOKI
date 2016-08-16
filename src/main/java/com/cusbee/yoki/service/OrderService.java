@@ -2,8 +2,8 @@ package com.cusbee.yoki.service;
 
 import java.util.List;
 
+import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.enums.CrudOperation;
-import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.OrderModel;
@@ -24,7 +24,7 @@ public interface OrderService {
 
 	Order assignCourier(OrderModel request);
 
-	List<Dish> getDishesFromOrderModel(OrderModel request);
+	List<DishQuantity> getDishesFromOrderModel(OrderModel request);
 	
 	Order saveOrderStatus(Long id, OrderStatus status);
 	

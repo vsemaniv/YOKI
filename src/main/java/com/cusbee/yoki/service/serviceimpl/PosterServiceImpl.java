@@ -1,6 +1,7 @@
 package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.entity.Dish;
+import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.poster.*;
@@ -54,13 +55,13 @@ public class PosterServiceImpl implements StorageService {
     private List<WriteOffDish> remapDishes(Order order) {
         List<WriteOffDish> writeOffList = new ArrayList<>();
         List<PosterDish> posterDishes = getDishesFromPoster();
-        Map<Dish, Integer> orderMap = getOrderMap(order);
+        List<DishQuantity> orderMap = order.getDishes();
 
-        for (Map.Entry<Dish, Integer> dishEntry : orderMap.entrySet()) {
-            String dishName = dishEntry.getKey().getName();
+        for (DishQuantity dishQuantity : orderMap) {
+            String dishName = dishQuantity.getDish().getName();
             for (PosterDish posterDish : posterDishes) {
                 if (posterDish.getName().equals(dishName)) {
-                    writeOffList.add(new WriteOffDish(posterDish.getId(), posterDish.getType(), dishEntry.getValue()));
+                    writeOffList.add(new WriteOffDish(posterDish.getId(), posterDish.getType(), dishQuantity.getQuantity()));
                 }
                 break;
             }
@@ -88,7 +89,7 @@ public class PosterServiceImpl implements StorageService {
      *
      * @param order
      * @return Map with dishes and their quantity
-     */
+     *//*
     private Map<Dish, Integer> getOrderMap(Order order) {
         Map<Dish, Integer> orderMap = new HashMap<>();
         List<Dish> dishes = order.getDishes();
@@ -100,5 +101,5 @@ public class PosterServiceImpl implements StorageService {
             }
         }
         return orderMap;
-    }
+    }*/
 }

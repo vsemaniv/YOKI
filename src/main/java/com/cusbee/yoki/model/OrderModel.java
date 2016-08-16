@@ -12,7 +12,7 @@ public class OrderModel implements RequestModel, Serializable {
 
     @JsonIgnore
     private Long id;
-    private List<DishQuantity> dishes;
+    private List<DishQuantityModel> dishes;
     @JsonIgnore
     private Double cost;
     private ClientModel client;
@@ -34,11 +34,11 @@ public class OrderModel implements RequestModel, Serializable {
         this.id = id;
     }
 
-    public List<DishQuantity> getDishes() {
+    public List<DishQuantityModel> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<DishQuantity> dishes) {
+    public void setDishes(List<DishQuantityModel> dishes) {
         this.dishes = dishes;
     }
 

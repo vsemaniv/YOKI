@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.dao.OrderDao;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.model.DishQuantity;
+import com.cusbee.yoki.model.DishQuantityModel;
 import com.cusbee.yoki.model.OrderModel;
 import com.cusbee.yoki.utils.ErrorCodes;
 
@@ -122,12 +122,13 @@ public class OrderServiceImpl implements OrderService {
         return dao.save(order);
     }
 
-    public List<Dish> getDishesFromOrderModel(OrderModel request) {
-        List<Dish> dishes = new ArrayList<>();
-        for (DishQuantity model : request.getDishes()) {
+    public List<DishQuantity> getDishesFromOrderModel(OrderModel request) {
+        List<DishQuantity> dishes = new ArrayList<>();
+        List<DishQuantityModel> dishModels = request.getDishes();
+        for (DishQuantityModel model : dishModels) {
             Dish dish = dishService.get(model.getDishId());
             if (dish != null)
-                dishes.add(dish);
+                dishes.add(new DishQuantity(dish, model.getQuantity()));
         }
         return dishes;
     }
@@ -161,9 +162,9 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private Double countAmount(List<DishQuantity> request) {
+    private Double countAmount(List<DishQuantityModel> request) {
         Double amount = 0.0;
-        for (DishQuantity dishPosition : request) {
+        for (DishQuantityModel dishPosition : request) {
             amount += dishService.get(dishPosition.getDishId()).getPrice() * dishPosition.getQuantity();
         }
         return amount;

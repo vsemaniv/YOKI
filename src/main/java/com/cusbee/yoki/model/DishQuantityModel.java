@@ -1,6 +1,6 @@
 package com.cusbee.yoki.model;
 
-public class DishQuantity {
+public class DishQuantityModel {
 	
 	private Long dishId;
 	
