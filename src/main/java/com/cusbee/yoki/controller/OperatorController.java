@@ -49,7 +49,7 @@ public class OperatorController {
 	/*
 	@RequestMapping(value="makeOrderInProgress/{id}", method=RequestMethod.GET)
 	public YokiResult<Order> processOrder(@PathVariable("id") Long id) {
-		Order order = orderService.updateOrderStatus(id, OrderStatus.IN_PROGRESS);
+		Order order = orderService.saveOrderStatus(id, OrderStatus.IN_PROGRESS);
 		return new YokiResult<Order>(Status.SUCCESS, "Order success updated", order);
 	}*/
 	
@@ -62,14 +62,20 @@ public class OperatorController {
 	/*
 	@RequestMapping(value="acceptOrder", method = RequestMethod.POST)
 	public YokiResult<Order> acceptOrder(@PathVariable("id") Long id) {
-		Order order = orderService.updateOrderStatus(id, OrderStatus.KITCHEN);
+		Order order = orderService.saveOrderStatus(id, OrderStatus.KITCHEN);
 		// send to kitchen
 		return null;
 	}*/
 
 	@RequestMapping(value="closeOrder", method=RequestMethod.POST)
 	public YokiResult<Order> closeOrder(@PathVariable("id")Long id) {
-		Order order = orderService.updateOrderStatus(id, OrderStatus.CLOSED);
+		Order order = orderService.saveOrderStatus(id, OrderStatus.CLOSED);
 		return new YokiResult<Order>(Status.SUCCESS, "Order was successfully closed", order);
+	}
+
+	@RequestMapping(value="setOrderInProgress", method=RequestMethod.POST)
+	public YokiResult<Order> setOrderInProgress(@PathVariable("id")Long id) {
+		Order order = orderService.saveOrderStatus(id, OrderStatus.IN_PROGRESS);
+		return new YokiResult<Order>(Status.SUCCESS, "Order is now in progress", order);
 	}
 }

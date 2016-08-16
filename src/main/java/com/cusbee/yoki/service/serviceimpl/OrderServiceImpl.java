@@ -133,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrderStatus(Long id, OrderStatus status) {
+    public Order saveOrderStatus(Long id, OrderStatus status) {
         Order order = get(id);
         order.setStatus(status);
         return dao.save(order);

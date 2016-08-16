@@ -26,6 +26,6 @@ public interface OrderService {
 
 	List<Dish> getDishesFromOrderModel(OrderModel request);
 	
-	Order updateOrderStatus(Long id, OrderStatus status);
+	Order saveOrderStatus(Long id, OrderStatus status);
 	
 }
