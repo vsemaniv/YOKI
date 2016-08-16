@@ -49,13 +49,13 @@ public class Order implements BaseEntity, Serializable {
     @Column(name = "written_off")
     private boolean writtenOff;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "courier_id")
     @Fetch(FetchMode.JOIN)
     private Courier courier;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "courier_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id")
     @Fetch(FetchMode.JOIN)
     private Client client;
 
