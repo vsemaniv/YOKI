@@ -221,6 +221,9 @@ public class ValidatorServiceImpl implements ValidatorService {
     private boolean validateRegexCategoryName(String name) {
         Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,35}$");
         Matcher matcher = pattern.matcher(name);
+        if (!matcher.matches()) {
+            throw new ApplicationException(ErrorCodes.Category.INVALID_REQUEST, "Invalid category name");
+        }
         return matcher.matches();
     }
 

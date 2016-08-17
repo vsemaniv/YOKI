@@ -35,6 +35,7 @@ public class ErrorCodes {
         int NOT_EXIST = 3000;
         int EMPTY_FIELD = 3001;
         int ALREADY_EXIST = 3002;
+        int INVALID_REQUEST = 3003;
     }
 
     public interface Dish {
