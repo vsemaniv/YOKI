@@ -1,5 +1,7 @@
 package com.cusbee.yoki.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,21 +13,27 @@ public class DishQuantity implements Serializable {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Order order;
+
+    @ManyToOne
     @JoinColumn(name = "dish_id")
-    Dish dish;
+    private Dish dish;
 
     @Column
-    Integer quantity;
-
-    public DishQuantity(Dish dish, Integer quantity) {
-        this.dish = dish;
-        this.quantity = quantity;
-    }
+    private Integer quantity;
 
     public DishQuantity() {
+    }
+
+    public DishQuantity(Order order, Dish dish, Integer quantity) {
+        this.order = order;
+        this.dish = dish;
+        this.quantity = quantity;
     }
 
     public Long getId() {
@@ -34,6 +42,14 @@ public class DishQuantity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Dish getDish() {

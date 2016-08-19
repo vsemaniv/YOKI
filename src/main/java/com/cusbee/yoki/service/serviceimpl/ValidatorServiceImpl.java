@@ -102,19 +102,19 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateOrderSaveRequest(OrderModel request, CrudOperation operation) {
         validateRequestNotNull(request, Order.class);
-        if(request.getClient() == null) {
+        if (Objects.isNull(request.getDishes())) {
             throw new ApplicationException(
-                    ErrorCodes.Order.NO_CLIENT_ASSIGNED,
-                    "There is no client assigned for this order!");
+                    ErrorCodes.Order.EMPTY_LIST_OF_DISHES,
+                    "List of ordered dishes is empty");
         }
-        validateClientFields(request.getClient());
         switch (operation) {
             case CREATE:
-                if (Objects.isNull(request.getDishes())) {
+                if(request.getClient() == null) {
                     throw new ApplicationException(
-                            ErrorCodes.Order.EMPTY_LIST_OF_DISHES,
-                            "List of ordered dishes is empty");
+                            ErrorCodes.Order.NO_CLIENT_ASSIGNED,
+                            "There is no client assigned for this order!");
                 }
+                validateClientFields(request.getClient());
                 break;
             case UPDATE:
                 validateRequestIdNotNull(request.getId());
@@ -146,6 +146,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         }
     }
 
+    @Override
     public <E extends Enum<E>> boolean isEnumValid(String type, Class<E> enumClass) {
         if (StringUtils.isEmpty(type)) return false;
         for (E e : enumClass.getEnumConstants()) {
@@ -154,6 +155,14 @@ public class ValidatorServiceImpl implements ValidatorService {
             }
         }
         return false;
+    }
+
+    @Override
+    public void validateDates(String... dates) {
+
+        for (String date : dates) {
+
+        }
     }
 
     private void validateAccountFields(AccountModel request, boolean createOperation) {

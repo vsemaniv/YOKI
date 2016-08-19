@@ -68,15 +68,16 @@ public class OperatorController {
 		return null;
 	}*/
 
-	@RequestMapping(value="closeOrder", method=RequestMethod.POST)
-	public YokiResult<Order> closeOrder(@RequestBody IdModel idModel) {
-		Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.CLOSED);
-		return new YokiResult<Order>(Status.SUCCESS, "Order was successfully closed", order);
-	}
 
 	@RequestMapping(value="setOrderInProgress", method=RequestMethod.POST)
 	public YokiResult<Order> setOrderInProgress(@RequestBody IdModel idModel) {
 		Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.IN_PROGRESS);
 		return new YokiResult<Order>(Status.SUCCESS, "Order is now in progress", order);
+	}
+
+	@RequestMapping(value="closeOrder", method=RequestMethod.POST)
+	public YokiResult<Order> closeOrder(@RequestBody IdModel idModel) {
+		Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.CLOSED);
+		return new YokiResult<Order>(Status.SUCCESS, "Order was successfully closed", order);
 	}
 }

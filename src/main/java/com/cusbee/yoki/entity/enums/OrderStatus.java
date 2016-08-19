@@ -8,6 +8,7 @@ public enum OrderStatus {
 	KITCHEN, 		//order was sent to kitchen
 	CANT_PREPARE,	//kitchen could not prepare order
 	COOKING,		//order is being prepared
+	PREPARED,		//order is ready to deliver
 	DELIVERY,		//order is on its way to consumer
 	DONE, 			//order was successfully delivered
 	CLOSED			//call-center had done a control call and closed the order

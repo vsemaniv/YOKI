@@ -1,15 +1,13 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.ClientModel;
 import com.cusbee.yoki.repositories.ClientRepositories;
+import com.cusbee.yoki.repositories.DishQuantityRepository;
 import com.cusbee.yoki.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ClientRepositories clientRepositories;
 
+    @Autowired
+    private DishQuantityRepository dishQuantityRepository;
+
     @Override
     public void remove(Order order) {
         dao.remove(order);
@@ -58,6 +59,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrderHistory(String startDate, String endDate) {
+        validatorService.validateDates(startDate, endDate);
+        return dao.getOrderHistory(startDate, endDate);
+    }
+
+    @Override
     public Order get(Long id) {
         validatorService.validateRequestIdNotNull(id);
         Order order = dao.get(id);
@@ -65,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
     public Order saveOrder(OrderModel request, CrudOperation operation) {
         validatorService.validateOrderSaveRequest(request, operation);
         Order order;
@@ -73,22 +81,24 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setStatus(OrderStatus.FRESH);
+                order.setDishes(new ArrayList<DishQuantity>());
+                order.setClient(parseClient(request.getClient()));
                 break;
             case UPDATE:
                 order = get(request.getId());
-                if(!Objects.isNull(request.getCourierId())) {
+                if(request.getCourierId() != null) {
                     order.setCourier(courierService.get(request.getCourierId()));
                 }
-                if(!Objects.isNull(request.getTimeToTake())){
+                if(request.getTimeToTake() != null){
                 	order.getTimeToTake().setTime(request.getTimeToTake());
                 }
-                if(!Objects.isNull(request.getTimeToDeliver())){
+                if(request.getTimeToDeliver() != null){
                 	order.getTimeToDeliver().setTime(request.getTimeToDeliver());
                 }
-                if(!Objects.isNull(request.getTimeTaken())){
+                if(request.getTimeTaken() != null){
                     order.getTimeTaken().setTime(request.getTimeTaken());
                 }
-                if(!Objects.isNull(request.getTimeDelivered())){
+                if(request.getTimeDelivered() != null){
                 	order.getTimeDelivered().setTime(request.getTimeDelivered());
                 }
                 break;
@@ -96,15 +106,20 @@ public class OrderServiceImpl implements OrderService {
                 throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
                         "Invalid Request");
         }
-        order.setDishes(getDishesFromOrderModel(request));
+        if(request.getDishes() != null) {
+            List<DishQuantityModel> dishModels = request.getDishes();
+            resetDishes(order, dishModels);
+        }
         order.setCost(countAmount(request.getDishes()));
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         }
-        order.setClient(parseClient(request.getClient()));
-        return dao.save(order);
+        Order savedOrder = dao.save(order);
+        dishQuantityRepository.deleteInBatch(order.getDishes());
+        return savedOrder;
     }
 
+    @Override
     public Order declineOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
@@ -115,6 +130,7 @@ public class OrderServiceImpl implements OrderService {
         return dao.save(order);
     }
 
+    @Override
     public Order assignCourier(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
@@ -122,22 +138,28 @@ public class OrderServiceImpl implements OrderService {
         return dao.save(order);
     }
 
-    public List<DishQuantity> getDishesFromOrderModel(OrderModel request) {
-        List<DishQuantity> dishes = new ArrayList<>();
-        List<DishQuantityModel> dishModels = request.getDishes();
-        for (DishQuantityModel model : dishModels) {
-            Dish dish = dishService.get(model.getDishId());
-            if (dish != null)
-                dishes.add(new DishQuantity(dish, model.getQuantity()));
-        }
-        return dishes;
-    }
-
     @Override
     public Order saveOrderStatus(Long id, OrderStatus status) {
         Order order = get(id);
         order.setStatus(status);
         return dao.save(order);
+    }
+
+    /**
+     * Rewrites all dishes in the order.
+     * At first this method clears list of dishes making it empty.
+     * Then it adds to order every dish that came in order model from UI.
+     *
+     * @param order         - old order version retrieved from database
+     * @param dishModels    - dish models received from front-end
+     */
+    private void resetDishes(Order order, List<DishQuantityModel> dishModels) {
+        List<DishQuantity> dishes = order.getDishes();
+        dishes.clear();
+        for (DishQuantityModel model : dishModels) {
+            Dish dish = dishService.get(model.getDishId());
+            dishes.add(new DishQuantity(order, dish, model.getQuantity()));
+        }
     }
 
     /**

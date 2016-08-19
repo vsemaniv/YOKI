@@ -49,11 +49,6 @@ public class Dish implements Activatable, Serializable {
     @Enumerated(EnumType.STRING)
     private DishType type;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dishes")
-    @Fetch(FetchMode.JOIN)
-    private List<Order> order;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @Fetch(FetchMode.JOIN)
@@ -94,14 +89,6 @@ public class Dish implements Activatable, Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public List<Order> getOrder() {
-        return order;
-    }
-
-    public void setOrder(List<Order> order) {
-        this.order = order;
     }
 
     public String getDescription() {

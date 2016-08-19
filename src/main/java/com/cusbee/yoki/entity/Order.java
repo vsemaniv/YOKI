@@ -33,7 +33,7 @@ public class Order implements BaseEntity, Serializable {
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "dish_id")})
     @Fetch(FetchMode.JOIN)*/
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
     @Fetch(FetchMode.JOIN)
     private List<DishQuantity> dishes;
 

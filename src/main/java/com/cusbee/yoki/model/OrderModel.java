@@ -10,7 +10,6 @@ public class OrderModel implements RequestModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonIgnore
     private Long id;
     private List<DishQuantityModel> dishes;
     @JsonIgnore

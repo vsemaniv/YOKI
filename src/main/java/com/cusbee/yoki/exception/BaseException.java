@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
-
-import com.cusbee.yoki.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -16,7 +15,7 @@ import com.cusbee.yoki.logging.LogFactory;
  */
 public class BaseException extends RuntimeException implements Serializable {
 
-	private static final Logger log = LogFactory.getLog(BaseException.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseException.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +27,7 @@ public class BaseException extends RuntimeException implements Serializable {
 
 	public BaseException(final String message) {
 
-		log.error("ErrorMessage: " + message);
+		LOG.error("ErrorMessage: {}", message);
 		this.message = message;
 	}
 
@@ -39,15 +38,14 @@ public class BaseException extends RuntimeException implements Serializable {
 	public BaseException(int code, String message) {
 		this.errorCode = code;
 		this.message = message;
-		log.error(" ErrorCode:" + code + " Error Message: " + message);
+		LOG.error("ErrorCode: {}, Error Message: {}", code, message);
 		issues.add(new Issue(code, message));
 	}
 
 	public BaseException(int code, String message, IssueType issueType) {
 		this.errorCode = code;
 		this.message = message;
-		log.error(" ErrorCode:" + code + " Error Message: " + message
-				+ " IssueType: " + issueType);
+		LOG.error("ErrorCode: {}, Error Message: {},  IssueType: {}", code, message, issueType);
 		issues.add(new Issue(code, message, issueType));
 	}
 
@@ -61,14 +59,14 @@ public class BaseException extends RuntimeException implements Serializable {
 		super(message, exception);
 		this.errorCode = errorCode;
 		this.message = message;
-		log.error(" ErrorCode:" + errorCode + " Error Message: " + message);
+		LOG.error("ErrorCode: {}, Error Message: {}", errorCode, message);
 	}
 
 	public BaseException(int errorCode, String message, Issues issue) {
 		this.errorCode = errorCode;
 		this.message = message;
 		this.issues = issue;
-		log.error(" ErrorCode:" + errorCode + " Error Message: " + message);
+		LOG.error("ErrorCode: {}, Error Message: {}", errorCode, message);
 	}
 
 	public int getErrorCode() {
@@ -100,7 +98,6 @@ public class BaseException extends RuntimeException implements Serializable {
 		List<Issue> issues = this.getIssues();
 
 		if (CollectionUtils.isNotEmpty(issues)) {
-
 			for (Issue issue : issues) {
 				if (IssueType.ERROR == issue.getIssueType()) {
 					return true;

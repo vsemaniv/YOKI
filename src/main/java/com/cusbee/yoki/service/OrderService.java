@@ -16,6 +16,8 @@ public interface OrderService {
 
 	List<Order> getAvailableOrders();
 
+	List<Order> getOrderHistory(String startDate, String endDate);
+
 	Order get(Long id);
 	
 	Order saveOrder(OrderModel request, CrudOperation operation);
@@ -23,8 +25,6 @@ public interface OrderService {
 	Order declineOrder(OrderModel request);
 
 	Order assignCourier(OrderModel request);
-
-	List<DishQuantity> getDishesFromOrderModel(OrderModel request);
 	
 	Order saveOrderStatus(Long id, OrderStatus status);
 	

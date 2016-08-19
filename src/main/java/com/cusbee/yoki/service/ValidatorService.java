@@ -23,5 +23,7 @@ public interface ValidatorService {
 
     void validateEntityNotNull(BaseEntity entity, Class entityClass);
 
+    void validateDates(String... date);
+
     <E extends Enum<E>> boolean isEnumValid(String type, Class<E> enumClass);
 }

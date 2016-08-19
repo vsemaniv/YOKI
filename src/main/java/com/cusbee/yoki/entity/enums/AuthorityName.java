@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public enum AuthorityName {
 
-	ADMINISTRATOR("Administrator"), OPERATOR("Operator"), COURIER("Courier");
+	ADMINISTRATOR("Administrator"), OPERATOR("Operator"), KITCHEN("Kitchen"), COURIER("Courier");
 	
 	private String value;
 

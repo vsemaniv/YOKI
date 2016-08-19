@@ -1,5 +1,6 @@
 package com.cusbee.yoki.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cusbee.yoki.entity.Order;
@@ -15,6 +16,8 @@ public interface OrderDao {
 	List<Order> getKitchenOrders();
 
 	List<Order> getAll();
+
+	List<Order> getOrderHistory(String startDate, String endDate);
 	
 	Order get(Long id);
 	
