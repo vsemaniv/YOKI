@@ -122,6 +122,7 @@ public class TokenUtils {
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("sub", userDetails.getUsername());
 		claims.put("created", Calendar.getInstance());
+		claims.put("userRoles", userDetails.getAuthorities());
 		return this.generateToken(claims);
 	}
 

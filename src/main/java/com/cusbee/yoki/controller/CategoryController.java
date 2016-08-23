@@ -56,7 +56,7 @@ public class CategoryController {
 	@ApiOperation(value="get all categories")
 	@RequestMapping(value="getAll", method=RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Category> getAll() {
+	public @ResponseBody List<Category> getAll() {
 		return categoryService.getAll();
 	}
 	
