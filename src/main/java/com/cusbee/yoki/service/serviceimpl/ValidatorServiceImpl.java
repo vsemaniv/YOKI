@@ -14,6 +14,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -159,10 +161,15 @@ public class ValidatorServiceImpl implements ValidatorService {
 
     @Override
     public void validateDates(String... dates) {
-
-        for (String date : dates) {
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            for (String date : dates) {
+                format.parse(date);
+            }
+        } catch (ParseException e) {
+            throw new ApplicationException(ErrorCodes.Common.INVALID_DATE_FORMAT, "Invalid date format");
         }
+
     }
 
     private void validateAccountFields(AccountModel request, boolean createOperation) {

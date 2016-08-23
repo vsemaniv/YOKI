@@ -11,16 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "client")
 public class Client implements BaseEntity, Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-    private Long id;
-    
-    @Column(name = "phone_number", length = 10, nullable = false)
+    @Column(name = "phone", length = 10, unique = true, nullable = false)
     private String phoneNumber;
 
     @Column(name = "name", length = 35, nullable = false)
@@ -32,15 +26,6 @@ public class Client implements BaseEntity, Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     @JsonIgnore
     private List<Order> order;
-
-    
-    public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
         return name;

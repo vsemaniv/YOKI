@@ -11,4 +11,6 @@ public interface ClientService {
 	Client get(Long id);
 
 	List<Client> getAll();
+
+	Client getByPhone(String phone);
 }

@@ -3,7 +3,6 @@ package com.cusbee.yoki.dao;
 import java.util.List;
 
 import com.cusbee.yoki.entity.Client;
-import com.cusbee.yoki.exception.BaseException;
 
 public interface ClientDao {
 
@@ -12,4 +11,6 @@ public interface ClientDao {
 	Client get(Long id);
 	
 	List<Client> getAll();
+
+	Client getByPhone(String phone);
 }

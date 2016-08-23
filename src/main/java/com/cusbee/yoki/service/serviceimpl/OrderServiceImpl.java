@@ -6,8 +6,6 @@ import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.ClientModel;
-import com.cusbee.yoki.repositories.ClientRepositories;
-import com.cusbee.yoki.repositories.DishQuantityRepository;
 import com.cusbee.yoki.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +34,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ValidatorService validatorService;
-
-    @Autowired
-    private ClientRepositories clientRepositories;
-
-    @Autowired
-    private DishQuantityRepository dishQuantityRepository;
 
     @Override
     public void remove(Order order) {
@@ -81,7 +73,6 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setStatus(OrderStatus.FRESH);
-                order.setDishes(new ArrayList<DishQuantity>());
                 order.setClient(parseClient(request.getClient()));
                 break;
             case UPDATE:
@@ -115,7 +106,6 @@ public class OrderServiceImpl implements OrderService {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         }
         Order savedOrder = dao.save(order);
-        dishQuantityRepository.deleteInBatch(order.getDishes());
         return savedOrder;
     }
 
@@ -172,16 +162,14 @@ public class OrderServiceImpl implements OrderService {
      * @return client instance.
      */
     private Client parseClient(ClientModel customerData) {
-        Client client = clientRepositories.findByPhoneNumber(customerData.getPhone());
-        if (client != null) {
-            return client;
-        } else {
+        Client client = clientService.getByPhone(customerData.getPhone());
+        if (client == null) {
             client = new Client();
             client.setName(customerData.getName());
             client.setAddress(customerData.getAddress());
             client.setPhoneNumber(customerData.getPhone());
-            return clientService.save(client);
         }
+        return client;
     }
 
     private Double countAmount(List<DishQuantityModel> request) {

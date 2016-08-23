@@ -1,7 +1,6 @@
 package com.cusbee.yoki.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,11 +17,6 @@ public class Courier implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    /*@Column(name = "account_id")
-    TODO HOW TO DO THIS?
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "courier")
-    private Long accountId;*/
-
     @Column
     private String name;
 
@@ -35,28 +29,20 @@ public class Courier implements BaseEntity, Serializable {
     private CourierStatus status;
 
     public Long getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
+    public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-    /*
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }*/
 
     public Set<Order> getOrders() {
         return orders;

@@ -2,7 +2,6 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.List;
 
-import com.cusbee.yoki.repositories.ClientRepositories;
 import com.cusbee.yoki.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,6 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientDao dao;
-
-	@Autowired
-	private ClientRepositories clientRepositories;
 	
 	@Override
 	public Client save(Client client) {
@@ -36,4 +32,8 @@ public class ClientServiceImpl implements ClientService {
 		return dao.getAll();
 	}
 
+	@Override
+	public Client getByPhone(String phone) {
+		return dao.getByPhone(phone);
+	}
 }

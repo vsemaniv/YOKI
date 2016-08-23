@@ -15,13 +15,11 @@ public class DishQuantity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
+    @ManyToOne
     @JsonIgnore
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id")
     private Dish dish;
 
     @Column

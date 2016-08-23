@@ -13,23 +13,11 @@ public class GlobalExceptionHandler {
 
     protected static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(value = {ApplicationException.class, Throwable.class})
+    @ExceptionHandler(value = {ApplicationException.class})
     public
     @ResponseBody
-    YokiResult defaultErrorHandler(Throwable throwable) {
-        LOG.error(throwable.getMessage(), throwable);
-        ApplicationException ae;
-        if (throwable instanceof ApplicationException) {
-            ae = (ApplicationException) throwable;
-            return new YokiResult(YokiResult.Status.ERROR, ae.getMessage(), ae.getErrorCode());
-        } else if(throwable instanceof NullPointerException) {
-            return new YokiResult(YokiResult.Status.ERROR, "NullPointerException", throwable.getStackTrace());
-        } else {
-            Throwable cause = throwable;
-            while (cause.getCause() != null) {
-                cause = cause.getCause();
-            }
-            return new YokiResult(YokiResult.Status.ERROR, throwable.getMessage(), "Main cause: " + cause.getMessage());
-        }
+    YokiResult defaultErrorHandler(ApplicationException ae) {
+        LOG.error(ae.getMessage(), ae);
+        return new YokiResult(YokiResult.Status.ERROR, ae.getMessage(), ae.getErrorCode());
     }
 }

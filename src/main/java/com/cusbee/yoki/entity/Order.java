@@ -1,22 +1,13 @@
 package com.cusbee.yoki.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.OrderStatus;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-
-/**
- * @author Dmytro Khodan
- * @date 09.07.2016
- * @project: yoki
- */
-
 
 @Table(name = "orders")
 @Entity
@@ -28,14 +19,8 @@ public class Order implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    /*@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "ordered_dish",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "dish_id")})
-    @Fetch(FetchMode.JOIN)*/
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-    @Fetch(FetchMode.JOIN)
-    private List<DishQuantity> dishes;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DishQuantity> dishes = new ArrayList<>();
 
     @Column(name = "order_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,32 +36,28 @@ public class Order implements BaseEntity, Serializable {
     @Column(name = "written_off")
     private boolean writtenOff;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "courier_id")
-    @Fetch(FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Courier courier;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
-    @Fetch(FetchMode.JOIN)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Client client;
 
     @Column(name = "message")
     private String message;
     
-    @Column
+    @Column(name = "time_to_take")
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar timeToTake;
     
-    @Column
+    @Column(name = "time_taken")
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar timeTaken;
     
-    @Column
+    @Column(name = "time_to_deliver")
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar timeToDeliver;
     
-    @Column
+    @Column(name = "time_delivered")
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar timeDelivered;
 
@@ -146,10 +127,6 @@ public class Order implements BaseEntity, Serializable {
 
     public List<DishQuantity> getDishes() {
         return dishes;
-    }
-
-    public void setDishes(List<DishQuantity> dishes) {
-        this.dishes = dishes;
     }
 
     public Calendar getOrderDate() {

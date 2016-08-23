@@ -35,4 +35,8 @@ public class ClientDaoImpl implements ClientDao{
 		return (List<Client>) em.createQuery("SELECT c FROM Client c").getResultList();
 	}
 
+	@Override
+	public Client getByPhone(String phone) {
+		return em.find(Client.class, phone);
+	}
 }

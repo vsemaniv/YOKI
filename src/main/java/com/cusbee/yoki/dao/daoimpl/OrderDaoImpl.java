@@ -1,6 +1,5 @@
 package com.cusbee.yoki.dao.daoimpl;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -46,10 +45,7 @@ public class OrderDaoImpl implements OrderDao {
 
 	@Override
 	public List<Order> getOrderHistory(String startDate, String endDate) {
-		/*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String frmDate = format.parse(startDate);
-		String enDate = format.parse(endDate);*/
-		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.date");
+		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.date BETWEEN ?1 AND ?2");
 	}
 
 	@Override
