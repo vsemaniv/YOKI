@@ -168,13 +168,6 @@
 			<version>1.0.0.Final</version>
 		</dependency>
 		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.15.0-GA</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.jboss.logging</groupId>
 			<artifactId>jboss-logging</artifactId>
 			<version>3.3.0.Final</version>
@@ -220,7 +213,7 @@
 			<optional>false</optional>
 		</dependency>
 
-		<!-- Hibernate helper for proxying objects (String @Id) -->
+		<!-- Hibernate helper for proxying objects -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
