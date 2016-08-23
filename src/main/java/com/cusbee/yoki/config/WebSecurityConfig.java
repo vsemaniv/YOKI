@@ -19,12 +19,6 @@ import com.cusbee.yoki.security.AuthenticationTokenFilter;
 import com.cusbee.yoki.security.EntryPointUnauthorizedHandler;
 import com.cusbee.yoki.service.SecurityService;
 
-/**
- * 
- * @author Dmytro Khodan
- * @date 09.07.2016
- * @project: yoki
- */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -84,7 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 			.authorizeRequests()
-				.antMatchers("/category/getAll").hasRole("ADMINISTRATOR");
+				.antMatchers("/category/getAll").hasRole("ADMINISTRATOR")
+				.anyRequest().permitAll();
 		
 		http
 			.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
