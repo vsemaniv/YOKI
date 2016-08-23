@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,6 +38,7 @@ public class AuthenticationTokenFilter extends
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		String authToken = httpRequest.getHeader(TOKEN_HEADER);
 		String username = this.tokenUtils.getUsernameFromToken(authToken);
 
@@ -53,7 +55,11 @@ public class AuthenticationTokenFilter extends
 						authentication);
 			}
 		}
-
+		res.setHeader("Access-Control-Allow-Origin", "*");
+	    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+	    res.setHeader("Access-Control-Max-Age", "3600");
+		res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, api_key, Authorization");
+		res.setHeader("Authorization", authToken);
 		chain.doFilter(request, response);
 	}
 
