@@ -17,7 +17,6 @@ public class UserFactory {
 		return new YokiUser(user.getId(), user.getUsername(),
 				user.getPassword(), user.getEmail(),
 				user.getLastPasswordResetDate(),
-				AuthorityUtils.commaSeparatedStringToAuthorityList(user
-						.getAuthority()));
+				user.getAuthorities());
 	}
 }

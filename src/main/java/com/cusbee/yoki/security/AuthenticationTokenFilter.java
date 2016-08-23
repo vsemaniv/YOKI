@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 public class AuthenticationTokenFilter extends
 		UsernamePasswordAuthenticationFilter {
 
-	private final static String TOKEN_HEADER = "X-Auth-Token";
+	private final static String TOKEN_HEADER = "Authorization";
 
 	@Autowired
 	private UserDetailsService userDetailsService;

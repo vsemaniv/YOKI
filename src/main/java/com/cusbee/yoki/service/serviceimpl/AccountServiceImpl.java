@@ -1,11 +1,14 @@
 package com.cusbee.yoki.service.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.cusbee.yoki.entity.Authority;
 import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,13 +73,12 @@ public class AccountServiceImpl implements AccountService {
      */
     @Transactional
     public Account saveAccount(AccountModel request, CrudOperation operation) {
-        validatorService.validateAccountSaveRequest(request, operation);
         Account account;
         switch (operation) {
             case CREATE:
                 account = new Account();
                 account.setPassword(encryptPassword(request.getNewPassword()));
-                account.setAuthority(request.getAuthority());
+                account.setAuthorities(new ArrayList<Authority>(request.getAuthorities()));
                 account.setEnabled(Boolean.TRUE);
                 break;
             case UPDATE:
@@ -93,7 +95,6 @@ public class AccountServiceImpl implements AccountService {
         account.setEmail(request.getEmail());
         account.setFirstname(request.getFirstname());
         account.setLastname(request.getLastname());
-        account.setAuthority(request.getAuthority());
         return dao.save(account);
     }
 
