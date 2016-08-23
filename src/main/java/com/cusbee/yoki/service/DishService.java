@@ -17,8 +17,4 @@ public interface DishService {
 	Dish saveDish(DishModel request, CrudOperation operation);
 
 	Dish processActivation(Long id, boolean activate);
-
-	Dish addImages(DishModel request);
-
-	Dish removeImages(DishModel request);
 }

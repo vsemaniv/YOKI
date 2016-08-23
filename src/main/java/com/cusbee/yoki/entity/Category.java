@@ -17,15 +17,6 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
-
-/**
- * 
- * @author Dmytro Khodan
- * @date 09.07.2016
- * @project: yoki
- */
-
 @Entity
 @Table(name="category")
 public class Category implements Activatable, Serializable{
@@ -47,7 +38,8 @@ public class Category implements Activatable, Serializable{
 	@Column
 	@Type(type = "org.hibernate.type.YesNoType")
 	private Boolean enabled;
-	
+
+	private String imageCode;
 	public Long getId() {
 		return id;
 	}

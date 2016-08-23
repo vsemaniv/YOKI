@@ -7,7 +7,6 @@ import java.util.Objects;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
-import com.cusbee.yoki.model.ImageModel;
 import com.cusbee.yoki.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +23,6 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private DishDao dao;
-
-    @Autowired
-    private ImageService imageService;
 
     @Autowired
     private CategoryService categoryService;
@@ -90,33 +86,6 @@ public class DishServiceImpl implements DishService {
         Dish dish = get(id);
         activationService.processActivation(dish, activate);
         return dao.save(dish);
-    }
-
-
-    @Override
-    public Dish addImages(DishModel request) {
-        validatorService.validateRequestNotNull(request, Dish.class);
-        validatorService.validateRequestIdNotNull(request.getId());
-        if (Objects.isNull(request.getImages())) {
-            throw new ApplicationException(ErrorCodes.Dish.EMPTY_FIELD,
-                    "You don't input no one dish to adding");
-        }
-        Dish dish = dao.get(request.getId());
-        validatorService.validateEntityNotNull(dish, Dish.class);
-        List<DishImage> images = new ArrayList<>();
-        for (ImageModel model : request.getImages()) {
-            DishImage dishImage = imageService.get(model.getId());
-            images.add(dishImage);
-        }
-        dish.setImages(images);
-        dao.save(dish);
-        return dish;
-    }
-
-    @Override
-    public Dish removeImages(DishModel request) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     private DishType getDishType(DishModel request) {

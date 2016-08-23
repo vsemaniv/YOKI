@@ -13,12 +13,6 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
-/**
- * @author Dmytro Khodan
- * @date 09.07.2016
- * @project: yoki
- */
 @Table(name = "dish")
 @Entity
 public class Dish implements Activatable, Serializable {
@@ -53,11 +47,6 @@ public class Dish implements Activatable, Serializable {
     @JoinColumn(name = "category_id")
     @Fetch(FetchMode.JOIN)
     private Category category;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dish")
-    @Fetch(FetchMode.JOIN)
-    @JsonManagedReference
-    private List<DishImage> images;
 
     public Long getId() {
         return id;
@@ -115,14 +104,6 @@ public class Dish implements Activatable, Serializable {
         this.category = category;
     }
 
-    public List<DishImage> getImages() {
-        return this.images;
-    }
-
-    public void setImages(List<DishImage> images) {
-        this.images = images;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -134,8 +115,7 @@ public class Dish implements Activatable, Serializable {
         if (!name.equals(dish.name)) return false;
         if (description != null ? !description.equals(dish.description) : dish.description != null) return false;
         if (!enabled.equals(dish.enabled)) return false;
-        if (type != dish.type) return false;
-        return !(category != null ? !category.equals(dish.category) : dish.category != null);
+        return type == dish.type && !(category != null ? !category.equals(dish.category) : dish.category != null);
     }
 
     @Override
