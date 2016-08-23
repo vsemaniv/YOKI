@@ -10,6 +10,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.cusbee.yoki.utils.DomainBase;
+import org.hibernate.annotations.Type;
 
 /**
  * 
@@ -48,18 +49,18 @@ public class Account extends DomainBase implements Activatable, Serializable {
     private String email;
 
     @Column(name = "enabled")
+	@Type(type = "org.hibernate.type.YesNoType")
     private Boolean enabled;
 
     @Column(name = "lastpasswordresetdate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordResetDate;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
-    @Fetch(FetchMode.JOIN)
     private List<Authority> authorities;
     
     @Column(name = "authority")

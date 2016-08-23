@@ -2,18 +2,11 @@ package com.cusbee.yoki.entity;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.AuthorityName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 
@@ -24,7 +17,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table(name="authority")
 @Entity
-public class Authority {
+public class Authority implements GrantedAuthority {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -34,7 +32,7 @@ public class Authority {
 	@Enumerated(EnumType.STRING)
 	private AuthorityName name;
 	
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="authorities")
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="authorities", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Account> users;
 
@@ -61,5 +59,10 @@ public class Authority {
 	public void setUsers(List<Account> users) {
 		this.users = users;
 	}
-	
+
+
+	@Override
+	public String getAuthority() {
+		return name.name();
+	}
 }
