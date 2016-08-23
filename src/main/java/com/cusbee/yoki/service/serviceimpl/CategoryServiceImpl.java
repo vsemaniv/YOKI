@@ -66,10 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
 		this.dao.remove(category);
 	}
 
-	/**
-	 * Method check for null pointers and if all is right, create or update
-	 * Category
-	 */
 	public Category saveCategory(CategoryModel request, CrudOperation status) {
 		validatorService.validateCategorySaveRequest(request, status);
 		Category category;
@@ -81,16 +77,16 @@ public class CategoryServiceImpl implements CategoryService {
 			break;
 		case UPDATE:
 			category = get(request.getId());
-			category.setName(request.getName());
+
 			break;
 		default:
 			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
 					"Unsupported operation");
 		}
+		category.setName(request.getName());
+		category.setImageCode(request.getImage());
 		return dao.save(category);
 	}
-
-
 
 	@Override
 	@Transactional

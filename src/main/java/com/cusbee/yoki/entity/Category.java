@@ -39,7 +39,9 @@ public class Category implements Activatable, Serializable{
 	@Type(type = "org.hibernate.type.YesNoType")
 	private Boolean enabled;
 
+	@Column(name = "image_code")
 	private String imageCode;
+
 	public Long getId() {
 		return id;
 	}
@@ -72,4 +74,11 @@ public class Category implements Activatable, Serializable{
 		this.dishes = dishes;
 	}
 
+	public String getImageCode() {
+		return imageCode;
+	}
+
+	public void setImageCode(String imageCode) {
+		this.imageCode = imageCode;
+	}
 }

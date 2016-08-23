@@ -12,15 +12,17 @@ public class CategoryModel implements RequestModel, Serializable {
 
     private Long id;
     private String name;
+    private String image;
     private List<DishModel> dishes;
 
     public CategoryModel() {
     }
 
-    public CategoryModel(Long id, String name, List<DishModel> dishes, MultipartFile[] images) {
+    public CategoryModel(Long id, String name, List<DishModel> dishes, String image) {
         super();
         this.id = id;
         this.name = name;
+        this.image = image;
         this.dishes = dishes;
     }
 
@@ -38,6 +40,14 @@ public class CategoryModel implements RequestModel, Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<DishModel> getDishes() {
