@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
-import com.cusbee.yoki.exception.BaseException;
 import com.cusbee.yoki.security.AuthenticationRequest;
 import com.cusbee.yoki.security.AuthenticationResponse;
 import com.cusbee.yoki.security.TokenUtils;
@@ -52,7 +51,6 @@ public class AuthenticationController {
 	@Autowired
 	private AccountService userService;
 	
-	@ApiIgnore
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest){
 		
@@ -74,7 +72,6 @@ public class AuthenticationController {
 		return null;
 	}
 	
-	@ApiIgnore
 	@RequestMapping(value = "refresh", method = RequestMethod.POST)
 	public ResponseEntity<AuthenticationResponse> authenticationResponse(HttpServletRequest request) {
 		String token = request.getHeader(TOKEN_HEADER);

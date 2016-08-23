@@ -1,7 +1,5 @@
 package com.cusbee.yoki.entity.enums;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 
