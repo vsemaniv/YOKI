@@ -49,6 +49,17 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	@Override
+	public List<Order> getOrderHistory(String startDate, String endDate, String client) {
+		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.client_id = ?3 " +
+				"AND o.date BETWEEN ?1 AND ?2");
+	}
+
+	@Override
+	public List<Order> getOrderHistory(String client) {
+		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.client_id = ?1");
+	}
+
+	@Override
 	public Order get(Long id) {
 		return em.find(Order.class, id);
 	}

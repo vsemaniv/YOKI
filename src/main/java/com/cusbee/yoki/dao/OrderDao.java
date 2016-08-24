@@ -18,6 +18,10 @@ public interface OrderDao {
 	List<Order> getAll();
 
 	List<Order> getOrderHistory(String startDate, String endDate);
+
+	List<Order> getOrderHistory(String startDate, String endDate, String client);
+
+	List<Order> getOrderHistory(String client);
 	
 	Order get(Long id);
 	

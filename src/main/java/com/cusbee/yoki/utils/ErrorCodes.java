@@ -1,10 +1,5 @@
 package com.cusbee.yoki.utils;
 
-/**
- * @author Dmytro Khodan
- * @date 28.06.2016
- * @project: yoki
- */
 public class ErrorCodes {
     public interface Common {
         int EMPTY_REQUEST = 1000;
@@ -13,9 +8,7 @@ public class ErrorCodes {
         int INVALID_REQUEST = 1003;
         int KEY_CANNOT_BE_EMPTY = 1004;
         int NO_MAPPING_EXISTS = 1005;
-        int INVALID_TYPE = 1006;
-        int INVALID_DATE_FORMAT = 1007;
-        int INVALID_PROFILE = 1008;
+        int INVALID_DATE_FORMAT = 1006;
     }
 
     public interface User {
@@ -32,15 +25,12 @@ public class ErrorCodes {
     }
 
     public interface Category {
-        int NOT_EXIST = 3000;
         int EMPTY_FIELD = 3001;
         int ALREADY_EXIST = 3002;
         int INVALID_REQUEST = 3003;
     }
 
     public interface Dish {
-        int EMPTY_FIELD = 5001;
-        int ALREADY_EXISTS = 5002;
         int INVALID_REQUEST = 5003;
     }
 
@@ -49,6 +39,7 @@ public class ErrorCodes {
         int EMPTY_LIST_OF_DISHES = 6002;
         int COULD_NOT_WRITEOFF_DISH = 6003;
         int ERROR_DURING_WRITEOFF = 6004;
+        int NO_CRITERIA_FOR_HISTORY = 6005;
     }
 
     public interface Client {

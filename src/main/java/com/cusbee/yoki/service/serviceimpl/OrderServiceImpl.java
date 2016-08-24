@@ -8,6 +8,7 @@ import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.ClientModel;
 import com.cusbee.yoki.service.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,9 +52,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrderHistory(String startDate, String endDate) {
-        validatorService.validateDates(startDate, endDate);
-        return dao.getOrderHistory(startDate, endDate);
+    public List<Order> getOrderHistory(String startDate, String endDate, String clientId) {
+        if(StringUtils.isNotEmpty(startDate) && StringUtils.isNotEmpty(endDate)) {
+            validatorService.validateDates(startDate, endDate);
+            if(StringUtils.isEmpty(clientId)) {
+                return dao.getOrderHistory(startDate, endDate);
+            } else {
+                Client client = clientService.get(clientId);
+                return dao.getOrderHistory(startDate, endDate, clientId);
+            }
+        } else if(StringUtils.isNotEmpty(clientId)) {
+            Client client = clientService.get(clientId);
+            return dao.getOrderHistory(clientId);
+        } else {
+            throw new ApplicationException(ErrorCodes.Order.NO_CRITERIA_FOR_HISTORY,
+                    "You should specify at least one of the following: both dates or client ID");
+        }
     }
 
     @Override
@@ -105,8 +119,7 @@ public class OrderServiceImpl implements OrderService {
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         }
-        Order savedOrder = dao.save(order);
-        return savedOrder;
+        return dao.save(order);
     }
 
     @Override
@@ -162,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
      * @return client instance.
      */
     private Client parseClient(ClientModel customerData) {
-        Client client = clientService.getByPhone(customerData.getPhone());
+        Client client = clientService.get(customerData.getPhone());
         if (client == null) {
             client = new Client();
             client.setName(customerData.getName());

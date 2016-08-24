@@ -25,18 +25,13 @@ public class ClientDaoImpl implements ClientDao{
 	}
 
 	@Override
-	public Client get(Long id) {
-		return em.find(Client.class, id);
+	public Client get(String phone) {
+		return em.find(Client.class, phone);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Client> getAll() {
 		return (List<Client>) em.createQuery("SELECT c FROM Client c").getResultList();
-	}
-
-	@Override
-	public Client getByPhone(String phone) {
-		return em.find(Client.class, phone);
 	}
 }

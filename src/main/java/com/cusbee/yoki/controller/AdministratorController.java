@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * @author Dmytro Khodan
- * @date 25.07.2016
- * @project: yoki
- */
-
 @ApiClass("Administrator operations")
 @RestController
 @RequestMapping(value = "admin")
@@ -42,9 +36,9 @@ public class AdministratorController {
         return orderService.getAvailableOrders();
     }
 
-    @RequestMapping(value = "getOrderHistory", params = {"startDate", "endDate"}, method = RequestMethod.GET)
-    public List<Order> getOrderHistory(String startDate, String endDate) {
-        return orderService.getOrderHistory(startDate, endDate);
+    @RequestMapping(value = "getOrderHistory", params = {"startDate", "endDate", "client"}, method = RequestMethod.GET)
+    public List<Order> getOrderHistory(String startDate, String endDate, String client) {
+        return orderService.getOrderHistory(startDate, endDate, client);
     }
 
     /*

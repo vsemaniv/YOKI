@@ -8,9 +8,7 @@ public interface ClientService {
 
 	Client save(Client client);
 
-	Client get(Long id);
+	Client get(String phone);
 
 	List<Client> getAll();
-
-	Client getByPhone(String phone);
 }

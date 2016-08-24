@@ -16,7 +16,7 @@ public interface OrderService {
 
 	List<Order> getAvailableOrders();
 
-	List<Order> getOrderHistory(String startDate, String endDate);
+	List<Order> getOrderHistory(String startDate, String endDate, String clientId);
 
 	Order get(Long id);
 	
