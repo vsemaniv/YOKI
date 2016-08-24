@@ -38,8 +38,10 @@ public class ErrorCodes {
         int NO_CLIENT_ASSIGNED = 6001;
         int EMPTY_LIST_OF_DISHES = 6002;
         int COULD_NOT_WRITEOFF_DISH = 6003;
-        int ERROR_DURING_WRITEOFF = 6004;
+        int WRITEOFF_ERROR = 6004;
         int NO_CRITERIA_FOR_HISTORY = 6005;
+        int EMPTY_DECLINE_MESSAGE = 6006;
+        int INVALID_STATUS = 6007;
     }
 
     public interface Client {

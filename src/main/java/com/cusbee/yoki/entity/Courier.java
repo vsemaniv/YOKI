@@ -28,6 +28,9 @@ public class Courier implements BaseEntity, Serializable {
     @Enumerated(EnumType.STRING)
     private CourierStatus status;
 
+    @Column(name = "messaging_token")
+    private String messagingToken;
+
     public Long getId() {
         return id;
     }
@@ -58,6 +61,14 @@ public class Courier implements BaseEntity, Serializable {
 
     public void setStatus(CourierStatus status) {
         this.status = status;
+    }
+
+    public String getMessagingToken() {
+        return messagingToken;
+    }
+
+    public void setMessagingToken(String messagingToken) {
+        this.messagingToken = messagingToken;
     }
 
     public enum CourierStatus {

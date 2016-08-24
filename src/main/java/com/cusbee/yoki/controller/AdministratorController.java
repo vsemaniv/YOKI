@@ -51,15 +51,15 @@ public class AdministratorController {
     // new
     @RequestMapping(value = "proceedToCooking", method = RequestMethod.POST)
     public String sendToCooking(@RequestBody IdModel idModel) {
-        service.processIncomingKitchenOrder(idModel.getId(), true);
+        service.acceptIncomingKitchenOrder(idModel.getId());
         return "Status success updated";
     }
 
     //new
-    @RequestMapping(value = "cantPrepare", method = RequestMethod.POST)
-    public String cantPrepare(@RequestBody IdModel idModel) {
-        service.processIncomingKitchenOrder(idModel.getId(), false);
-        return "Order rejected successful";
+    @RequestMapping(value = "declineOrder", method = RequestMethod.POST)
+    public String cantPrepare(@RequestBody OrderModel orderModel) {
+        service.declineOrder(orderModel);
+        return "Order was successfully declined";
     }
 
     @RequestMapping(value = "setOrderToCourier", method = RequestMethod.POST)

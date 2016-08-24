@@ -3,17 +3,16 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.entity.Courier;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.service.CourierService;
-import com.cusbee.yoki.service.OrderService;
-import com.cusbee.yoki.service.StorageService;
+import com.cusbee.yoki.model.OrderModel;
+import com.cusbee.yoki.service.*;
 import com.cusbee.yoki.utils.ErrorCodes;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.dao.OrderDao;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
-import com.cusbee.yoki.service.AdministratorService;
 
 import java.util.Calendar;
 
@@ -33,25 +32,47 @@ public class AdministratorServiceImpl implements AdministratorService {
 	private OrderService orderService;
 
 	@Autowired
+	private ValidatorService validatorService;
+
+	@Autowired
 	private OrderDao orderDao;
 	
 	@Override
-	public void processIncomingKitchenOrder(Long id, boolean accept) {
+	public void acceptIncomingKitchenOrder(Long id) {
     	Order order = dao.get(id);
 		order.setStatus(OrderStatus.COOKING);
-		if(accept && !order.isWrittenOff()) {
+		if(!order.isWrittenOff()) {
 			boolean writtenOffSuccessfully = posterService.writeOffOrder(order);
 			if(writtenOffSuccessfully) {
 				order.setWrittenOff(true);
 			} else {
-				throw new ApplicationException(ErrorCodes.Order.ERROR_DURING_WRITEOFF,
+				throw new ApplicationException(ErrorCodes.Order.WRITEOFF_ERROR,
 						"Unexpected error during writeoff. Please contact CRM vendor");
 			}
 		} else {
-			order.setStatus(OrderStatus.CANT_PREPARE);
+			throw new ApplicationException(ErrorCodes.Order.WRITEOFF_ERROR,
+					"Order was already written off!");
 		}
     	dao.save(order);
     }
+
+	@Override
+	public void declineOrder(OrderModel request) {
+		Order order = orderService.get(request.getId());
+		if(StringUtils.isNotEmpty(request.getMessage())) {
+			order.setMessage(request.getMessage());
+		} else {
+			throw new ApplicationException(ErrorCodes.Order.EMPTY_DECLINE_MESSAGE,
+					"Decline message should not be empty!");
+		}
+		if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+			order.setStatus(OrderStatus.valueOf(request.getStatus()));
+		} else {
+			throw new ApplicationException(ErrorCodes.Order.INVALID_STATUS,
+					"Invalid order status");
+		}
+		dao.save(order);
+	}
 
 	public Order passOrderToCourier(Long orderId, Long courierId) {
 		Order order = orderService.get(orderId);
