@@ -27,7 +27,16 @@ public class Client implements BaseEntity, Serializable {
     @JsonIgnore
     private List<Order> order;
 
-	public String getName() {
+    public Client(String phoneNumber, String name, String address) {
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+        this.address = address;
+    }
+
+    public Client() {
+    }
+
+    public String getName() {
         return name;
     }
 

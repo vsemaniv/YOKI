@@ -87,9 +87,11 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setStatus(OrderStatus.FRESH);
+                order.setClient(parseClient(request.getClient(), new Client()));
                 break;
             case UPDATE:
                 order = get(request.getId());
+                order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
                 if(request.getCourierId() != null) {
                     order.setCourier(courierService.get(request.getCourierId()));
                 }
@@ -117,7 +119,6 @@ public class OrderServiceImpl implements OrderService {
             List<DishQuantityModel> dishModels = request.getDishes();
             resetDishes(order, dishModels);
         }
-        order.setClient(parseClient(request.getClient()));
         order.setCost(countAmount(request.getDishes()));
         return dao.save(order);
     }
@@ -174,12 +175,8 @@ public class OrderServiceImpl implements OrderService {
      * @param customerData - information from order about customer.
      * @return client instance.
      */
-    private Client parseClient(ClientModel customerData) {
-        Client client = clientService.get(customerData.getPhone());
-        if (client == null) {
-            client = new Client();
-            client.setPhoneNumber(customerData.getPhone());
-        }
+    private Client parseClient(ClientModel customerData, Client client) {
+        client.setPhoneNumber(customerData.getPhone());
         client.setName(customerData.getName());
         client.setAddress(customerData.getAddress());
         return client;
