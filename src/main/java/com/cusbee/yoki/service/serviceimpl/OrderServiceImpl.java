@@ -87,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setStatus(OrderStatus.FRESH);
-                order.setClient(parseClient(request.getClient()));
                 break;
             case UPDATE:
                 order = get(request.getId());
@@ -106,6 +105,9 @@ public class OrderServiceImpl implements OrderService {
                 if(request.getTimeDelivered() != null){
                 	order.getTimeDelivered().setTime(request.getTimeDelivered());
                 }
+                if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+                    order.setStatus(OrderStatus.valueOf(request.getStatus()));
+                }
                 break;
             default:
                 throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
@@ -115,10 +117,8 @@ public class OrderServiceImpl implements OrderService {
             List<DishQuantityModel> dishModels = request.getDishes();
             resetDishes(order, dishModels);
         }
+        order.setClient(parseClient(request.getClient()));
         order.setCost(countAmount(request.getDishes()));
-        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
-            order.setStatus(OrderStatus.valueOf(request.getStatus()));
-        }
         return dao.save(order);
     }
 
@@ -178,10 +178,10 @@ public class OrderServiceImpl implements OrderService {
         Client client = clientService.get(customerData.getPhone());
         if (client == null) {
             client = new Client();
-            client.setName(customerData.getName());
-            client.setAddress(customerData.getAddress());
             client.setPhoneNumber(customerData.getPhone());
         }
+        client.setName(customerData.getName());
+        client.setAddress(customerData.getAddress());
         return client;
     }
 

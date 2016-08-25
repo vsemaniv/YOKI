@@ -16,7 +16,6 @@ public class OrderModel implements RequestModel, Serializable {
     private Double cost;
     private ClientModel client;
     private Long courierId;
-    @JsonIgnore
     private String status;
     private String message;
     private Date timeToTake;

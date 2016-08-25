@@ -49,6 +49,7 @@ public class Dish implements Activatable, Serializable {
     private Category category;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dish", orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
     private List<DishImage> images;
 
     public Long getId() {
