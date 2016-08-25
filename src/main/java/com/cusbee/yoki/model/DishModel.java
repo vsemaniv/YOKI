@@ -17,12 +17,12 @@ public class DishModel implements RequestModel, Serializable {
 	private Double price;
 	private Long categoryId;
 
-	private List<String> images;
+	private List<String> imageLinks;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Double price, String description, Long category_id,
-					 String type, List<String> images) {
+					 String type, List<String> imageLinks) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,7 +30,7 @@ public class DishModel implements RequestModel, Serializable {
 		this.description = description;
 		this.categoryId = category_id;
 		this.type = type;
-		this.images = images;
+		this.imageLinks = imageLinks;
 	}
 
 	@Override
@@ -82,11 +82,11 @@ public class DishModel implements RequestModel, Serializable {
 		this.categoryId = categoryId;
 	}
 
-	public List<String> getImages() {
-		return images;
+	public List<String> getImageLinks() {
+		return imageLinks;
 	}
 
-	public void setImages(List<String> images) {
-		this.images = images;
+	public void setImageLinks(List<String> imageLinks) {
+		this.imageLinks = imageLinks;
 	}
 }

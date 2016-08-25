@@ -2,12 +2,14 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,8 @@ import com.cusbee.yoki.utils.ErrorCodes;
 @Service
 @Transactional
 public class DishServiceImpl implements DishService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DishServiceImpl.class);
 
     @Autowired
     private DishDao dao;
@@ -64,6 +68,7 @@ public class DishServiceImpl implements DishService {
         switch (operation) {
             case CREATE:
                 dish = new Dish();
+                dish.setImages(new ArrayList<DishImage>());
                 dish.setEnabled(Boolean.TRUE);
                 break;
             case UPDATE:
@@ -78,6 +83,7 @@ public class DishServiceImpl implements DishService {
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
+        setDishImageList(dish, request.getImageLinks());
         return dao.save(dish);
     }
 
@@ -92,5 +98,17 @@ public class DishServiceImpl implements DishService {
         String type = request.getType();
         return validatorService.isEnumValid(type, DishType.class) ?
                 DishType.valueOf(type.toUpperCase()) : DishType.ORDINARY;
+    }
+
+    private void setDishImageList(Dish dish, List<String> imageLinks) {
+        List<DishImage> dishImages = dish.getImages();
+        dishImages.clear();
+        for(String link : imageLinks) {
+            if(StringUtils.isNotEmpty(link)) {
+                dishImages.add(new DishImage(link, dish));
+            } else {
+                LOG.warn("Attempt to save empty link to image for Dish named {{}}", dish.getName());
+            }
+        }
     }
 }

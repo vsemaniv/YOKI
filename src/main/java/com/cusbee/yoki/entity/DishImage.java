@@ -1,9 +1,5 @@
 package com.cusbee.yoki.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -12,9 +8,6 @@ import javax.persistence.*;
 @Entity
 public class DishImage implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -22,19 +15,18 @@ public class DishImage implements Serializable {
     private Long id;
 
     @Column
-    private String name;
+    private String link;
 
-    @Column
-    private String description;
-
-    @Column
-    private String location;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dish_id")
-    @Fetch(FetchMode.JOIN)
-    @JsonBackReference
+    @ManyToOne
     private Dish dish;
+
+    public DishImage(String link, Dish dish) {
+        this.link = link;
+        this.dish = dish;
+    }
+
+    public DishImage() {
+    }
 
     public Long getId() {
         return id;
@@ -44,32 +36,16 @@ public class DishImage implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLink() {
+        return link;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public Dish getDish() {
-        return this.dish;
+        return dish;
     }
 
     public void setDish(Dish dish) {
