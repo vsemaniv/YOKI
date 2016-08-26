@@ -36,10 +36,10 @@ public class AdministratorController {
         return orderService.getAvailableOrders();
     }
 
-    @RequestMapping(value = "getOrderHistory", params = {"startDate", "endDate", "client"}, method = RequestMethod.GET)
+    @RequestMapping(value = "getOrderHistory", params = {"startDate", "endDate", "clientPhone"}, method = RequestMethod.GET)
     public List<Order> getOrderHistory(@RequestParam(value = "startDate", required = false) String startDate,
                                        @RequestParam(value = "endDate", required = false) String endDate,
-                                       @RequestParam(value = "client", required = false) String client) {
+                                       @RequestParam(value = "clientPhone", required = false) String client) {
         return orderService.getOrderHistory(startDate, endDate, client);
     }
 
