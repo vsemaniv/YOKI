@@ -36,31 +36,22 @@ public class AdministratorController {
         return orderService.getAvailableOrders();
     }
 
-    @RequestMapping(value = "getOrderHistory", params = {"startDate", "endDate", "clientPhone"}, method = RequestMethod.GET)
+    @RequestMapping(value = "getOrderHistory", method = RequestMethod.GET)
     public List<Order> getOrderHistory(@RequestParam(value = "startDate", required = false) String startDate,
                                        @RequestParam(value = "endDate", required = false) String endDate,
                                        @RequestParam(value = "clientPhone", required = false) String client) {
         return orderService.getOrderHistory(startDate, endDate, client);
     }
 
-    /*
-    @RequestMapping(value = "decline", method = RequestMethod.POST)
-    public YokiResult<Order> decline(@RequestBody OrderModel request) {
-        Order order = orderService.declineOrder(request);
-        return new YokiResult<>(YokiResult.Status.SUCCESS, "Order status was successfully changed", order);
-    }*/
-
-    // new
     @RequestMapping(value = "proceedToCooking", method = RequestMethod.POST)
     public String sendToCooking(@RequestBody IdModel idModel) {
         service.acceptIncomingKitchenOrder(idModel.getId());
         return "Status success updated";
     }
 
-    //new
     @RequestMapping(value = "declineOrder", method = RequestMethod.POST)
-    public String cantPrepare(@RequestBody OrderModel orderModel) {
-        service.declineOrder(orderModel);
+    public String declineOrder(@RequestBody OrderModel orderModel) {
+        orderService.declineOrder(orderModel);
         return "Order was successfully declined";
     }
 

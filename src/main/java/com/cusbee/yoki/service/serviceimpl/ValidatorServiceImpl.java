@@ -119,7 +119,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                 validateClientFields(request.getClient());
                 break;
             case UPDATE:
-                validateRequestIdNotNull(request.getId());
+                validateRequestIdNotNull(request.getId(), Order.class);
                 break;
         }
     }
@@ -133,10 +133,10 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     @Override
-    public void validateRequestIdNotNull(Long id) {
+    public void validateRequestIdNotNull(Long id, Class entityClass) {
         if (Objects.isNull(id)) {
             throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST_ID,
-                    "Request id is empty");
+                    entityClass.getSimpleName()+" id should not be empty");
         }
     }
 

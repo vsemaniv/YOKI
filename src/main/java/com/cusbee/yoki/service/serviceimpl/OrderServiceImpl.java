@@ -6,6 +6,7 @@ import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.ClientModel;
+import com.cusbee.yoki.repositories.OrderRepository;
 import com.cusbee.yoki.service.*;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +24,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDao dao;
+
+    @Autowired
+    private OrderRepository repository;
 
     @Autowired
     private DishService dishService;
@@ -56,14 +60,14 @@ public class OrderServiceImpl implements OrderService {
         if(StringUtils.isNotEmpty(startDate) && StringUtils.isNotEmpty(endDate)) {
             validatorService.validateDates(startDate, endDate);
             if(StringUtils.isEmpty(clientId)) {
-                return dao.getOrderHistory(startDate, endDate);
+                return repository.getOrderHistory(startDate, endDate);
             } else {
                 Client client = clientService.get(clientId);
-                return dao.getOrderHistory(startDate, endDate, clientId);
+                return repository.getOrderHistory(startDate, endDate, clientId);
             }
         } else if(StringUtils.isNotEmpty(clientId)) {
             Client client = clientService.get(clientId);
-            return dao.getOrderHistory(clientId);
+            return repository.getOrderHistory(clientId);
         } else {
             throw new ApplicationException(ErrorCodes.Order.NO_CRITERIA_FOR_HISTORY,
                     "You should specify at least one of the following: both dates or client ID");
@@ -72,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order get(Long id) {
-        validatorService.validateRequestIdNotNull(id);
+        validatorService.validateRequestIdNotNull(id, Order.class);
         Order order = dao.get(id);
         validatorService.validateEntityNotNull(order, Order.class);
         return order;
@@ -129,8 +133,16 @@ public class OrderServiceImpl implements OrderService {
         Order order = get(request.getId());
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
+        } else {
+            throw new ApplicationException(ErrorCodes.Order.INVALID_STATUS,
+                    "Invalid order status");
         }
-        order.setMessage(order.getMessage());
+        if(StringUtils.isNotEmpty(request.getMessage())) {
+            order.setMessage(request.getMessage());
+        } else {
+            throw new ApplicationException(ErrorCodes.Order.EMPTY_DECLINE_MESSAGE,
+                    "Decline message should not be empty!");
+        }
         return dao.save(order);
     }
 

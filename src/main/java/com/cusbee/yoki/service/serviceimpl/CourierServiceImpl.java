@@ -56,7 +56,7 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public Courier get(Long id) {
-        validatorService.validateRequestIdNotNull(id);
+        validatorService.validateRequestIdNotNull(id, Courier.class);
         Courier courier = accountRepository.findCourierById(id);
         validatorService.validateEntityNotNull(courier, Courier.class);
         return courier;

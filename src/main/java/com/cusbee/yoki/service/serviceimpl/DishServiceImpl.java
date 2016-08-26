@@ -40,7 +40,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public Dish get(Long id) {
-        validatorService.validateRequestIdNotNull(id);
+        validatorService.validateRequestIdNotNull(id, Dish.class);
         Dish dish = dao.get(id);
         validatorService.validateEntityNotNull(dish, Dish.class);
         return dish;

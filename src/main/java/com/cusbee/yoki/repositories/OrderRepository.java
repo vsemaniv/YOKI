@@ -20,4 +20,13 @@ public interface OrderRepository  extends JpaRepository<Order, Long>{
 
 	@Query(value="SELECT o.* FROM orders o WHERE o.id=?1", nativeQuery=true)
 	Order findById(Long id);
+
+	@Query(value="SELECT o.* FROM orders o WHERE o.order_date BETWEEN ?1 AND ?2", nativeQuery=true)
+	List<Order> getOrderHistory(String startDate, String endDate);
+
+	@Query(value="SELECT o.* FROM orders o WHERE o.client_id = ?3 AND o.order_date BETWEEN ?1 AND ?2", nativeQuery=true)
+	List<Order> getOrderHistory(String startDate, String endDate, String client);
+
+	@Query(value="SELECT o.* FROM orders o WHERE o.client_id = ?1", nativeQuery=true)
+	List<Order> getOrderHistory(String client);
 }

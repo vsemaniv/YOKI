@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public Category get(Long id) {
-		validatorService.validateRequestIdNotNull(id);
+		validatorService.validateRequestIdNotNull(id, Category.class);
 		Category category = dao.get(id);
 		validatorService.validateEntityNotNull(category, Category.class);
 		return category;

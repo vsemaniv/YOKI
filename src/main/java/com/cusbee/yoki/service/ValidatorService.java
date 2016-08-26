@@ -19,7 +19,7 @@ public interface ValidatorService {
 
     void validateRequestNotNull(RequestModel request, Class entityClass);
 
-    void validateRequestIdNotNull(Long id);
+    void validateRequestIdNotNull(Long id, Class entityClass);
 
     void validateEntityNotNull(BaseEntity entity, Class entityClass);
 

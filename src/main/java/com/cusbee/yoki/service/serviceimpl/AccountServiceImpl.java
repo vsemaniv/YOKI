@@ -60,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Account get(Long id) {
-        validatorService.validateRequestIdNotNull(id);
+        validatorService.validateRequestIdNotNull(id, Account.class);
         Account account = dao.get(id);
         validatorService.validateEntityNotNull(account, Account.class);
         return account;
