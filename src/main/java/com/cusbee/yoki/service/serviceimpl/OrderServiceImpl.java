@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAvailableOrders() {
-        return repository.getAvailableOrders(OrderStatus.CLOSED);
+        return repository.getAvailableOrders();
     }
 
     @Override

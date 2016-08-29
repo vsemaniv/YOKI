@@ -13,7 +13,7 @@ import com.cusbee.yoki.entity.Order;
 public interface OrderRepository  extends JpaRepository<Order, Long>{
 
 	@Query(value = "SELECT o.* FROM orders o WHERE o.order_status <> 'CLOSED'", nativeQuery = true)
-	List<Order> getAvailableOrders(OrderStatus status);
+	List<Order> getAvailableOrders();
 
 	@Query(value = "SELECT o.* FROM orders o WHERE o.order_status IN ('COOKING', 'PREPARED')", nativeQuery = true)
 	List<Order> getKitchenOrders();
