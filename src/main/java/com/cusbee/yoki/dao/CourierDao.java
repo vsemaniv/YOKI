@@ -1,15 +1,15 @@
 package com.cusbee.yoki.dao;
 
-import com.cusbee.yoki.entity.Courier;
+import com.cusbee.yoki.entity.CourierDetails;
 
 import java.util.List;
 
 public interface CourierDao {
-    Courier save(Courier courier);
+    CourierDetails save(CourierDetails courierDetails);
 
-    List<Courier> getAll();
+    List<CourierDetails> getAllCouriers();
     
-    List<Courier> getAllAvailableCouriers();
+    List<CourierDetails> getAvailableCouriers();
 
-    Courier get(Long id);
+    CourierDetails get(Long id);
 }

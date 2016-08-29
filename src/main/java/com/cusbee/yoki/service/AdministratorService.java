@@ -1,6 +1,6 @@
 package com.cusbee.yoki.service;
 
-import com.cusbee.yoki.entity.Courier;
+import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.OrderModel;
 
@@ -12,5 +12,5 @@ public interface AdministratorService {
 
 	void declineOrder(OrderModel request);
 
-	Courier manageCourierWorkTime(Long id, boolean onPlace);
+	CourierDetails manageCourierWorkTime(Long id, boolean onPlace);
 }

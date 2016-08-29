@@ -8,8 +8,8 @@ import java.util.Set;
 
 //TODO remove
 @Entity
-@Table(name = "courier")
-public class Courier implements BaseEntity, Serializable {
+@Table(name = "courier_details")
+public class CourierDetails implements BaseEntity, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,10 +17,10 @@ public class Courier implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private String name;
+    @OneToOne
+    private Account account;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "courier")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "courierDetails")
     @JsonIgnore
     private Set<Order> orders;
 
@@ -37,14 +37,6 @@ public class Courier implements BaseEntity, Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Set<Order> getOrders() {

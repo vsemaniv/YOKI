@@ -1,7 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-
-import com.cusbee.yoki.entity.Courier;
+import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.OrderModel;
 import com.cusbee.yoki.service.*;
@@ -26,7 +25,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	private StorageService posterService;
 
 	@Autowired
-	private CourierService courierService;
+	private CourierDetailsService courierService;
 
 	@Autowired
 	private OrderService orderService;
@@ -76,15 +75,15 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	public Order passOrderToCourier(Long orderId, Long courierId) {
 		Order order = orderService.get(orderId);
-		Courier courier = courierService.updateStatus(courierId, Courier.CourierStatus.BUSY);
+		CourierDetails courierDetails = courierService.updateStatus(courierId, CourierDetails.CourierStatus.BUSY);
 		order.setStatus(OrderStatus.DELIVERY);
 		order.setTimeTaken(Calendar.getInstance());
-		order.setCourier(courier);
+		order.setCourierDetails(courierDetails);
 		return orderDao.save(order);
 	}
 
-	public Courier manageCourierWorkTime(Long id, boolean onPlace) {
-		return courierService.updateStatus(id, onPlace ? Courier.CourierStatus.FREE : Courier.CourierStatus.OUT);
+	public CourierDetails manageCourierWorkTime(Long id, boolean onPlace) {
+		return courierService.updateStatus(id, onPlace ? CourierDetails.CourierStatus.FREE : CourierDetails.CourierStatus.OUT);
 	}
 
 }

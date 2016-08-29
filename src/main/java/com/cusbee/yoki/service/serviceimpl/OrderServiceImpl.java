@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private ClientService clientService;
 
     @Autowired
-    private CourierService courierService;
+    private CourierDetailsService courierService;
 
     @Autowired
     private ValidatorService validatorService;
@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
                 order = get(request.getId());
                 order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
                 if(request.getCourierId() != null) {
-                    order.setCourier(courierService.get(request.getCourierId()));
+                    order.setCourierDetails(courierService.get(request.getCourierId()));
                 }
                 if(request.getTimeToTake() != null){
                 	order.getTimeToTake().setTime(request.getTimeToTake());
@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
     public Order assignCourier(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
-        order.setCourier(courierService.get(request.getCourierId()));
+        order.setCourierDetails(courierService.get(request.getCourierId()));
         return dao.save(order);
     }
 

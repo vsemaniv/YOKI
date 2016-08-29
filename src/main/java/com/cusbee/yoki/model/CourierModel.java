@@ -12,6 +12,7 @@ public class CourierModel implements RequestModel, Serializable {
     private String firstName;
     private String lastName;
     private Account account;
+    private String messagingToken;
 
     @Override
     public Long getId() {
@@ -44,5 +45,13 @@ public class CourierModel implements RequestModel, Serializable {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getMessagingToken() {
+        return messagingToken;
+    }
+
+    public void setMessagingToken(String messagingToken) {
+        this.messagingToken = messagingToken;
     }
 }

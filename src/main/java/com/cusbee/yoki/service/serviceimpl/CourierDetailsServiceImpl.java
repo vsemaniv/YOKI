@@ -2,15 +2,17 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.dao.CourierDao;
 import com.cusbee.yoki.dao.OrderDao;
-import com.cusbee.yoki.entity.Courier;
+import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
-import com.cusbee.yoki.repositories.AccountRepository;
-import com.cusbee.yoki.service.ActivationService;
-import com.cusbee.yoki.service.CourierService;
+import com.cusbee.yoki.exception.ApplicationException;
+import com.cusbee.yoki.repositories.CourierRepository;
+import com.cusbee.yoki.service.CourierDetailsService;
 import com.cusbee.yoki.service.OrderService;
 import com.cusbee.yoki.service.ValidatorService;
 
+import com.cusbee.yoki.utils.ErrorCodes;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,7 @@ import java.util.List;
  * метод в accountService.
  */
 @Service
-public class CourierServiceImpl implements CourierService {
+public class CourierDetailsServiceImpl implements CourierDetailsService {
 
     @Autowired
     CourierDao dao;
@@ -40,31 +42,33 @@ public class CourierServiceImpl implements CourierService {
     OrderDao orderDao;
 
     @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
     ValidatorService validatorService;
-
-    @Autowired
-    ActivationService activationService;
 
     @Autowired
     OrderService orderService;
 
     @Autowired
-    CourierService courierService;
+    CourierDetailsService courierService;
+
+    @Autowired
+    CourierRepository courierRepository;
 
     @Override
-    public Courier get(Long id) {
-        validatorService.validateRequestIdNotNull(id, Courier.class);
-        Courier courier = accountRepository.findCourierById(id);
-        validatorService.validateEntityNotNull(courier, Courier.class);
-        return courier;
+    public CourierDetails get(Long id) {
+        validatorService.validateRequestIdNotNull(id, CourierDetails.class);
+        CourierDetails courierDetails = dao.get(id);
+        validatorService.validateEntityNotNull(courierDetails, CourierDetails.class);
+        return courierDetails;
     }
 
     @Override
-    public List<Courier> getAll() {
-        return dao.getAll();
+    public List<CourierDetails> getAllCouriers() {
+        return dao.getAllCouriers();
+    }
+
+    @Override
+    public List<CourierDetails> getAvailableCouriers() {
+        return dao.getAvailableCouriers();
     }
 
     @Override
@@ -74,24 +78,32 @@ public class CourierServiceImpl implements CourierService {
 
     //we can update status, but enable/disable we should do in account
     @Override
-    public Courier updateStatus(Long id, Courier.CourierStatus status) {
-        Courier courier = get(id);
-        courier.setStatus(status);
-        return dao.save(courier);
+    public CourierDetails updateStatus(Long id, CourierDetails.CourierStatus status) {
+        CourierDetails courierDetails = get(id);
+        courierDetails.setStatus(status);
+        return dao.save(courierDetails);
     }
-
-    @Override
-	public List<Courier> getAllAvailableCouriers() {
-		return dao.getAllAvailableCouriers();
-	}
 
     @Override
     public Order orderDelivered(Long orderId) {
         Order order = orderService.get(orderId);
-        Courier courier = order.getCourier();
+        CourierDetails courierDetails = order.getCourierDetails();
         order.setStatus(OrderStatus.DONE);
         order.setTimeDelivered(Calendar.getInstance());
-        courierService.updateStatus(courier.getId(), Courier.CourierStatus.FREE);
+        courierService.updateStatus(courierDetails.getId(), CourierDetails.CourierStatus.FREE);
         return orderDao.save(order);
+    }
+
+    @Override
+    public CourierDetails saveCourierDetails(String username, String token) {
+        if(StringUtils.isNotEmpty(username)) {
+            CourierDetails courierDetails = courierRepository.getCourierDetailsByUsername(username);
+            validatorService.validateEntityNotNull(courierDetails, CourierDetails.class);
+            courierDetails.setMessagingToken(token);
+            return dao.save(courierDetails);
+        } else {
+            throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME,
+                    "Username should not be empty!");
+        }
     }
 }

@@ -36,8 +36,8 @@ public class Order implements BaseEntity, Serializable {
     @Column(name = "written_off")
     private boolean writtenOff;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Courier courier;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private CourierDetails courierDetails;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Client client;
@@ -101,12 +101,12 @@ public class Order implements BaseEntity, Serializable {
 		this.timeDelivered = timeDelivered;
 	}
 
-	public Courier getCourier() {
-        return courier;
+    public CourierDetails getCourierDetails() {
+        return courierDetails;
     }
 
-    public void setCourier(Courier courier) {
-        this.courier = courier;
+    public void setCourierDetails(CourierDetails courierDetails) {
+        this.courierDetails = courierDetails;
     }
 
     public Long getId() {
