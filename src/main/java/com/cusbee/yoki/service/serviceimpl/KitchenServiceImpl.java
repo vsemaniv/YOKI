@@ -14,11 +14,11 @@ import java.util.List;
 public class KitchenServiceImpl implements KitchenService {
 
     @Autowired
-    OrderDao orderDao;
+    OrderRepository repository;
 
     @Override
     public List<Order> getKitchenOrders() {
-        return orderDao.getKitchenOrders();
+        return repository.getKitchenOrders();
     }
 
 }
