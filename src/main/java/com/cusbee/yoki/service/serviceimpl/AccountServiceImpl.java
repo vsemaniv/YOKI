@@ -3,7 +3,9 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cusbee.yoki.dao.CourierDao;
 import com.cusbee.yoki.entity.Authority;
+import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +38,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository userRepository;
+
+    @Autowired
+    private CourierDao courierDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,7 +83,13 @@ public class AccountServiceImpl implements AccountService {
             case CREATE:
                 account = new Account();
                 account.setPassword(encryptPassword(request.getNewPassword()));
-                account.setAuthorities(new ArrayList<Authority>(request.getAuthorities()));
+                List<Authority> authorities = new ArrayList<Authority>(request.getAuthorities());
+                account.setAuthorities(authorities);
+                for(Authority authority : authorities) {
+                    if(authority.getName().equals("ROLE_COURIER")) {
+                        courierDao.save(new CourierDetails(null, CourierDetails.CourierStatus.OUT, account));
+                    }
+                }
                 account.setEnabled(Boolean.TRUE);
                 break;
             case UPDATE:

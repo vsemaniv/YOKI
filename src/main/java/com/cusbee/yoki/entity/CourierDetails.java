@@ -31,6 +31,15 @@ public class CourierDetails implements BaseEntity, Serializable {
     @Column(name = "messaging_token")
     private String messagingToken;
 
+    public CourierDetails() {
+    }
+
+    public CourierDetails(String messagingToken, CourierStatus status, Account account) {
+        this.messagingToken = messagingToken;
+        this.status = status;
+        this.account = account;
+    }
+
     public Long getId() {
         return id;
     }
@@ -45,6 +54,14 @@ public class CourierDetails implements BaseEntity, Serializable {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public CourierStatus getStatus() {
