@@ -7,6 +7,7 @@ import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,14 +102,17 @@ public class DishServiceImpl implements DishService {
     }
 
     private void setDishImageList(Dish dish, List<String> imageLinks) {
-        List<DishImage> dishImages = dish.getImages();
-        dishImages.clear();
-        for(String link : imageLinks) {
-            if(StringUtils.isNotEmpty(link)) {
-                dishImages.add(new DishImage(link, dish));
-            } else {
-                LOG.warn("Attempt to save empty link to image for Dish named {{}}", dish.getName());
+        if(CollectionUtils.isNotEmpty(imageLinks)) {
+            List<DishImage> dishImages = dish.getImages();
+            dishImages.clear();
+            for(String link : imageLinks) {
+                if(StringUtils.isNotEmpty(link)) {
+                    dishImages.add(new DishImage(link, dish));
+                } else {
+                    LOG.warn("Attempt to save empty link to image for Dish named {{}}", dish.getName());
+                }
             }
         }
+
     }
 }
