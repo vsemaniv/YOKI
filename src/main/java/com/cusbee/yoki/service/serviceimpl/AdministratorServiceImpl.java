@@ -41,7 +41,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public void acceptIncomingKitchenOrder(Long id) {
     	Order order = dao.get(id);
 		order.setStatus(OrderStatus.COOKING);
-		if(!order.isWrittenOff()) {
+		//TODO uncomment and test when it comes to production
+		/*if(!order.isWrittenOff()) {
 			boolean writtenOffSuccessfully = posterService.writeOffOrder(order);
 			if(writtenOffSuccessfully) {
 				order.setWrittenOff(true);
@@ -52,7 +53,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 		} else {
 			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Order was already written off!");
-		}
+		}*/
     	dao.save(order);
     }
 
