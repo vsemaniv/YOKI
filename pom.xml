@@ -156,6 +156,12 @@
 			<version>2.1.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+
 		<!-- Hibernate framework -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -225,6 +231,13 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj.version}</version>
+		</dependency>
+
+		<!-- Google messaging -->
+		<dependency>
+			<groupId>com.ganyo</groupId>
+			<artifactId>gcm-server</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 
 		<!-- Logging with SLF4J & LogBack -->

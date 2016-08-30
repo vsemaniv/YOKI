@@ -2,10 +2,8 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.Order;
-import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.poster.*;
 import com.cusbee.yoki.service.StorageService;
-import com.cusbee.yoki.utils.ErrorCodes;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -78,24 +76,4 @@ public class PosterServiceImpl implements StorageService {
         PosterDishResponse posterDishList = restTemplate.getForObject(uriWithParams, PosterDishResponse.class);
         return posterDishList.getPosterDishes();
     }
-
-    /**
-     * Transforms order to the Map where keys are dishes from order
-     * and values are quantities of each one.
-     *
-     * @param order
-     * @return Map with dishes and their quantity
-     *//*
-    private Map<Dish, Integer> getOrderMap(Order order) {
-        Map<Dish, Integer> orderMap = new HashMap<>();
-        List<Dish> dishes = order.getDishes();
-        for (Dish dish : dishes) {
-            if (orderMap.containsKey(dish)) {
-                orderMap.put(dish, orderMap.get(dish) + 1);
-            } else {
-                orderMap.put(dish, 1);
-            }
-        }
-        return orderMap;
-    }*/
 }
