@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cusbee.yoki.model.IdModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,28 +35,28 @@ public class AccountController {
 	@RequestMapping(value="create", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> create(@ApiModel(type=AccountModel.class, collection=false)@RequestBody AccountModel request) {
 		Account user = service.saveAccount(request, CrudOperation.CREATE);
-		return new YokiResult<Account>(Status.SUCCESS, "User created successful", user);
+		return new YokiResult<Account>(HttpStatus.OK, "User created successful", user);
 	}
 	
 	@ApiOperation(value="Updates user account")
 	@RequestMapping(value="update", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> update(@ApiModel(type=AccountModel.class, collection=false) @RequestBody AccountModel request) {
 		Account user = service.saveAccount(request, CrudOperation.UPDATE);
-		return new YokiResult<Account>(Status.SUCCESS, "User updated successful", user);
+		return new YokiResult<Account>(HttpStatus.OK, "User updated successful", user);
 	}
 	
 	@ApiOperation(value="Block user")
 	@RequestMapping(value="block/{id}", method=RequestMethod.POST)
 	public YokiResult<Account> block(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
 	 							  @PathVariable("id") Long id) {
-		return new YokiResult<Account>(Status.SUCCESS, "User blocked successfully", service.processActivation(id, false));
+		return new YokiResult<Account>(HttpStatus.OK, "User blocked successfully", service.processActivation(id, false));
 	}
 	
 	@ApiOperation(value="Unblock user")
 	@RequestMapping(value="unblock/{id}", method=RequestMethod.POST)
 	public YokiResult<Account> unblock(@ApiParam(required=true, value="The id of the account that should be unblocked", name="id")
 									@PathVariable("id") Long id) {
-		return new YokiResult<Account>(Status.SUCCESS, "User unblocked successfully", service.processActivation(id, true));
+		return new YokiResult<Account>(HttpStatus.OK, "User unblocked successfully", service.processActivation(id, true));
 	}
 	
 	@ApiOperation(value="Get all users")
@@ -67,6 +68,6 @@ public class AccountController {
 	@ApiOperation(value="get account by id")
 	@RequestMapping(value="get", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public YokiResult<Account> get(@RequestBody IdModel idModel) {
-		return new YokiResult<Account>(Status.SUCCESS, "Successful request", service.get(idModel.getId()));
+		return new YokiResult<Account>(HttpStatus.OK, "Successful request", service.get(idModel.getId()));
 	}
 }

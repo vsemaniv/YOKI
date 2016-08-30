@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,27 +45,27 @@ public class DishController {
     @ApiOperation(value = "create new dish")
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public YokiResult<Dish> add(@RequestBody DishModel request) {
-        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.CREATE));
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, dishService.saveDish(request, CrudOperation.CREATE));
     }
 
     @ApiOperation(value = "update dish")
     @RequestMapping(value = "update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public YokiResult<Dish> update(@RequestBody DishModel request) {
-        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dishService.saveDish(request, CrudOperation.UPDATE));
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, dishService.saveDish(request, CrudOperation.UPDATE));
     }
 
     @ApiOperation(value = "remove dish")
     @RequestMapping(value = "remove/{id}", method = RequestMethod.POST)
     public YokiResult<Dish> remove(@PathVariable("id") Long id) {
         dishService.remove(id);
-        return new YokiResult<Dish>(Status.SUCCESS, STATUS, null);
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, null);
     }
 
     @ApiOperation(value = "get dish")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
     public YokiResult<Dish> get(@PathVariable("id") Long id) {
         nullPointerService.isNull(id);
-        return new YokiResult<Dish>(Status.SUCCESS, STATUS, repository.findById(id));
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, repository.findById(id));
     }
 
     @ApiOperation(value = "get all dishes")
@@ -79,7 +80,7 @@ public class DishController {
         nullPointerService.isNull(id);
         Dish dish = dishService.processActivation(id, false);
 
-        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, dish);
     }
 
     @ApiOperation(value = "activate dish")
@@ -87,6 +88,6 @@ public class DishController {
     public YokiResult<Dish> activate(@PathVariable("id") Long id) {
         nullPointerService.isNull(id);
         Dish dish = dishService.processActivation(id, true);
-        return new YokiResult<Dish>(Status.SUCCESS, STATUS, dish);
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, dish);
     }
 }

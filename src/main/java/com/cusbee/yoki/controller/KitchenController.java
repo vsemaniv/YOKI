@@ -8,6 +8,7 @@ import com.cusbee.yoki.service.KitchenService;
 import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,12 +31,12 @@ public class KitchenController {
     @RequestMapping(value = "orderPrepared", method = RequestMethod.POST)
     public YokiResult<Order> orderPrepared(@RequestBody IdModel orderIdModel) {
         Order order = orderService.saveOrderStatus(orderIdModel.getId(), OrderStatus.PREPARED);
-        return new YokiResult<>(YokiResult.Status.SUCCESS, "Order is prepared now", order);
+        return new YokiResult<>(HttpStatus.OK, "Order is prepared now", order);
     }
 
     @RequestMapping(value = "orderNotPrepared", method = RequestMethod.POST)
     public YokiResult<Order> orderNotPrepared(@RequestBody IdModel orderIdModel) {
         Order order = orderService.saveOrderStatus(orderIdModel.getId(), OrderStatus.COOKING);
-        return new YokiResult<>(YokiResult.Status.SUCCESS, "Order is on cooking again", order);
+        return new YokiResult<>(HttpStatus.OK, "Order is on cooking again", order);
     }
 }

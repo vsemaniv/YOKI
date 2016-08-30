@@ -11,6 +11,7 @@ import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,46 +39,31 @@ public class OperatorController {
 	@RequestMapping(value = "createOrder", method = RequestMethod.POST)
 	public YokiResult<Order> createOrder(@RequestBody OrderModel request) {
 		Order order = orderService.saveOrder(request, CrudOperation.CREATE);
-		return new YokiResult<>(YokiResult.Status.SUCCESS, "Order was successfully created", order);
+		return new YokiResult<>(HttpStatus.OK, "Order was successfully created", order);
 	}
 
 	@RequestMapping(value = "updateOrder", method = RequestMethod.POST)
 	public YokiResult<Order> updateOrder(@RequestBody OrderModel request) {
 		Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
-		return new YokiResult<>(YokiResult.Status.SUCCESS, "Order was successfully updated", order);
+		return new YokiResult<>(HttpStatus.OK, "Order was successfully updated", order);
 	}
-	
-	/*
-	@RequestMapping(value="makeOrderInProgress/{id}", method=RequestMethod.GET)
-	public YokiResult<Order> processOrder(@PathVariable("id") Long id) {
-		Order order = orderService.saveOrderStatus(id, OrderStatus.IN_PROGRESS);
-		return new YokiResult<Order>(Status.SUCCESS, "Order success updated", order);
-	}*/
 	
 	@RequestMapping(value="declineOrder", method=RequestMethod.POST)
 	public YokiResult<Order> declineOrder(@RequestBody OrderModel request) {
 		Order order = orderService.declineOrder(request);
-		return new YokiResult<Order>(Status.SUCCESS, "Order declined successfully", order);
+		return new YokiResult<Order>(HttpStatus.OK, "Order declined successfully", order);
 	}
-
-	/*
-	@RequestMapping(value="acceptOrder", method = RequestMethod.POST)
-	public YokiResult<Order> acceptOrder(@PathVariable("id") Long id) {
-		Order order = orderService.saveOrderStatus(id, OrderStatus.KITCHEN);
-		// send to kitchen
-		return null;
-	}*/
 
 
 	@RequestMapping(value="setOrderInProgress", method=RequestMethod.POST)
 	public YokiResult<Order> setOrderInProgress(@RequestBody IdModel idModel) {
 		Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.IN_PROGRESS);
-		return new YokiResult<Order>(Status.SUCCESS, "Order is now in progress", order);
+		return new YokiResult<Order>(HttpStatus.OK, "Order is now in progress", order);
 	}
 
 	@RequestMapping(value="closeOrder", method=RequestMethod.POST)
 	public YokiResult<Order> closeOrder(@RequestBody IdModel idModel) {
 		Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.CLOSED);
-		return new YokiResult<Order>(Status.SUCCESS, "Order was successfully closed", order);
+		return new YokiResult<Order>(HttpStatus.OK, "Order was successfully closed", order);
 	}
 }

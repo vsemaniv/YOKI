@@ -11,6 +11,7 @@ import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,24 +60,24 @@ public class AdministratorController {
     public YokiResult<Order> setOrderToCourier(OrderModel request) {
         //push - notification
         Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
-        return new YokiResult<>(Status.SUCCESS, "Courier was successfully assigned to order", order);
+        return new YokiResult<>(HttpStatus.OK, "Courier was successfully assigned to order", order);
     }
 
     @RequestMapping(value = "passOrderToCourier", method = RequestMethod.POST)
     public YokiResult passOrderToCourier(@RequestBody OrderModel orderModel) {
         // set status delivery and update order time when courier get order and set courier is busy
         Order order = service.passOrderToCourier(orderModel.getId(), orderModel.getCourierId());
-        return new YokiResult<>(Status.SUCCESS, "Order was successfully passed to courier", order);
+        return new YokiResult<>(HttpStatus.OK, "Order was successfully passed to courier", order);
     }
 
     @RequestMapping(value = "releaseCourier", method = RequestMethod.POST)
     public YokiResult releaseCourier(@RequestBody IdModel courierIdModel) {
-        return new YokiResult<>(Status.SUCCESS, "Courier is now out of work", service.manageCourierWorkTime(courierIdModel.getId(), false));
+        return new YokiResult<>(HttpStatus.OK, "Courier is now out of work", service.manageCourierWorkTime(courierIdModel.getId(), false));
     }
 
     @RequestMapping(value = "courierOnPlace", method = RequestMethod.POST)
     public YokiResult courierOnPlace(@RequestBody IdModel courierIdModel) {
-        return new YokiResult<>(Status.SUCCESS, "Courier is now working", service.manageCourierWorkTime(courierIdModel.getId(), true));
+        return new YokiResult<>(HttpStatus.OK, "Courier is now working", service.manageCourierWorkTime(courierIdModel.getId(), true));
     }
 
 }

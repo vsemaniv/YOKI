@@ -3,6 +3,7 @@ package com.cusbee.yoki.exception;
 import java.io.Serializable;
 
 import com.cusbee.yoki.utils.PropertyUtils;
+import org.springframework.http.HttpStatus;
 
 /**
  * 
@@ -56,6 +57,14 @@ public class ApplicationException extends BaseException implements Serializable 
 
 	public ApplicationException(int code, String msg, IssueType issueType) {
 		super(code, msg, issueType);
+	}
+
+	public ApplicationException(HttpStatus status, String msg, Throwable e) {
+		super(status, msg, e);
+	}
+
+	public ApplicationException(HttpStatus status, String msg) {
+		super(status, msg);
 	}
 	
 }

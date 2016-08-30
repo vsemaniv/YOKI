@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class CategoryControllerTest {
         YokiResult<Category> result = controller.add(request);
         verify(categoryService, times(1)).saveCategory(request, CrudOperation.CREATE);
         verifyNoMoreInteractions(categoryService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), category);
     }
 
@@ -49,7 +50,7 @@ public class CategoryControllerTest {
         YokiResult<Category> result = controller.update(request);
         verify(categoryService, times(1)).saveCategory(request, CrudOperation.UPDATE);
         verifyNoMoreInteractions(categoryService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), category);
     }
 
@@ -59,7 +60,7 @@ public class CategoryControllerTest {
         YokiResult<Category> result = controller.remove(categoryId);
         verify(categoryService, times(1)).remove(categoryId);
         verifyNoMoreInteractions(categoryService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), null);
     }
 
@@ -70,7 +71,7 @@ public class CategoryControllerTest {
         YokiResult<Category> result = controller.get(categoryId);
         verify(categoryService, times(1)).get(categoryId);
         verifyNoMoreInteractions(categoryService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), category);
     }
 
@@ -95,7 +96,7 @@ public class CategoryControllerTest {
         verifyNoMoreInteractions(categoryService);
 
         assertEquals(result.getData(), category);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
@@ -107,6 +108,6 @@ public class CategoryControllerTest {
         verifyNoMoreInteractions(categoryService);
 
         assertEquals(result.getData(), category);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
     }
 }

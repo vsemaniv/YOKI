@@ -13,6 +13,7 @@ import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,12 +45,12 @@ public class CourierController {
     @RequestMapping(value="done", method=RequestMethod.POST)
     public YokiResult<Order> orderDelivered(@RequestBody IdModel idModel) {
     	// status DONE and time when courier done this order and status courier in free
-    	return new YokiResult<Order>(Status.SUCCESS, "Order is done", courierService.orderDelivered(idModel.getId()));
+    	return new YokiResult<Order>(HttpStatus.OK, "Order is done", courierService.orderDelivered(idModel.getId()));
     }
 
     @RequestMapping(value = "saveMessagingToken", method = RequestMethod.POST)
     public YokiResult<CourierDetails> saveMessagingToken(@RequestBody CourierModel request) {
         CourierDetails courierDetails = courierService.saveCourierDetails(request);
-        return new YokiResult<>(Status.SUCCESS, "Token was successfully saved", courierDetails);
+        return new YokiResult<>(HttpStatus.OK, "Token was successfully saved", courierDetails);
     }
  }

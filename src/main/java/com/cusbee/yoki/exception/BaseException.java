@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 /**
  * 
@@ -24,6 +25,8 @@ public class BaseException extends RuntimeException implements Serializable {
 	private int errorCode;
 
 	private String message;
+
+	private HttpStatus status;
 
 	public BaseException(final String message) {
 
@@ -69,6 +72,21 @@ public class BaseException extends RuntimeException implements Serializable {
 		LOG.error("ErrorCode: {}, Error Message: {}", errorCode, message);
 	}
 
+	public BaseException(HttpStatus status, String message) {
+		this.status = status;
+		this.message = message;
+		LOG.error("HTTP status: {}, Error Message: {}", status, message);
+		issues.add(new Issue(status, message));
+	}
+
+	public BaseException(HttpStatus status, final String message,
+						 final Throwable exception) {
+		super(message, exception);
+		this.status = status;
+		this.message = message;
+		LOG.error("HTTP status: {}, Error Message: {}, Exception: {}", status, message, exception.getStackTrace());
+	}
+
 	public int getErrorCode() {
 		return errorCode;
 	}
@@ -91,6 +109,14 @@ public class BaseException extends RuntimeException implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(HttpStatus status) {
+		this.status = status;
 	}
 
 	public boolean anyErrorInIssue() {

@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -42,7 +43,7 @@ public class AccountControllerTest {
         YokiResult<Account> result = controller.create(request);
         verify(accountService, times(1)).saveAccount(request, CrudOperation.CREATE);
         verifyNoMoreInteractions(accountService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), account);
     }
 
@@ -53,7 +54,7 @@ public class AccountControllerTest {
         YokiResult<Account> result = controller.update(request);
         verify(accountService, times(1)).saveAccount(request, CrudOperation.UPDATE);
         verifyNoMoreInteractions(accountService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), account);
     }
 
@@ -64,7 +65,7 @@ public class AccountControllerTest {
         YokiResult<Account> result = controller.block(id);
         verify(accountService, times(1)).processActivation(id, false);
         verifyNoMoreInteractions(accountService);
-        assertEquals(YokiResult.Status.SUCCESS, result.getStatus());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(account, result.getData());
     }
 
@@ -75,7 +76,7 @@ public class AccountControllerTest {
         YokiResult<Account> result = controller.unblock(id);
         verify(accountService, times(1)).processActivation(id, true);
         verifyNoMoreInteractions(accountService);
-        assertEquals(YokiResult.Status.SUCCESS, result.getStatus());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(account, result.getData());
     }
 
@@ -91,7 +92,7 @@ public class AccountControllerTest {
         YokiResult<Account> result = controller.get(idModel);
         verify(accountService, times(1)).get(id);
         verifyNoMoreInteractions(accountService);
-        assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
         assertEquals(result.getData(), account);
     }
 

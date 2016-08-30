@@ -1,5 +1,7 @@
 package com.cusbee.yoki.exception;
 
+import org.springframework.http.HttpStatus;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,7 @@ public class Issue implements Serializable {
 	private Integer code;
 	private String message;
 	private IssueType issueType;
+	private HttpStatus status;
 
 	public Issue() {
 		super();
@@ -29,6 +32,20 @@ public class Issue implements Serializable {
 	public Issue(Integer code, String message) {
 		super();
 		this.code = code;
+		this.message = message;
+		this.issueType = IssueType.ERROR;
+	}
+
+	public Issue(HttpStatus status, String message, IssueType issueType) {
+		super();
+		this.status = status;
+		this.message = message;
+		this.issueType = issueType;
+	}
+
+	public Issue(HttpStatus status, String message) {
+		super();
+		this.status = status;
 		this.message = message;
 		this.issueType = IssueType.ERROR;
 	}
@@ -57,4 +74,11 @@ public class Issue implements Serializable {
 		this.issueType = issueType;
 	}
 
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(HttpStatus status) {
+		this.status = status;
+	}
 }
