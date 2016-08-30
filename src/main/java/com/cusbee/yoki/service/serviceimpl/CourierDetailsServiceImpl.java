@@ -6,6 +6,7 @@ import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.exception.ApplicationException;
+import com.cusbee.yoki.model.CourierModel;
 import com.cusbee.yoki.repositories.CourierRepository;
 import com.cusbee.yoki.service.CourierDetailsService;
 import com.cusbee.yoki.service.OrderService;
@@ -62,6 +63,18 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
     }
 
     @Override
+    public CourierDetails getCourierByUsername(String username) {
+        if(StringUtils.isNotEmpty(username)) {
+            CourierDetails courierDetails = courierRepository.getCourierDetailsByUsername(username);
+            validatorService.validateEntityNotNull(courierDetails, CourierDetails.class);
+            return courierDetails;
+        } else {
+            throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME,
+                    "Username should not be empty!");
+        }
+    }
+
+    @Override
     public List<CourierDetails> getAllCouriers() {
         return dao.getAllCouriers();
     }
@@ -95,15 +108,14 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
     }
 
     @Override
-    public CourierDetails saveCourierDetails(String username, String token) {
-        if(StringUtils.isNotEmpty(username)) {
-            CourierDetails courierDetails = courierRepository.getCourierDetailsByUsername(username);
-            validatorService.validateEntityNotNull(courierDetails, CourierDetails.class);
-            courierDetails.setMessagingToken(token);
+    public CourierDetails saveCourierDetails(CourierModel request) {
+        if(StringUtils.isNotEmpty(request.getMessagingToken())) {
+            CourierDetails courierDetails = get(request.getId());
+            courierDetails.setMessagingToken(request.getMessagingToken());
             return dao.save(courierDetails);
         } else {
-            throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME,
-                    "Username should not be empty!");
+            throw new ApplicationException(ErrorCodes.Courier.INVALID_TOKEN,
+                    "Messaging token should not be empty!");
         }
     }
 }

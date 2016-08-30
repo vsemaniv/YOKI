@@ -6,6 +6,7 @@ import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
+import com.cusbee.yoki.model.CourierModel;
 import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.service.CourierDetailsService;
 import com.cusbee.yoki.service.OrderService;
@@ -31,8 +32,13 @@ public class CourierController {
     }
 
     @RequestMapping(value="getAllCouriers", method=RequestMethod.GET)
-    public List<CourierDetails> getAllCouriers() {
+     public List<CourierDetails> getAllCouriers() {
         return courierService.getAllCouriers();
+    }
+
+    @RequestMapping(value="getCourierByUsername", method=RequestMethod.GET)
+    public CourierDetails getCourierByUsername(@RequestParam(value = "username") String username) {
+        return courierService.getCourierByUsername(username);
     }
 
     @RequestMapping(value="done", method=RequestMethod.POST)
@@ -42,9 +48,8 @@ public class CourierController {
     }
 
     @RequestMapping(value = "saveMessagingToken", method = RequestMethod.POST)
-    public YokiResult<CourierDetails> saveMessagingToken(@RequestParam(value = "courierName") String courierName,
-                                                         @RequestParam(value = "messageToken") String messageToken) {
-        CourierDetails courierDetails = courierService.saveCourierDetails(courierName, messageToken);
+    public YokiResult<CourierDetails> saveMessagingToken(@RequestBody CourierModel request) {
+        CourierDetails courierDetails = courierService.saveCourierDetails(request);
         return new YokiResult<>(Status.SUCCESS, "Token was successfully saved", courierDetails);
     }
  }

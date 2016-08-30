@@ -17,7 +17,7 @@ public class CourierDetails implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Account account;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courierDetails")

@@ -4,6 +4,7 @@ import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.AccountModel;
+import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.AccountService;
 import org.junit.Rule;
@@ -81,11 +82,13 @@ public class AccountControllerTest {
     @Test
     public void getAccountByIdTest() {
         Long id = 373367L;
+        IdModel idModel = new IdModel();
+        idModel.setId(id);
         account.setUsername("No_way");
         account.setEmail("way@hard.com");
         when(accountService.get(id)).thenReturn(account);
 
-        YokiResult<Account> result = controller.get(id);
+        YokiResult<Account> result = controller.get(idModel);
         verify(accountService, times(1)).get(id);
         verifyNoMoreInteractions(accountService);
         assertEquals(result.getStatus(), YokiResult.Status.SUCCESS);

@@ -2,6 +2,7 @@ package com.cusbee.yoki.controller;
 
 import java.util.List;
 
+import com.cusbee.yoki.model.IdModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +21,6 @@ import com.mangofactory.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
-
-/**
- * 
- * @author Dmytro Khodan
- * @date 28.06.2016
- * @project: yoki
- */
 
 @ApiClass(value="Users account service")
 @RestController
@@ -71,8 +65,8 @@ public class AccountController {
 	}
 	
 	@ApiOperation(value="get account by id")
-	@RequestMapping(value="get/{id}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public YokiResult<Account> get(@PathVariable("id") Long id) {
-		return new YokiResult<Account>(Status.SUCCESS, "Successful request", service.get(id));
+	@RequestMapping(value="get", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public YokiResult<Account> get(@RequestBody IdModel idModel) {
+		return new YokiResult<Account>(Status.SUCCESS, "Successful request", service.get(idModel.getId()));
 	}
 }

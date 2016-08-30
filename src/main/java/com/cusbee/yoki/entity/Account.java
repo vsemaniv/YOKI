@@ -12,13 +12,6 @@ import org.hibernate.annotations.FetchMode;
 import com.cusbee.yoki.utils.DomainBase;
 import org.hibernate.annotations.Type;
 
-/**
- * 
- * @author Dmytro Khodan
- * @date 28.06.2016
- * @project: yoki
- */
-
 @Table(name="account")
 @Entity
 public class Account extends DomainBase implements Activatable, Serializable {
@@ -62,16 +55,6 @@ public class Account extends DomainBase implements Activatable, Serializable {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
     private List<Authority> authorities;
-    
-    @Column(name = "authority")
-    private String authority;
-
-	public String getAuthority() {
-		return authority;
-	}
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
 
 	public Long getId() {
 		return id;

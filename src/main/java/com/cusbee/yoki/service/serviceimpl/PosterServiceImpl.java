@@ -1,22 +1,18 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.poster.*;
 import com.cusbee.yoki.service.StorageService;
 import com.cusbee.yoki.utils.ErrorCodes;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PosterServiceImpl implements StorageService {
@@ -65,8 +61,8 @@ public class PosterServiceImpl implements StorageService {
                 }
                 break;
             }
-            throw new ApplicationException(ErrorCodes.Order.COULD_NOT_WRITEOFF_DISH,
-                    "Could not find dish \"" + dishName + "\" in poster. Writeoff failed");
+            /*throw new ApplicationException(ErrorCodes.Order.COULD_NOT_WRITEOFF_DISH,
+                    "Could not find dish \"" + dishName + "\" in poster. Writeoff failed");*/
         }
         return writeOffList;
     }

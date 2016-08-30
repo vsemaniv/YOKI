@@ -27,7 +27,7 @@ public class CourierDaoImpl implements CourierDao {
     @SuppressWarnings("unchecked")
     @Transactional
     public List<CourierDetails> getAllCouriers(){
-        return (List<CourierDetails>) em.createQuery("SELECT a FROM Courier a").getResultList();
+        return (List<CourierDetails>) em.createQuery("SELECT cd FROM CourierDetails cd").getResultList();
     }
 
     @Override
@@ -38,6 +38,6 @@ public class CourierDaoImpl implements CourierDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CourierDetails> getAvailableCouriers() {
-		return (List<CourierDetails>) em.createQuery("SELECT c FROM CourierDetails c WHERE c.status='FREE'").getResultList();
+		return (List<CourierDetails>) em.createQuery("SELECT cd FROM CourierDetails cd WHERE cd.status='FREE'").getResultList();
 	}
 }

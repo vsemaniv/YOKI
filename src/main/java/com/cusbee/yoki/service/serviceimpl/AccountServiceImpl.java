@@ -6,6 +6,7 @@ import java.util.List;
 import com.cusbee.yoki.dao.CourierDao;
 import com.cusbee.yoki.entity.Authority;
 import com.cusbee.yoki.entity.CourierDetails;
+import com.cusbee.yoki.entity.enums.AuthorityName;
 import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
@@ -83,29 +84,24 @@ public class AccountServiceImpl implements AccountService {
             case CREATE:
                 account = new Account();
                 account.setPassword(encryptPassword(request.getNewPassword()));
-                List<Authority> authorities = new ArrayList<Authority>(request.getAuthorities());
-                account.setAuthorities(authorities);
-                for(Authority authority : authorities) {
-                    if(authority.getName().equals("ROLE_COURIER")) {
-                        courierDao.save(new CourierDetails(null, CourierDetails.CourierStatus.OUT, account));
-                    }
-                }
+                account.setAuthorities(new ArrayList<Authority>(request.getAuthorities()));
+                setCommonAccountFields(account, request);
                 account.setEnabled(Boolean.TRUE);
+                if(createCourierDetailsIfRequired(account)) {
+                    return account;
+                }
                 break;
             case UPDATE:
                 account = get(request.getId());
                 if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
                 }
+                setCommonAccountFields(account, request);
                 break;
             default:
                 throw new ApplicationException(ErrorCodes.User.BAD_REQUEST,
                         "Unknown user operation");
         }
-        account.setUsername(request.getUsername());
-        account.setEmail(request.getEmail());
-        account.setFirstname(request.getFirstname());
-        account.setLastname(request.getLastname());
         return dao.save(account);
     }
 
@@ -156,5 +152,22 @@ public class AccountServiceImpl implements AccountService {
         } else {
             throw new ApplicationException(ErrorCodes.User.WRONG_OLD_PASSWORD, "Password entered in the \"Current password\" field is incorrect.");
         }
+    }
+
+    private void setCommonAccountFields(Account account, AccountModel request) {
+        account.setUsername(request.getUsername());
+        account.setEmail(request.getEmail());
+        account.setFirstname(request.getFirstname());
+        account.setLastname(request.getLastname());
+    }
+
+    private boolean createCourierDetailsIfRequired(Account account) {
+        for(Authority authority : account.getAuthorities()) {
+            if(authority.getName().equals(AuthorityName.ROLE_COURIER)) {
+                courierDao.save(new CourierDetails(null, CourierDetails.CourierStatus.OUT, account));
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -49,7 +49,7 @@ public class ErrorCodes {
         int INVALID_PHONE_NUMBER = 7002;
     }
 
-    public interface Image {
-        int INVALID_REQUEST = 8000;
+    public interface Courier {
+        int INVALID_TOKEN = 8001;
     }
 }
