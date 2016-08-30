@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.cusbee.yoki.exception.ApplicationException;
@@ -44,7 +45,7 @@ public class PropertyUtils {
 		}
 
 		if (returnValue == null) {
-			throw new ApplicationException(ErrorCodes.Common.NO_MAPPING_EXISTS,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					errorCodeString);
 		}
 		return returnValue;

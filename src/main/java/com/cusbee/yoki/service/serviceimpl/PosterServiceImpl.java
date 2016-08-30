@@ -61,7 +61,7 @@ public class PosterServiceImpl implements StorageService {
                 }
                 break;
             }
-            /*throw new ApplicationException(ErrorCodes.Order.COULD_NOT_WRITEOFF_DISH,
+            /*throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Could not find dish \"" + dishName + "\" in poster. Writeoff failed");*/
         }
         return writeOffList;

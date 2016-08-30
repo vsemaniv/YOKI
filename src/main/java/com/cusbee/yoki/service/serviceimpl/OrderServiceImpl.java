@@ -11,6 +11,7 @@ import com.cusbee.yoki.service.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.dao.OrderDao;
@@ -69,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
             Client client = clientService.get(clientId);
             return repository.getOrderHistory(clientId);
         } else {
-            throw new ApplicationException(ErrorCodes.Order.NO_CRITERIA_FOR_HISTORY,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "You should specify at least one of the following: both dates or client ID");
         }
     }
@@ -116,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
                 }
                 break;
             default:
-                throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
+                throw new ApplicationException(HttpStatus.BAD_REQUEST,
                         "Invalid Request");
         }
         if(request.getDishes() != null) {
@@ -134,13 +135,13 @@ public class OrderServiceImpl implements OrderService {
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         } else {
-            throw new ApplicationException(ErrorCodes.Order.INVALID_STATUS,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Invalid order status");
         }
         if(StringUtils.isNotEmpty(request.getMessage())) {
             order.setMessage(request.getMessage());
         } else {
-            throw new ApplicationException(ErrorCodes.Order.EMPTY_DECLINE_MESSAGE,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Decline message should not be empty!");
         }
         return dao.save(order);

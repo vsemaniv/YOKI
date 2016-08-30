@@ -7,6 +7,7 @@ import com.cusbee.yoki.service.*;
 import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.cusbee.yoki.dao.OrderDao;
@@ -45,11 +46,11 @@ public class AdministratorServiceImpl implements AdministratorService {
 			if(writtenOffSuccessfully) {
 				order.setWrittenOff(true);
 			} else {
-				throw new ApplicationException(ErrorCodes.Order.WRITEOFF_ERROR,
+				throw new ApplicationException(HttpStatus.BAD_REQUEST,
 						"Unexpected error during writeoff. Please contact CRM vendor");
 			}
 		} else {
-			throw new ApplicationException(ErrorCodes.Order.WRITEOFF_ERROR,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Order was already written off!");
 		}
     	dao.save(order);
@@ -61,13 +62,13 @@ public class AdministratorServiceImpl implements AdministratorService {
 		if(StringUtils.isNotEmpty(request.getMessage())) {
 			order.setMessage(request.getMessage());
 		} else {
-			throw new ApplicationException(ErrorCodes.Order.EMPTY_DECLINE_MESSAGE,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Decline message should not be empty!");
 		}
 		if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
 			order.setStatus(OrderStatus.valueOf(request.getStatus()));
 		} else {
-			throw new ApplicationException(ErrorCodes.Order.INVALID_STATUS,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Invalid order status");
 		}
 		dao.save(order);

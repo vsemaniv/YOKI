@@ -15,6 +15,7 @@ import com.cusbee.yoki.service.ValidatorService;
 import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -69,7 +70,7 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
             validatorService.validateEntityNotNull(courierDetails, CourierDetails.class);
             return courierDetails;
         } else {
-            throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Username should not be empty!");
         }
     }
@@ -114,7 +115,7 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
             courierDetails.setMessagingToken(request.getMessagingToken());
             return dao.save(courierDetails);
         } else {
-            throw new ApplicationException(ErrorCodes.Courier.INVALID_TOKEN,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Messaging token should not be empty!");
         }
     }

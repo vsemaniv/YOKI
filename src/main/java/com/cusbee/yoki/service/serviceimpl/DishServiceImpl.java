@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +77,7 @@ public class DishServiceImpl implements DishService {
                 dish = dao.get(request.getId());
                 break;
             default:
-                throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST, "Invalid request");
+                throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid request");
         }
         dish.setName(request.getName());
         dish.setPrice(request.getPrice());

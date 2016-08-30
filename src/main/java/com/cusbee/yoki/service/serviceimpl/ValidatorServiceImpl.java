@@ -12,6 +12,7 @@ import com.cusbee.yoki.service.ValidatorService;
 import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -35,7 +36,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     public void validateAccountSaveRequest(AccountModel request, CrudOperation operation) {
         validateRequestNotNull(request, Account.class);
         if(!isEnumValid(request.getAuthority(), AuthorityName.class)) {
-            throw new ApplicationException(ErrorCodes.User.INVALID_AUTHORITY,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Incorrect authority type");
         }
         switch (operation) {
@@ -45,20 +46,20 @@ public class ValidatorServiceImpl implements ValidatorService {
                 //username validation
                 if (StringUtils.isEmpty(username)
                         || Objects.isNull(request.getNewPassword())) {
-                    throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
                             "Field Username or Password still empty");
                 }
                 if (accountRepository.findByUsername(username) != null) {
-                    throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
                             "User with this username already exist");
                 }
                 //email validation
                 if (StringUtils.isEmpty(email)) {
-                    throw new ApplicationException(ErrorCodes.User.EMPTY_FIELDS,
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
                             "Email field can't be empty");
                 }
                 if (accountRepository.validateAccount(email) != null) {
-                    throw new ApplicationException(ErrorCodes.User.ALREADY_EXIST,
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
                             "This email is already in use");
                 }
                 validateAccountFields(request, true);
@@ -67,7 +68,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                 validateAccountFields(request, false);
                 break;
             default:
-                throw new ApplicationException(ErrorCodes.User.BAD_REQUEST, "Unsupported operation");
+                throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unsupported operation");
         }
     }
 
@@ -75,11 +76,11 @@ public class ValidatorServiceImpl implements ValidatorService {
     public void validateCategorySaveRequest(CategoryModel request, CrudOperation status) {
         validateRequestNotNull(request, Category.class);
         if (StringUtils.isEmpty(request.getName())) {
-            throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Category name should not be empty!");
         }
         if (status == CrudOperation.CREATE && categoryRepository.findByName(request.getName()) != null) {
-            throw new ApplicationException(ErrorCodes.Category.ALREADY_EXIST,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "This category already exists");
         }
         validateRegexCategoryName(request.getName());
@@ -91,7 +92,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         switch (operation) {
             case CREATE:
                 if (dishRepository.findByName(request.getName()) != null) {
-                    throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Dish with such name already exists");
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST, "Dish with such name already exists");
                 }
                 break;
             case UPDATE:
@@ -106,14 +107,14 @@ public class ValidatorServiceImpl implements ValidatorService {
         validateRequestNotNull(request, Order.class);
         if (Objects.isNull(request.getDishes())) {
             throw new ApplicationException(
-                    ErrorCodes.Order.EMPTY_LIST_OF_DISHES,
+                    HttpStatus.BAD_REQUEST,
                     "List of ordered dishes is empty");
         }
         switch (operation) {
             case CREATE:
                 if(request.getClient() == null) {
                     throw new ApplicationException(
-                            ErrorCodes.Order.NO_CLIENT_ASSIGNED,
+                            HttpStatus.BAD_REQUEST,
                             "There is no client assigned for this order!");
                 }
                 validateClientFields(request.getClient());
@@ -127,7 +128,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateRequestNotNull(RequestModel request, Class entityClass) {
         if (Objects.isNull(request)) {
-            throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     entityClass.getSimpleName() + " Request is empty");
         }
     }
@@ -135,7 +136,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateRequestIdNotNull(Long id, Class entityClass) {
         if (Objects.isNull(id)) {
-            throw new ApplicationException(ErrorCodes.Common.EMPTY_REQUEST_ID,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     entityClass.getSimpleName()+" id should not be empty");
         }
     }
@@ -143,7 +144,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateEntityNotNull(BaseEntity entity, Class entityClass) {
         if (Objects.isNull(entity)) {
-            throw new ApplicationException(ErrorCodes.Common.NOT_EXIST,
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Could not find " + entityClass.getSimpleName() + " in database or failed to retrieve it");
         }
     }
@@ -167,7 +168,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                 format.parse(date);
             }
         } catch (ParseException e) {
-            throw new ApplicationException(ErrorCodes.Common.INVALID_DATE_FORMAT, "Invalid date format");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid date format");
         }
 
     }
@@ -191,7 +192,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         String clientPhone = request.getPhone();
         if(StringUtils.isEmpty(clientPhone)) {
             throw new ApplicationException(
-                    ErrorCodes.Client.EMPTY_PHONE_NUMBER,
+                    HttpStatus.BAD_REQUEST,
                     "You should specify client's phone number!");
         }
         validateRegexClientPhoneNumber(clientPhone);
@@ -202,7 +203,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}-_\\d]{5,25}$");
         Matcher matcher = pattern.matcher(username);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.User.INVALID_USERNAME, "Invalid username. Username include only alphabet symbols and numbers and should be at least 5 and at last 15 symbols long");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid username. Username include only alphabet symbols and numbers and should be at least 5 and at last 15 symbols long");
         }
         return matcher.matches();
     }
@@ -211,7 +212,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^.{8,}$");
         Matcher matcher = pattern.matcher(password);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.User.INVALID_PASSWORD, "Password is too weak. Username should include at least 8 symbols");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Password is too weak. Username should include at least 8 symbols");
         }
         return matcher.matches();
     }
@@ -220,7 +221,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^([a-z0-9.-]){1,20}[\\@]([a-z]){2,10}[\\.]([a-z]){2,4}$");
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.User.INVALID_EMAIL, "Email is not valid");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Email is not valid");
         }
         return matcher.matches();
     }
@@ -229,7 +230,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}-]{2,25}$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.User.IVALID_FIRST_OR_LAST_NAME, "Invalid first/lastname");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid first/lastname");
         }
         return matcher.matches();
     }
@@ -238,7 +239,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\s]{2,35}$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.Category.INVALID_REQUEST, "Invalid category name");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid category name");
         }
         return matcher.matches();
     }
@@ -247,7 +248,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern patter = Pattern.compile("^[\\p{IsAlphabetic}\\s\\d]{2,35}$");
         Matcher matcher = patter.matcher(name);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish name");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid dish name");
         }
         return matcher.matches();
     }
@@ -256,7 +257,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^[0-9]{1,4}[\\.,]{0,1}[0-9]{0,4}$");
         Matcher matcher = pattern.matcher(price.toString());
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.Dish.INVALID_REQUEST, "Invalid dish price");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid dish price");
         }
         return matcher.matches();
     }
@@ -265,7 +266,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^\\d{10}$");
         Matcher matcher = pattern.matcher(phone);
         if (!matcher.matches()) {
-            throw new ApplicationException(ErrorCodes.Client.INVALID_PHONE_NUMBER, "Invalid phone number. It should consist of 10 digits.");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid phone number. It should consist of 10 digits.");
         }
         return matcher.matches();
     }

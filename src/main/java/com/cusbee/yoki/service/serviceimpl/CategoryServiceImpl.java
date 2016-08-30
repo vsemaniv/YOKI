@@ -9,6 +9,7 @@ import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 			break;
 		default:
-			throw new ApplicationException(ErrorCodes.Common.INVALID_REQUEST,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Unsupported operation");
 		}
 		category.setName(request.getName());
@@ -106,7 +107,7 @@ public class CategoryServiceImpl implements CategoryService {
 		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (CollectionUtils.isEmpty(request.getDishes())) {
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"You passed no dish to add");
 		}
 		Category category = get(request.getId());
@@ -129,7 +130,7 @@ public class CategoryServiceImpl implements CategoryService {
 		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
 		if (Objects.isNull(request.getDishes())) {
-			throw new ApplicationException(ErrorCodes.Category.EMPTY_FIELD,
+			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Dishes ID's to remove is not present");
 		}
 		Category category = get(request.getId());

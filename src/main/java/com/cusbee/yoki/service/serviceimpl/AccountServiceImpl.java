@@ -11,6 +11,7 @@ import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -99,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
                 setCommonAccountFields(account, request);
                 break;
             default:
-                throw new ApplicationException(ErrorCodes.User.BAD_REQUEST,
+                throw new ApplicationException(HttpStatus.BAD_REQUEST,
                         "Unknown user operation");
         }
         return dao.save(account);
@@ -122,7 +123,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void validateUserEnabled(String username) {
         if (userRepository.availability(username) == null) {
-            throw new ApplicationException(ErrorCodes.User.USER_UNAVAILABLE, "User is blocked");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "User is blocked");
         }
     }
 
@@ -150,7 +151,7 @@ public class AccountServiceImpl implements AccountService {
         if(passwordFromDB.equals(encodedPassword)) {
             return true;
         } else {
-            throw new ApplicationException(ErrorCodes.User.WRONG_OLD_PASSWORD, "Password entered in the \"Current password\" field is incorrect.");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Password entered in the \"Current password\" field is incorrect.");
         }
     }
 
