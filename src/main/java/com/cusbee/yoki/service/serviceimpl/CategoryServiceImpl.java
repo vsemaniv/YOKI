@@ -85,7 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
 					"Unsupported operation");
 		}
 		category.setName(request.getName());
-		category.setImageCode(request.getImage());
 		return dao.save(category);
 	}
 
