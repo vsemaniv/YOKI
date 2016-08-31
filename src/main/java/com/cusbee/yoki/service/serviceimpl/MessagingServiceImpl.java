@@ -4,18 +4,12 @@ import com.cusbee.yoki.service.MessagingService;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+@Service
 public class MessagingServiceImpl implements MessagingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MessagingServiceImpl.class);
