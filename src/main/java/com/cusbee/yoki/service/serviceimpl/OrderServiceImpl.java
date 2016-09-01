@@ -149,7 +149,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = get(request.getId());
         Date timeToTake = request.getTimeToTake();
         Date timeToDeliver = request.getTimeToDeliver();
-        validatorService.validateRequestIdNotNull(request.getCourierId(), CourierDetails.class);
         CourierDetails courier = courierService.get(request.getCourierId());
         if(timeToTake != null && timeToDeliver != null){
             order.getTimeToTake().setTime(timeToTake);

@@ -16,7 +16,7 @@ public class DishImage implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition="LONGTEXT")
     private String link;
 
     @ManyToOne
