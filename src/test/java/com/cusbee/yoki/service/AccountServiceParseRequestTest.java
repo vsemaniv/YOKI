@@ -51,7 +51,6 @@ public class AccountServiceParseRequestTest {
         request.setEmail("normal@email.com");
         request.setUsername("normal username");
         request.setNewPassword("normal password");
-        request.setAuthority("normal authority");
         request.setFirstname("normal first name");
         request.setLastname("normal last name");
         account.setUsername("test account1");

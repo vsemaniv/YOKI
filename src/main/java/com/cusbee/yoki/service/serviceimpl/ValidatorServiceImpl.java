@@ -9,7 +9,7 @@ import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.repositories.CategoryRepository;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.service.ValidatorService;
-import com.cusbee.yoki.utils.ErrorCodes;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,10 +35,6 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateAccountSaveRequest(AccountModel request, CrudOperation operation) {
         validateRequestNotNull(request, Account.class);
-        if(!isEnumValid(request.getAuthority(), AuthorityName.class)) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST,
-                    "Incorrect authority type");
-        }
         switch (operation) {
             case CREATE:
                 String username = request.getUsername();
@@ -50,7 +46,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                             "Field Username or Password still empty");
                 }
                 if (accountRepository.findByUsername(username) != null) {
-                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
+                    throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
                             "User with this username already exist");
                 }
                 //email validation
@@ -58,9 +54,13 @@ public class ValidatorServiceImpl implements ValidatorService {
                     throw new ApplicationException(HttpStatus.BAD_REQUEST,
                             "Email field can't be empty");
                 }
-                if (accountRepository.validateAccount(email) != null) {
-                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
+                if (accountRepository.getByEmail(email) != null) {
+                    throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
                             "This email is already in use");
+                }
+                if(CollectionUtils.isEmpty(request.getAuthorities())) {
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
+                            "You should specify at least one authority!");
                 }
                 validateAccountFields(request, true);
                 break;
@@ -69,6 +69,14 @@ public class ValidatorServiceImpl implements ValidatorService {
                 break;
             default:
                 throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unsupported operation");
+        }
+        if(CollectionUtils.isNotEmpty(request.getAuthorities())) {
+            for(String authority : request.getAuthorities()) {
+                if(!isEnumValid(authority, AuthorityName.class)) {
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST,
+                            "Incorrect authority type");
+                }
+            }
         }
     }
 
@@ -114,7 +122,7 @@ public class ValidatorServiceImpl implements ValidatorService {
             case CREATE:
                 if(request.getClient() == null) {
                     throw new ApplicationException(
-                            HttpStatus.BAD_REQUEST,
+                            HttpStatus.INTERNAL_SERVER_ERROR,
                             "There is no client assigned for this order!");
                 }
                 validateClientFields(request.getClient());
@@ -144,7 +152,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateEntityNotNull(BaseEntity entity, Class entityClass) {
         if (Objects.isNull(entity)) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST,
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Could not find " + entityClass.getSimpleName() + " in database or failed to retrieve it");
         }
     }

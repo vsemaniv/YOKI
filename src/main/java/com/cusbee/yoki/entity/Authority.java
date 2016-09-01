@@ -36,6 +36,13 @@ public class Authority implements GrantedAuthority {
 	@JsonIgnore
 	private List<Account> users;
 
+	public Authority() {
+	}
+
+	public Authority(AuthorityName name) {
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}

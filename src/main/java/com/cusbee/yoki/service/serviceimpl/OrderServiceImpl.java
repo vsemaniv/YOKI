@@ -18,7 +18,6 @@ import com.cusbee.yoki.dao.OrderDao;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishQuantityModel;
 import com.cusbee.yoki.model.OrderModel;
-import com.cusbee.yoki.utils.ErrorCodes;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -34,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private MessagingService messagingService;
 
     @Autowired
     private CourierDetailsService courierService;
@@ -70,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
             Client client = clientService.get(clientId);
             return repository.getOrderHistory(clientId);
         } else {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST,
+            throw new ApplicationException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "You should specify at least one of the following: both dates or client ID");
         }
     }
@@ -99,12 +101,6 @@ public class OrderServiceImpl implements OrderService {
                 order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
                 if(request.getCourierId() != null) {
                     order.setCourierDetails(courierService.get(request.getCourierId()));
-                }
-                if(request.getTimeToTake() != null){
-                	order.getTimeToTake().setTime(request.getTimeToTake());
-                }
-                if(request.getTimeToDeliver() != null){
-                	order.getTimeToDeliver().setTime(request.getTimeToDeliver());
                 }
                 if(request.getTimeTaken() != null){
                     order.getTimeTaken().setTime(request.getTimeTaken());
@@ -148,11 +144,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order assignCourier(OrderModel request) {
+    public Order assignCourierToOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
-        order.setCourierDetails(courierService.get(request.getCourierId()));
-        return dao.save(order);
+        Date timeToTake = request.getTimeToTake();
+        Date timeToDeliver = request.getTimeToDeliver();
+        validatorService.validateRequestIdNotNull(request.getCourierId(), CourierDetails.class);
+        CourierDetails courier = courierService.get(request.getCourierId());
+        if(timeToTake != null && timeToDeliver != null){
+            order.getTimeToTake().setTime(timeToTake);
+            order.getTimeToDeliver().setTime(timeToDeliver);
+            order.setCourierDetails(courier);
+            dao.save(order);
+            messagingService.notifyCourier(courier, timeToTake, timeToDeliver);
+            return order;
+        } else {
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to take order and time to deliver order should not be empty");
+        }
     }
 
     @Override

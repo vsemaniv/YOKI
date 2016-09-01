@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishModel;
-import com.cusbee.yoki.utils.ErrorCodes;
 
 @Service
 @Transactional
@@ -85,7 +84,7 @@ public class DishServiceImpl implements DishService {
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
-        setDishImageList(dish, request.getImageLinks());
+        setDishImageList(dish, request.getImages());
         return dao.save(dish);
     }
 

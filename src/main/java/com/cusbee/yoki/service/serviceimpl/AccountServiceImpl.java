@@ -9,10 +9,10 @@ import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.enums.AuthorityName;
 import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,6 @@ import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.AccountModel;
 import com.cusbee.yoki.repositories.AccountRepository;
 import com.cusbee.yoki.service.AccountService;
-import com.cusbee.yoki.utils.ErrorCodes;
 
 /**
  * @author Dmytro Khodan
@@ -80,12 +79,13 @@ public class AccountServiceImpl implements AccountService {
      */
     @Transactional
     public Account saveAccount(AccountModel request, CrudOperation operation) {
+        validatorService.validateAccountSaveRequest(request, operation);
         Account account;
         switch (operation) {
             case CREATE:
                 account = new Account();
                 account.setPassword(encryptPassword(request.getNewPassword()));
-                account.setAuthorities(new ArrayList<Authority>(request.getAuthorities()));
+                setAuthorities(account, request.getAuthorities());
                 setCommonAccountFields(account, request);
                 account.setEnabled(Boolean.TRUE);
                 if(createCourierDetailsIfRequired(account)) {
@@ -96,6 +96,9 @@ public class AccountServiceImpl implements AccountService {
                 account = get(request.getId());
                 if (StringUtils.isNotEmpty(request.getNewPassword()) && oldPasswordIsCorrect(account.getPassword(), request.getOldPassword())) {
                     account.setPassword(encryptPassword(request.getNewPassword()));
+                }
+                if(CollectionUtils.isNotEmpty(request.getAuthorities())) {
+                    setAuthorities(account, request.getAuthorities());
                 }
                 setCommonAccountFields(account, request);
                 break;
@@ -160,6 +163,18 @@ public class AccountServiceImpl implements AccountService {
         account.setEmail(request.getEmail());
         account.setFirstname(request.getFirstname());
         account.setLastname(request.getLastname());
+    }
+
+    private void setAuthorities(Account account, List<String> authorityNames) {
+        List<Authority> authorityList = new ArrayList<>();
+        for(String authorityName : authorityNames) {
+            if(validatorService.isEnumValid(authorityName, AuthorityName.class)) {
+                authorityList.add(new Authority(AuthorityName.valueOf(authorityName)));
+            } else {
+                throw new ApplicationException(HttpStatus.BAD_REQUEST, "Incorrect authority name");
+            }
+        }
+        account.setAuthorities(authorityList);
     }
 
     private boolean createCourierDetailsIfRequired(Account account) {

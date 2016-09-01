@@ -5,9 +5,6 @@ import java.util.List;
 
 public class DishModel implements RequestModel, Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -17,12 +14,12 @@ public class DishModel implements RequestModel, Serializable {
 	private Double price;
 	private Long categoryId;
 
-	private List<String> imageLinks;
+	private List<String> images;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Double price, String description, Long category_id,
-					 String type, List<String> imageLinks) {
+					 String type, List<String> images) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,7 +27,7 @@ public class DishModel implements RequestModel, Serializable {
 		this.description = description;
 		this.categoryId = category_id;
 		this.type = type;
-		this.imageLinks = imageLinks;
+		this.images = images;
 	}
 
 	@Override
@@ -82,11 +79,11 @@ public class DishModel implements RequestModel, Serializable {
 		this.categoryId = categoryId;
 	}
 
-	public List<String> getImageLinks() {
-		return imageLinks;
+	public List<String> getImages() {
+		return images;
 	}
 
-	public void setImageLinks(List<String> imageLinks) {
-		this.imageLinks = imageLinks;
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 }

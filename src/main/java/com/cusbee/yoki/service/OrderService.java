@@ -24,7 +24,7 @@ public interface OrderService {
 
 	Order declineOrder(OrderModel request);
 
-	Order assignCourier(OrderModel request);
+	Order assignCourierToOrder(OrderModel request);
 	
 	Order saveOrderStatus(Long id, OrderStatus status);
 	

@@ -1,5 +1,8 @@
 package com.cusbee.yoki.service;
 
+import com.cusbee.yoki.entity.CourierDetails;
+import java.util.Date;
+
 public interface MessagingService {
-    boolean sendPushNotification(String token, String message);
+    void notifyCourier(CourierDetails courier, Date timeToTake, Date timeToDeliver);
 }

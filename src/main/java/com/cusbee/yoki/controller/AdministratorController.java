@@ -1,14 +1,10 @@
 package com.cusbee.yoki.controller;
 
 import com.cusbee.yoki.dto.YokiResult;
-import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.Order;
-import com.cusbee.yoki.entity.PushNotificationModel;
-import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.model.OrderModel;
 import com.cusbee.yoki.service.AdministratorService;
-import com.cusbee.yoki.service.MessagingService;
 import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 
@@ -28,9 +24,6 @@ public class AdministratorController {
 
     @Autowired
     private AdministratorService service;
-
-    @Autowired
-    private MessagingService messagingService;
 
     @RequestMapping(value = "getAllOrders", method = RequestMethod.GET)
     public List<Order> getAllOrders() {
@@ -63,7 +56,7 @@ public class AdministratorController {
 
     @RequestMapping(value = "setOrderToCourier", method = RequestMethod.POST)
     public YokiResult<Order> setOrderToCourier(@RequestBody OrderModel request) {
-        Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
+        Order order = orderService.assignCourierToOrder(request);
         return new YokiResult<>(HttpStatus.OK, "Courier was successfully assigned to order", order);
     }
 
@@ -82,13 +75,5 @@ public class AdministratorController {
     @RequestMapping(value = "courierOnPlace", method = RequestMethod.POST)
     public YokiResult courierOnPlace(@RequestBody IdModel courierIdModel) {
         return new YokiResult<>(HttpStatus.OK, "Courier is now working", service.manageCourierWorkTime(courierIdModel.getId(), true));
-    }
-
-    @RequestMapping(value = "sendPushNotification", method = RequestMethod.POST)
-    public YokiResult sendPushNotification(@RequestBody PushNotificationModel notification) {
-        boolean success = messagingService.sendPushNotification(notification.getToken(), notification.getMessage());
-        return success ?
-                new YokiResult(HttpStatus.OK, "Notification has been sent successfully", null) :
-                new YokiResult(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send notification. See server logs for details", null);
     }
 }

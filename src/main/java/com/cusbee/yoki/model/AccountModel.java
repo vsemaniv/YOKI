@@ -1,12 +1,9 @@
 package com.cusbee.yoki.model;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.cusbee.yoki.entity.Authority;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,10 +19,9 @@ public class AccountModel implements RequestModel {
 	private String lastname;
 	@JsonIgnore
 	private Boolean enabled;
-	private String authority;
 	@JsonIgnore
 	private Date lastPasswordReset;
-	private List<Authority> authorities;
+	private List<String> authorities;
 	@JsonIgnore
 	private Boolean accountNonExpired;
 	@JsonIgnore
@@ -102,19 +98,11 @@ public class AccountModel implements RequestModel {
 		this.enabled = enabled;
 	}
 
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
-
-	public List<Authority> getAuthorities() {
+	public List<String> getAuthorities() {
 		return authorities;
 	}
 
-	public void setAuthorities(List<Authority> authorities) {
+	public void setAuthorities(List<String> authorities) {
 		this.authorities = authorities;
 	}
 

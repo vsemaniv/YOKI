@@ -1,5 +1,7 @@
 package com.cusbee.yoki.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ public class DishImage implements Serializable {
     private String link;
 
     @ManyToOne
+    @JsonIgnore
     private Dish dish;
 
     public DishImage(String link, Dish dish) {
