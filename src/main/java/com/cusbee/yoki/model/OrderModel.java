@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,14 +20,10 @@ public class OrderModel implements RequestModel, Serializable {
     private Long courierId;
     private String status;
     private String message;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timeToTake;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timeToDeliver;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timeTaken;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timeDelivered;
+    private String timeToTake;
+    private String timeToDeliver;
+    private String timeTaken;
+    private String timeDelivered;
 
     @Override
     public Long getId() {
@@ -85,35 +82,35 @@ public class OrderModel implements RequestModel, Serializable {
         this.message = message;
     }
 
-    public Date getTimeToTake() {
+    public String getTimeToTake() {
         return timeToTake;
     }
 
-    public void setTimeToTake(Date timeToTake) {
+    public void setTimeToTake(String timeToTake) {
         this.timeToTake = timeToTake;
     }
 
-    public Date getTimeToDeliver() {
+    public String getTimeToDeliver() {
         return timeToDeliver;
     }
 
-    public void setTimeToDeliver(Date timeToDeliver) {
+    public void setTimeToDeliver(String timeToDeliver) {
         this.timeToDeliver = timeToDeliver;
     }
 
-    public Date getTimeTaken() {
+    public String getTimeTaken() {
         return timeTaken;
     }
 
-    public void setTimeTaken(Date timeTaken) {
+    public void setTimeTaken(String timeTaken) {
         this.timeTaken = timeTaken;
     }
 
-    public Date getTimeDelivered() {
+    public String getTimeDelivered() {
         return timeDelivered;
     }
 
-    public void setTimeDelivered(Date timeDelivered) {
+    public void setTimeDelivered(String timeDelivered) {
         this.timeDelivered = timeDelivered;
     }
 }

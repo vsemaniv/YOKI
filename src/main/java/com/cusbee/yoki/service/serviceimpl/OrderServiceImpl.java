@@ -9,6 +9,7 @@ import com.cusbee.yoki.model.ClientModel;
 import com.cusbee.yoki.repositories.OrderRepository;
 import com.cusbee.yoki.service.*;
 
+import com.cusbee.yoki.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,10 +104,10 @@ public class OrderServiceImpl implements OrderService {
                     order.setCourierDetails(courierService.get(request.getCourierId()));
                 }
                 if(request.getTimeTaken() != null){
-                    order.getTimeTaken().setTime(request.getTimeTaken());
+                    order.setTimeTaken(DateUtil.getCalendar(request.getTimeTaken()));
                 }
                 if(request.getTimeDelivered() != null){
-                	order.getTimeDelivered().setTime(request.getTimeDelivered());
+                	order.setTimeDelivered(DateUtil.getCalendar(request.getTimeDelivered()));
                 }
                 if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
                     order.setStatus(OrderStatus.valueOf(request.getStatus()));
@@ -147,15 +148,15 @@ public class OrderServiceImpl implements OrderService {
     public Order assignCourierToOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
-        Date timeToTake = request.getTimeToTake();
-        Date timeToDeliver = request.getTimeToDeliver();
+        Calendar timeToTake = DateUtil.getCalendar(request.getTimeToTake());
+        Calendar timeToDeliver = DateUtil.getCalendar(request.getTimeToDeliver());
         CourierDetails courier = courierService.get(request.getCourierId());
         if(timeToTake != null && timeToDeliver != null){
-            order.getTimeToTake().setTime(timeToTake);
-            order.getTimeToDeliver().setTime(timeToDeliver);
+            order.setTimeToTake(DateUtil.getCalendar(request.getTimeToTake()));
+            order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
             order.setCourierDetails(courier);
             dao.save(order);
-            messagingService.notifyCourier(courier, timeToTake, timeToDeliver);
+            messagingService.notifyCourier(courier, timeToTake.getTime(), timeToDeliver.getTime());
             return order;
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to take order and time to deliver order should not be empty");

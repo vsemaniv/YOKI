@@ -35,7 +35,7 @@ public class PosterWriteOffModel {
 
         public WriteOff(Integer storageId) {
             this.storageId = storageId;
-            date = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         }
 
         public String getDate() {
