@@ -43,15 +43,14 @@ public class AdministratorController {
     }
 
     @RequestMapping(value = "proceedToCooking", method = RequestMethod.POST)
-    public String sendToCooking(@RequestBody IdModel idModel) {
+    public YokiResult<Order> sendToCooking(@RequestBody IdModel idModel) {
         service.acceptIncomingKitchenOrder(idModel.getId());
-        return "Status success updated";
+        return new YokiResult<>(HttpStatus.OK, "Order was successfully declined", null);
     }
 
     @RequestMapping(value = "declineOrder", method = RequestMethod.POST)
-    public String declineOrder(@RequestBody OrderModel orderModel) {
-        orderService.declineOrder(orderModel);
-        return "Order was successfully declined";
+    public YokiResult<Order> declineOrder(@RequestBody OrderModel orderModel) {
+        return new YokiResult<>(HttpStatus.OK, "Order was successfully declined", orderService.declineOrder(orderModel));
     }
 
     @RequestMapping(value = "setOrderToCourier", method = RequestMethod.POST)
