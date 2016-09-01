@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class OrderModel implements RequestModel, Serializable {
 
@@ -18,9 +19,13 @@ public class OrderModel implements RequestModel, Serializable {
     private Long courierId;
     private String status;
     private String message;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timeToTake;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timeToDeliver;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timeTaken;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timeDelivered;
 
     @Override
