@@ -60,9 +60,9 @@ public class DishController {
 
     @ApiOperation(value = "get dish")
     @RequestMapping(value = "get", method = RequestMethod.GET)
-    public YokiResult<Dish> get(@RequestBody IdModel idModel) {
-        validatorService.validateRequestIdNotNull(idModel.getId(), Dish.class);
-        return new YokiResult<Dish>(HttpStatus.OK, STATUS, repository.findById(idModel.getId()));
+    public YokiResult<Dish> get(@RequestParam Long id) {
+        validatorService.validateRequestIdNotNull(id, Dish.class);
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, repository.findById(id));
     }
 
     @ApiOperation(value = "get all dishes")
