@@ -2,25 +2,21 @@ package com.cusbee.yoki.controller;
 
 import java.util.List;
 
+import com.cusbee.yoki.model.IdModel;
+import com.cusbee.yoki.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cusbee.yoki.dto.YokiResult;
-import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.service.DishService;
-import com.cusbee.yoki.service.NullPointerService;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -37,7 +33,7 @@ public class DishController {
     private DishService dishService;
 
     @Autowired
-    private NullPointerService nullPointerService;
+    private ValidatorService validatorService;
 
     @Autowired
     private DishRepository repository;
@@ -55,17 +51,18 @@ public class DishController {
     }
 
     @ApiOperation(value = "remove dish")
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.POST)
-    public YokiResult<Dish> remove(@PathVariable("id") Long id) {
-        dishService.remove(id);
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public YokiResult<Dish> remove(@RequestBody IdModel idModel) {
+        validatorService.validateRequestIdNotNull(idModel.getId(), Dish.class);
+        dishService.remove(idModel.getId());
         return new YokiResult<Dish>(HttpStatus.OK, STATUS, null);
     }
 
     @ApiOperation(value = "get dish")
-    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
-    public YokiResult<Dish> get(@PathVariable("id") Long id) {
-        nullPointerService.isNull(id);
-        return new YokiResult<Dish>(HttpStatus.OK, STATUS, repository.findById(id));
+    @RequestMapping(value = "get", method = RequestMethod.GET)
+    public YokiResult<Dish> get(@RequestBody IdModel idModel) {
+        validatorService.validateRequestIdNotNull(idModel.getId(), Dish.class);
+        return new YokiResult<Dish>(HttpStatus.OK, STATUS, repository.findById(idModel.getId()));
     }
 
     @ApiOperation(value = "get all dishes")
@@ -74,20 +71,17 @@ public class DishController {
         return repository.findAll();
     }
 
-    @ApiOperation(value = "deactive dish")
-    @RequestMapping(value = "deactivate/{id}", method = RequestMethod.POST)
-    public YokiResult<Dish> deactivate(@PathVariable("id") Long id) {
-        nullPointerService.isNull(id);
-        Dish dish = dishService.processActivation(id, false);
-
+    @ApiOperation(value = "deactivate dish")
+    @RequestMapping(value = "deactivate", method = RequestMethod.POST)
+    public YokiResult<Dish> deactivate(@RequestBody IdModel idModel) {
+        Dish dish = dishService.processActivation(idModel.getId(), false);
         return new YokiResult<Dish>(HttpStatus.OK, STATUS, dish);
     }
 
     @ApiOperation(value = "activate dish")
-    @RequestMapping(value = "activate/{id}", method = RequestMethod.POST)
-    public YokiResult<Dish> activate(@PathVariable("id") Long id) {
-        nullPointerService.isNull(id);
-        Dish dish = dishService.processActivation(id, true);
+    @RequestMapping(value = "activate", method = RequestMethod.POST)
+    public YokiResult<Dish> activate(@RequestBody IdModel idModel) {
+        Dish dish = dishService.processActivation(idModel.getId(), true);
         return new YokiResult<Dish>(HttpStatus.OK, STATUS, dish);
     }
 }
