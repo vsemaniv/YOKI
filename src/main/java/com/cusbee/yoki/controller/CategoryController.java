@@ -1,6 +1,7 @@
 package com.cusbee.yoki.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,8 +62,8 @@ public class CategoryController {
 	}
 	
 	@ApiOperation(value="get all dishes from category")
-	@RequestMapping(value="getAllDisheshFromCategory/{id}", method=RequestMethod.GET)
-	public List<Dish> getAllDishes(@PathVariable("id") Long id) {
+	@RequestMapping(value="getAllDishesFromCategory/{id}", method=RequestMethod.GET)
+	public Set<Dish> getAllDishes(@PathVariable("id") Long id) {
 		return categoryService.getAllDishes(id);
 	}
 	

@@ -3,6 +3,7 @@ package com.cusbee.yoki.service.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.service.ActivationService;
@@ -60,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional
 	public void remove(Long id) {
 		Category category = get(id);
-		List<Dish> dishes = category.getDishes();
+		Set<Dish> dishes = category.getDishes();
 		for (Dish dish : dishes) {
 			dish.setCategory(null);
 		}
@@ -90,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public List<Dish> getAllDishes(Long id) {
+	public Set<Dish> getAllDishes(Long id) {
 		Category category = get(id);
 		return category.getDishes();
 	}
@@ -113,7 +114,7 @@ public class CategoryServiceImpl implements CategoryService {
 		for (DishModel model : request.getDishes()) {
 			Dish dish = dishDao.get(model.getId());
 
-			List<Dish> dishList = category.getDishes();
+			Set<Dish> dishList = category.getDishes();
 			if(dishList.contains(dish)) {
 				//TODO log that this category already contains dish
 			} else {
@@ -137,7 +138,7 @@ public class CategoryServiceImpl implements CategoryService {
 		for (DishModel dish : request.getDishes()) {
 			ids.add(dish.getId());
 		}
-		List<Dish> dishes = category.getDishes();
+		Set<Dish> dishes = category.getDishes();
 		for (Dish dish : dishes) {
 			for (Long id : ids) {
 				if (dish.getId().equals(id)) {

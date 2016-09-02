@@ -1,6 +1,7 @@
 package com.cusbee.yoki.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.cusbee.yoki.entity.Category;
 import com.cusbee.yoki.entity.enums.CrudOperation;
@@ -19,7 +20,7 @@ public interface CategoryService {
 	Category saveCategory(CategoryModel request, CrudOperation status)
 			throws BaseException;
 	
-	List<Dish> getAllDishes(Long id);
+	Set<Dish> getAllDishes(Long id);
 	
 	Category removeDishFromCategory(CategoryModel request) ;
 

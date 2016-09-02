@@ -2,6 +2,7 @@ package com.cusbee.yoki.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ public class Category implements Activatable, Serializable{
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="category")
 	@Fetch(FetchMode.JOIN)
 	@JsonIgnore
-	private List<Dish> dishes; 
+	private Set<Dish> dishes;
 	
 	@Column
 	@Type(type = "org.hibernate.type.YesNoType")
@@ -63,11 +64,11 @@ public class Category implements Activatable, Serializable{
 		this.enabled = enabled;
 	}
 
-	public List<Dish> getDishes() {
+	public Set<Dish> getDishes() {
 		return dishes;
 	}
 
-	public void setDishes(List<Dish> dishes) {
+	public void setDishes(Set<Dish> dishes) {
 		this.dishes = dishes;
 	}
 

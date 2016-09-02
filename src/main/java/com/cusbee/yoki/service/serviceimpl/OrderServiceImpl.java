@@ -94,7 +94,6 @@ public class OrderServiceImpl implements OrderService {
             case CREATE:
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
-                order.setStatus(OrderStatus.FRESH);
                 order.setClient(parseClient(request.getClient(), new Client()));
                 break;
             case UPDATE:
@@ -109,13 +108,13 @@ public class OrderServiceImpl implements OrderService {
                 if(request.getTimeDelivered() != null){
                 	order.setTimeDelivered(DateUtil.getCalendar(request.getTimeDelivered()));
                 }
-                if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
-                    order.setStatus(OrderStatus.valueOf(request.getStatus()));
-                }
                 break;
             default:
                 throw new ApplicationException(HttpStatus.BAD_REQUEST,
                         "Invalid Request");
+        }
+        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+            order.setStatus(OrderStatus.valueOf(request.getStatus()));
         }
         if(request.getDishes() != null) {
             List<DishQuantityModel> dishModels = request.getDishes();
