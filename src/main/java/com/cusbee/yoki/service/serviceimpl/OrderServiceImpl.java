@@ -155,7 +155,7 @@ public class OrderServiceImpl implements OrderService {
             order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
             order.setCourierDetails(courier);
             dao.save(order);
-            messagingService.notifyCourier(courier, timeToTake.getTime(), timeToDeliver.getTime());
+            messagingService.notifyCourier(courier, order);
             return order;
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to take order and time to deliver order should not be empty");

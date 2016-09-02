@@ -1,8 +1,8 @@
 package com.cusbee.yoki.service;
 
 import com.cusbee.yoki.entity.CourierDetails;
-import java.util.Date;
+import com.cusbee.yoki.entity.Order;
 
 public interface MessagingService {
-    void notifyCourier(CourierDetails courier, Date timeToTake, Date timeToDeliver);
+    void notifyCourier(CourierDetails courier, Order order);
 }
