@@ -177,7 +177,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getCurrentOrderForCourier(Long courierId) {
         validatorService.validateRequestIdNotNull(courierId, CourierDetails.class);
-        return repository.getActualOrderForCourier(courierId);
+        Order order = repository.getActualOrderForCourier(courierId);
+        if(order == null) {
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "There is no pending order for this courier");
+        }
+        return order;
     }
 
     /**

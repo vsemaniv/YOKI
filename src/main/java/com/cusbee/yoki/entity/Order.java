@@ -40,11 +40,12 @@ public class Order implements BaseEntity, Serializable {
     @Type(type = "org.hibernate.type.YesNoType")
     private Boolean pending;
 
-    @Column
+    @Column(name = "written_off")
     @Type(type = "org.hibernate.type.YesNoType")
     private Boolean writtenOff;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "courier_id")
     private CourierDetails courierDetails;
 
     @ManyToOne(cascade = CascadeType.ALL)
