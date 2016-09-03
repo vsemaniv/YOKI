@@ -2,10 +2,7 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.model.OrderModel;
 import com.cusbee.yoki.service.*;
-import com.cusbee.yoki.utils.ErrorCodes;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -57,30 +54,16 @@ public class AdministratorServiceImpl implements AdministratorService {
     	dao.save(order);
     }
 
-	@Override
-	public void declineOrder(OrderModel request) {
-		Order order = orderService.get(request.getId());
-		if(StringUtils.isNotEmpty(request.getMessage())) {
-			order.setMessage(request.getMessage());
-		} else {
-			throw new ApplicationException(HttpStatus.BAD_REQUEST,
-					"Decline message should not be empty!");
-		}
-		if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
-			order.setStatus(OrderStatus.valueOf(request.getStatus()));
-		} else {
-			throw new ApplicationException(HttpStatus.BAD_REQUEST,
-					"Invalid order status");
-		}
-		dao.save(order);
-	}
-
-	public Order passOrderToCourier(Long orderId, Long courierId) {
+	public Order passOrderToCourier(Long orderId) {
 		Order order = orderService.get(orderId);
-		CourierDetails courierDetails = courierService.updateStatus(courierId, CourierDetails.CourierStatus.BUSY);
+		CourierDetails courierDetails = order.getCourierDetails();
+		if(courierDetails == null) {
+			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "You should assign courier before passing it to him!");
+		} else {
+			courierService.updateStatus(courierDetails.getId(), CourierDetails.CourierStatus.BUSY);
+		}
 		order.setStatus(OrderStatus.DELIVERY);
 		order.setTimeTaken(Calendar.getInstance());
-		order.setCourierDetails(courierDetails);
 		return orderDao.save(order);
 	}
 

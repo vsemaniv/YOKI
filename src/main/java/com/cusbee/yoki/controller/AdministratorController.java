@@ -60,9 +60,9 @@ public class AdministratorController {
     }
 
     @RequestMapping(value = "passOrderToCourier", method = RequestMethod.POST)
-    public YokiResult passOrderToCourier(@RequestBody OrderModel orderModel) {
+    public YokiResult passOrderToCourier(@RequestBody IdModel idModel) {
         // set status delivery and update order time when courier get order and set courier is busy
-        Order order = service.passOrderToCourier(orderModel.getId(), orderModel.getCourierId());
+        Order order = service.passOrderToCourier(idModel.getId());
         return new YokiResult<>(HttpStatus.OK, "Order was successfully passed to courier", order);
     }
 

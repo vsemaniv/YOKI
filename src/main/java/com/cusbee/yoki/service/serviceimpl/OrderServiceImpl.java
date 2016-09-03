@@ -140,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Decline message should not be empty!");
         }
+        releaseCourierIfExist(order);
         return dao.save(order);
     }
 
@@ -149,10 +150,12 @@ public class OrderServiceImpl implements OrderService {
         Order order = get(request.getId());
         Calendar timeToTake = DateUtil.getCalendar(request.getTimeToTake());
         Calendar timeToDeliver = DateUtil.getCalendar(request.getTimeToDeliver());
+        releaseCourierIfExist(order);
         CourierDetails courier = courierService.get(request.getCourierId());
+        courier.setStatus(CourierDetails.CourierStatus.BUSY);
         if(timeToTake != null && timeToDeliver != null){
-            order.setTimeToTake(DateUtil.getCalendar(request.getTimeToTake()));
-            order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
+            order.setTimeToTake(timeToTake);
+            order.setTimeToDeliver(timeToDeliver);
             order.setCourierDetails(courier);
             dao.save(order);
             messagingService.notifyCourier(courier, order);
@@ -208,5 +211,12 @@ public class OrderServiceImpl implements OrderService {
             amount += dishService.get(dishPosition.getDishId()).getPrice() * dishPosition.getQuantity();
         }
         return amount;
+    }
+
+    private void releaseCourierIfExist(Order order) {
+        CourierDetails currentCourier = order.getCourierDetails();
+        if(currentCourier != null && currentCourier.getStatus() != CourierDetails.CourierStatus.OUT) {
+            courierService.updateStatus(currentCourier.getId(), CourierDetails.CourierStatus.FREE);
+        }
     }
 }
