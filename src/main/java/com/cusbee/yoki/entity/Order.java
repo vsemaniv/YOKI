@@ -36,11 +36,10 @@ public class Order implements BaseEntity, Serializable {
 
     //shows if order is actual for courier.
     @Column
-    @JsonIgnore
-    private boolean pending;
+    private Boolean pending = Boolean.FALSE;
 
     @Column(name = "written_off")
-    private boolean writtenOff;
+    private Boolean writtenOff = Boolean.FALSE;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private CourierDetails courierDetails;

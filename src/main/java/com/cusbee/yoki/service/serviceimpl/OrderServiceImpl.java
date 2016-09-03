@@ -174,6 +174,12 @@ public class OrderServiceImpl implements OrderService {
         return dao.save(order);
     }
 
+    @Override
+    public Order getCurrentOrderForCourier(Long courierId) {
+        validatorService.validateRequestIdNotNull(courierId, CourierDetails.class);
+        return repository.getActualOrderForCourier(courierId);
+    }
+
     /**
      * Rewrites all dishes in the order.
      * At first this method clears list of dishes making it empty.

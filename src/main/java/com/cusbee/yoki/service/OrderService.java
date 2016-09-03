@@ -27,5 +27,7 @@ public interface OrderService {
 	Order assignCourierToOrder(OrderModel request);
 	
 	Order saveOrderStatus(Long id, OrderStatus status);
+
+	Order getCurrentOrderForCourier(Long courierId);
 	
 }

@@ -8,8 +8,10 @@ import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.CourierModel;
 import com.cusbee.yoki.model.IdModel;
+import com.cusbee.yoki.repositories.OrderRepository;
 import com.cusbee.yoki.service.CourierDetailsService;
 import com.cusbee.yoki.service.OrderService;
+import com.cusbee.yoki.service.ValidatorService;
 import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +54,12 @@ public class CourierController {
     public YokiResult<CourierDetails> saveMessagingToken(@RequestBody CourierModel request) {
         CourierDetails courierDetails = courierService.saveCourierDetails(request);
         return new YokiResult<>(HttpStatus.OK, "Token was successfully saved", courierDetails);
+    }
+
+    //takes pending order for particular courier
+    @RequestMapping(value = "getPendingOrder", method = RequestMethod.POST)
+    public YokiResult<Order> getPendingOrder(@RequestBody IdModel courierIdModel) {
+        Order order = orderService.getCurrentOrderForCourier(courierIdModel.getId());
+        return new YokiResult<>(HttpStatus.OK, "Token was successfully saved", order);
     }
  }
