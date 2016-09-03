@@ -29,6 +29,6 @@ public interface OrderRepository  extends JpaRepository<Order, Long>{
 	@Query(value="SELECT o.* FROM orders o WHERE o.client_phone = ?1", nativeQuery=true)
 	List<Order> getOrderHistory(String client);
 
-	@Query()
+	@Query(value="SELECT o.* FROM orders o LIMIT 1", nativeQuery = true)
 	Order getActualOrderForCourier(Long courierId);
 }
