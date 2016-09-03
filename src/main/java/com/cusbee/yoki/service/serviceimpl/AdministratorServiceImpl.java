@@ -59,8 +59,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 		CourierDetails courierDetails = order.getCourierDetails();
 		if(courierDetails == null) {
 			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "You should assign courier before passing it to him!");
-		} else {
-			courierService.updateStatus(courierDetails.getId(), CourierDetails.CourierStatus.BUSY);
 		}
 		order.setStatus(OrderStatus.DELIVERY);
 		order.setTimeTaken(Calendar.getInstance());
