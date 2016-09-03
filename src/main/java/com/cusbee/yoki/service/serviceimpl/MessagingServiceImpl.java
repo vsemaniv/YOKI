@@ -24,7 +24,8 @@ public class MessagingServiceImpl implements MessagingService {
     //number of attempts to resend notification if previous attempt failed
     private static final int retries = 5;
 
-    private static final String TITLE = "Час забирати замовлення!";
+    private static final String DELIVERY_TITLE = "Час забирати замовлення!";
+    private static final String REJECTED_TITLE = "Скасоване замовлення!";
     private static final String MESSAGE_PATTERN = "Прибуття на базу: %1$tR.\r\n Доставити до: %2$tR.";
 
     @Override
@@ -34,23 +35,33 @@ public class MessagingServiceImpl implements MessagingService {
             public void run() {
                 Date timeToTake = order.getTimeToTake().getTime();
                 Date timeToDeliver = order.getTimeToDeliver().getTime();
-                String token = courier.getMessagingToken();
-                if(StringUtils.isEmpty(token)) {
-                    throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Courier device is not registered for notifications!");
-                }
+                String token = getCourierToken(courier);
                 String message = String.format(MESSAGE_PATTERN, timeToTake, timeToDeliver);
-                sendPushNotification(token, message, order.getId());
+                sendPushNotification(token, message, order.getId(), false);
             }
         });
         courierNotifier.start();
-
     }
 
-    public void sendPushNotification(String token, String message, Long orderId) {
+    public void releaseCourier(final CourierDetails courier, final Order order) {
+        final String message = String.format("Замовлення номер %1d скасовано.", order.getId());
+        Thread courierNotifier = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = getCourierToken(courier);
+                sendPushNotification(token, message, order.getId(), true);
+            }
+        });
+        courierNotifier.start();
+    }
+
+
+    public void sendPushNotification(String token, String message, Long orderId, boolean declined) {
         Sender sender = new Sender(API_KEY);
         Message msg = new Message.Builder()
-                .addData("title", TITLE)
+                .addData("title", declined ? REJECTED_TITLE : DELIVERY_TITLE)
                 .addData("message", message)
+                .addData("decline", String.valueOf(declined))
                 .addData("order", orderId.toString())
                 .build();
         Result result;
@@ -64,6 +75,14 @@ public class MessagingServiceImpl implements MessagingService {
         } catch (Exception e) {
             LOG.error("Exception occurred : {}", e.getStackTrace());
         }
+    }
+
+    private String getCourierToken(CourierDetails courier) {
+        String token = courier.getMessagingToken();
+        if(StringUtils.isEmpty(token)) {
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Courier device is not registered for notifications!");
+        }
+        return token;
     }
 /*
     public static void main(String[] args) {

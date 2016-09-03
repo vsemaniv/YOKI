@@ -218,5 +218,6 @@ public class OrderServiceImpl implements OrderService {
         if(currentCourier != null && currentCourier.getStatus() != CourierDetails.CourierStatus.OUT) {
             courierService.updateStatus(currentCourier.getId(), CourierDetails.CourierStatus.FREE);
         }
+        messagingService.releaseCourier(currentCourier, order);
     }
 }
