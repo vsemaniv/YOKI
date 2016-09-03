@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table(name = "orders")
 @Entity
@@ -32,6 +33,11 @@ public class Order implements BaseEntity, Serializable {
 
     @Column(name = "cost")
     private Double cost;
+
+    //shows if order is actual for courier.
+    @Column
+    @JsonIgnore
+    private boolean pending;
 
     @Column(name = "written_off")
     private boolean writtenOff;
@@ -159,5 +165,13 @@ public class Order implements BaseEntity, Serializable {
 
     public void setWrittenOff(boolean writtenOff) {
         this.writtenOff = writtenOff;
+    }
+
+    public boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 }

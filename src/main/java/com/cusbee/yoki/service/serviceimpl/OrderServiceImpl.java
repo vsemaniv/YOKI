@@ -140,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Decline message should not be empty!");
         }
+        order.setPending(false);
         releaseCourierIfExist(order);
         return dao.save(order);
     }
@@ -156,6 +157,7 @@ public class OrderServiceImpl implements OrderService {
         if(timeToTake != null && timeToDeliver != null){
             order.setTimeToTake(timeToTake);
             order.setTimeToDeliver(timeToDeliver);
+            order.setPending(true);
             order.setCourierDetails(courier);
             dao.save(order);
             messagingService.notifyCourier(courier, order);

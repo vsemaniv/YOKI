@@ -1,4 +1,4 @@
-package com.cusbee.yoki.entity;
+package com.cusbee.yoki.model.notifications;
 
 /**
  * Created on 30.08.2016.
