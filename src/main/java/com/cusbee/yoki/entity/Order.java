@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 
 @Table(name = "orders")
 @Entity
@@ -36,10 +37,12 @@ public class Order implements BaseEntity, Serializable {
 
     //shows if order is actual for courier.
     @Column
-    private Boolean pending = Boolean.FALSE;
+    @Type(type = "org.hibernate.type.YesNoType")
+    private Boolean pending;
 
-    @Column(name = "written_off")
-    private Boolean writtenOff = Boolean.FALSE;
+    @Column
+    @Type(type = "org.hibernate.type.YesNoType")
+    private Boolean writtenOff;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private CourierDetails courierDetails;
