@@ -19,12 +19,7 @@ import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private static final String BASE_PATH = System.getProperty("home.dir") + "/images/dish";
-
-    static {
-        File file = new File(System.getProperty("home.dir")+"/images/dish");
-        file.mkdirs();
-    }
+    private static final String BASE_PATH = "/home/yoki/images/dish";
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
