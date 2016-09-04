@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private static final String BASE_PATH = "/root/projects/YOKI/images/dish";
+    private static final String BASE_PATH = System.getProperty("home.dir");
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
@@ -69,7 +69,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private File createNewImageFile() {
-        File file2 = new File("images/dish");
+        File file2 = new File("/images/dish");
         file2.mkdirs();
         StringBuilder sb = new StringBuilder(BASE_PATH)
                 .append(System.currentTimeMillis())
@@ -96,3 +96,5 @@ public class ImageServiceImpl implements ImageService {
         System.out.println(imagesFromServer);
     }*/
 }
+
+
