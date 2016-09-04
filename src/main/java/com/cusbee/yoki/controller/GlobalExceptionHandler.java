@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
     YokiResult defaultErrorHandler(ApplicationException ae) {
         LOG.error("Application exception occurred: {}", ae.getStackTrace());
         return new YokiResult(ae.getStatus() != null ? ae.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR,
-                ae.getMessage(), ae.getMessage());
+                ae.getMessage(), ae.getStackTrace());
+    }
+
+    @ExceptionHandler(value = {Exception.class})
+    @ResponseBody YokiResult commonErrorHandler(Exception e) {
+        LOG.error("Unexpected exception occurred: {}", e.getStackTrace());
+        return new YokiResult(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getStackTrace());
     }
 }
