@@ -13,7 +13,7 @@ import org.hibernate.annotations.Type;
 
 @Table(name = "dish")
 @Entity
-public class Dish implements Activatable, Serializable {
+public class Dish implements IdEntity, Activatable, Serializable {
 
     /**
      *

@@ -8,7 +8,6 @@ import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,9 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private ValidatorService validatorService;
@@ -84,7 +86,7 @@ public class DishServiceImpl implements DishService {
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
-        setDishImageList(dish, request.getImages());
+        handleImages(dish, request.getImages());
         return dao.save(dish);
     }
 
@@ -101,18 +103,15 @@ public class DishServiceImpl implements DishService {
                 DishType.valueOf(type.toUpperCase()) : DishType.ORDINARY;
     }
 
-    private void setDishImageList(Dish dish, List<String> imageLinks) {
-        if(CollectionUtils.isNotEmpty(imageLinks)) {
+    private void handleImages(Dish dish, List<String> images) {
+        if (CollectionUtils.isNotEmpty(images)) {
+            List<String> links = imageService.saveImagesToServer(images, dish);
             List<DishImage> dishImages = dish.getImages();
-            dishImages.clear();
-            for(String link : imageLinks) {
-                if(StringUtils.isNotEmpty(link)) {
-                    dishImages.add(new DishImage(link, dish));
-                } else {
-                    LOG.warn("Attempt to save empty link to image for Dish named {{}}", dish.getName());
-                }
+            for (String link : links) {
+                dishImages.add(new DishImage(link, dish));
             }
         }
-
     }
+
+
 }
