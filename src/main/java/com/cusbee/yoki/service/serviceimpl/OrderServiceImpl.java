@@ -227,7 +227,7 @@ public class OrderServiceImpl implements OrderService {
     private void releaseCourierIfExist(Order order) {
         CourierDetails currentCourier = order.getCourierDetails();
         if(currentCourier != null && currentCourier.getStatus() != CourierDetails.CourierStatus.OUT) {
-            courierService.updateStatus(currentCourier.getId(), CourierDetails.CourierStatus.FREE);
+            currentCourier.setStatus(CourierDetails.CourierStatus.FREE);
         }
         messagingService.releaseCourier(currentCourier, order);
     }
