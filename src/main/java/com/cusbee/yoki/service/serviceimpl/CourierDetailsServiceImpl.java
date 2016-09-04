@@ -104,8 +104,8 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
         CourierDetails courierDetails = order.getCourierDetails();
         order.setStatus(OrderStatus.DONE);
         order.setTimeDelivered(Calendar.getInstance());
-        order.setPending(false);
-        courierService.updateStatus(courierDetails.getId(), CourierDetails.CourierStatus.FREE);
+        order.setPending(Boolean.FALSE);
+        courierDetails.setStatus(CourierDetails.CourierStatus.FREE);
         return orderDao.save(order);
     }
 

@@ -95,6 +95,8 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setClient(parseClient(request.getClient(), new Client()));
+                order.setPending(Boolean.FALSE);
+                order.setWrittenOff(Boolean.FALSE);
                 break;
             case UPDATE:
                 order = get(request.getId());
@@ -140,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Decline message should not be empty!");
         }
-        order.setPending(false);
+        order.setPending(Boolean.FALSE);
         releaseCourierIfExist(order);
         return dao.save(order);
     }
@@ -157,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
         if(timeToTake != null && timeToDeliver != null){
             order.setTimeToTake(timeToTake);
             order.setTimeToDeliver(timeToDeliver);
-            order.setPending(true);
+            order.setPending(Boolean.TRUE);
             order.setCourierDetails(courier);
             dao.save(order);
             messagingService.notifyCourier(courier, order);
