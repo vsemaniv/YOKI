@@ -12,18 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private static final String BASE_PATH = "images/dish";
-
-    static {
-        File dirs = new File(BASE_PATH);
-        if(!dirs.exists()) dirs.mkdirs();
-    }
+    private static final String BASE_PATH = "~/projects/YOKI/images/dish";
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
