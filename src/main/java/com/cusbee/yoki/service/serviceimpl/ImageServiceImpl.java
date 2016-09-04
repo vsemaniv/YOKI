@@ -19,7 +19,11 @@ import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private static final String BASE_PATH = System.getProperty("home.dir");
+    private static final String BASE_PATH = System.getProperty("home.dir") + "/images/dish";
+
+    static {
+        File file = new File(System.getProperty("home.dir")+"/images/dish");
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
@@ -69,8 +73,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private File createNewImageFile() {
-        File file2 = new File("/images/dish");
-        file2.mkdirs();
         StringBuilder sb = new StringBuilder(BASE_PATH)
                 .append(System.currentTimeMillis())
                 .append(".png");
