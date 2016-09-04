@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private static final String BASE_PATH = "~/projects/YOKI/images/dish";
+    private static final String BASE_PATH = "/root/projects/YOKI/images/dish";
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
