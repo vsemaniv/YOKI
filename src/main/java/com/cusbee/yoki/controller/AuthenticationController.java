@@ -48,9 +48,6 @@ public class AuthenticationController {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
-	@Autowired
-	private AccountService userService;
-	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<AuthenticationResponse> authenticationRequest(@ApiModel(type = AuthenticationRequest.class, collection = false) @RequestBody AuthenticationRequest authenticationRequest){
 		

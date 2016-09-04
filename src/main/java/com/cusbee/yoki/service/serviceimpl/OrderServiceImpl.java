@@ -178,9 +178,6 @@ public class OrderServiceImpl implements OrderService {
     public Order getCurrentOrderForCourier(Long courierId) {
         validatorService.validateRequestIdNotNull(courierId, CourierDetails.class);
         Order order = repository.getActualOrderForCourier(courierId);
-        if(order == null) {
-            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "There is no pending order for this courier");
-        }
         return order;
     }
 
