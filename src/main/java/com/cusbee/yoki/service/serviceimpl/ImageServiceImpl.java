@@ -23,6 +23,7 @@ public class ImageServiceImpl implements ImageService {
 
     static {
         File file = new File(System.getProperty("home.dir")+"/images/dish");
+        file.mkdirs();
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
