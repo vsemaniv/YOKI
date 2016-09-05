@@ -4,6 +4,8 @@ import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.poster.*;
 import com.cusbee.yoki.service.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +18,7 @@ import java.util.List;
 public class PosterServiceImpl implements StorageService {
 
     private static final RestTemplate restTemplate = new RestTemplate();
+    private static final Logger LOG = LoggerFactory.getLogger(PosterServiceImpl.class);
 
     private static final String API = "https://cusbee.joinposter.com/api/";
 
@@ -36,7 +39,8 @@ public class PosterServiceImpl implements StorageService {
                 .queryParam("token", token)
                 .toUriString();
         WriteOffResponse response = restTemplate.postForObject(uriWithParams, entity, WriteOffResponse.class);
-        return response.getSuccess() == 1;
+        LOG.debug("call to" + uriWithParams, response);
+        return response.getSuccess() != null && response.getSuccess() == 1;
     }
 
     /**
@@ -56,8 +60,8 @@ public class PosterServiceImpl implements StorageService {
             for (PosterDish posterDish : posterDishes) {
                 if (posterDish.getName().equals(dishName)) {
                     writeOffList.add(new WriteOffDish(posterDish.getId(), posterDish.getType(), dishQuantity.getQuantity()));
+                    break;
                 }
-                break;
             }
             /*throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Could not find dish \"" + dishName + "\" in poster. Writeoff failed");*/
