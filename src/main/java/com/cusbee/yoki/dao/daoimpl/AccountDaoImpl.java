@@ -20,8 +20,7 @@ public class AccountDaoImpl implements AccountDao {
 	
 	@Override
 	public Account save(Account user) {
-		em.merge(user);
-		return user;
+		return em.merge(user);
 	}
 	
 	@Override

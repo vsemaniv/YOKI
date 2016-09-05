@@ -7,6 +7,7 @@ import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
+import com.cusbee.yoki.utils.ImageCache;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,7 +84,11 @@ public class DishServiceImpl implements DishService {
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
         handleImages(dish, request.getImages());
-        return dao.save(dish);
+        Dish savedDish = dao.save(dish);
+        if(CollectionUtils.isNotEmpty(request.getImages())) {
+            ImageCache.putToCache(savedDish.getId(), request.getImages());
+        }
+        return savedDish;
     }
 
     @Override

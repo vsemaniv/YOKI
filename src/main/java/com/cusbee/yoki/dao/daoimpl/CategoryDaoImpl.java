@@ -20,8 +20,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	
 	@Override
 	public Category save(Category category) {
-		em.merge(category);
-		return category;
+		return em.merge(category);
 	}
 
 	@Override

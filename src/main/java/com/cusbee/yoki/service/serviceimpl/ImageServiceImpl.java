@@ -1,19 +1,16 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-import com.cusbee.yoki.entity.Dish;
-import com.cusbee.yoki.entity.DishImage;
-import com.cusbee.yoki.entity.IdEntity;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.images.GetImageDTO;
 import com.cusbee.yoki.model.images.ImageDTO;
 import com.cusbee.yoki.service.ImageService;
+import com.cusbee.yoki.utils.ImageCache;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +24,13 @@ public class ImageServiceImpl implements ImageService {
     public List<ImageDTO> getImagesForDishes(List<GetImageDTO> dishes) {
         List<ImageDTO> imageDTOs = new ArrayList<>();
         for(GetImageDTO dish : dishes) {
-            List<String> imagesFromServer = getImagesFromServer(dish.getLinks());
-            imageDTOs.add(new ImageDTO(dish.getDishId(), imagesFromServer));
+            Long dishId = dish.getDishId();
+            if(ImageCache.cached(dishId)) {
+                imageDTOs.add(new ImageDTO(dishId, ImageCache.getLinks(dishId)));
+            } else {
+                List<String> imagesFromServer = getImagesFromServer(dish.getLinks());
+                imageDTOs.add(new ImageDTO(dishId, imagesFromServer));
+            }
         }
         return imageDTOs;
     }
@@ -50,6 +52,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public List<String> getImagesFromServer(List<String> links) {
+
         List<String> images = new ArrayList<>();
         for (String link : links) {
             File file = new File(link);

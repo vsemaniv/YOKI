@@ -19,8 +19,7 @@ public class DishDaoImpl implements DishDao {
 	private EntityManager em;
 	
 	public Dish save(Dish dish) {
-		em.merge(dish);
-		return dish;
+		return em.merge(dish);
 	}
 
 	@Override

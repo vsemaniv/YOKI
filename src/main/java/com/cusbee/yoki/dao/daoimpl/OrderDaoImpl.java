@@ -20,8 +20,7 @@ public class OrderDaoImpl implements OrderDao {
 	
 	@Override
 	public Order save(Order order) {
-		em.merge(order);
-		return order;
+		return em.merge(order);
 	}
 
 	@Override

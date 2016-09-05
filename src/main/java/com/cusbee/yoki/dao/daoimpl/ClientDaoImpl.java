@@ -20,8 +20,7 @@ public class ClientDaoImpl implements ClientDao{
 	
 	@Override
 	public Client save(Client client) {
-		em.merge(client);
-		return client;
+		return em.merge(client);
 	}
 
 	@Override

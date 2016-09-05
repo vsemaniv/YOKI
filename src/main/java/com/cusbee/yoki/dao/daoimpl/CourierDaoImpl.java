@@ -19,8 +19,7 @@ public class CourierDaoImpl implements CourierDao {
 
     @Override
     public CourierDetails save(CourierDetails courierDetails) {
-        em.merge(courierDetails);
-        return courierDetails;
+        return em.merge(courierDetails);
     }
 
     @Override
