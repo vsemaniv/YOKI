@@ -1,6 +1,7 @@
 package com.cusbee.yoki.controller;
 
 import com.cusbee.yoki.entity.Dish;
+import com.cusbee.yoki.model.images.GetImageDTO;
 import com.cusbee.yoki.model.images.ImageDTO;
 import com.cusbee.yoki.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ImageController {
     ImageService imageService;
 
     @RequestMapping(value = "getDishImages", method = RequestMethod.POST)
-    public List<ImageDTO> getDishImages(@RequestBody List<Dish> dishes) {
+    public List<ImageDTO> getDishImages(@RequestBody List<GetImageDTO> dishes) {
         return imageService.getImagesForDishes(dishes);
     }
 }

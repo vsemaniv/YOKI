@@ -4,6 +4,7 @@ import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.DishImage;
 import com.cusbee.yoki.entity.IdEntity;
 import com.cusbee.yoki.exception.ApplicationException;
+import com.cusbee.yoki.model.images.GetImageDTO;
 import com.cusbee.yoki.model.images.ImageDTO;
 import com.cusbee.yoki.service.ImageService;
 import org.apache.commons.codec.binary.Base64;
@@ -23,11 +24,11 @@ public class ImageServiceImpl implements ImageService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
-    public List<ImageDTO> getImagesForDishes(List<Dish> dishes) {
+    public List<ImageDTO> getImagesForDishes(List<GetImageDTO> dishes) {
         List<ImageDTO> imageDTOs = new ArrayList<>();
-        for(Dish dish : dishes) {
-            List<String> imagesFromServer = getImagesFromServer(dish.getImages());
-            imageDTOs.add(new ImageDTO(dish.getId(), imagesFromServer));
+        for(GetImageDTO dish : dishes) {
+            List<String> imagesFromServer = getImagesFromServer(dish.getLinks());
+            imageDTOs.add(new ImageDTO(dish.getDishId(), imagesFromServer));
         }
         return imageDTOs;
     }
@@ -48,10 +49,10 @@ public class ImageServiceImpl implements ImageService {
         return links;
     }
 
-    public List<String> getImagesFromServer(List<DishImage> dishImages) {
+    public List<String> getImagesFromServer(List<String> links) {
         List<String> images = new ArrayList<>();
-        for (DishImage image : dishImages) {
-            File file = new File(image.getLink());
+        for (String link : links) {
+            File file = new File(link);
             if (file.exists()) {
                 try(InputStream is = new BufferedInputStream(new FileInputStream(file))) {
                     byte[] data = new byte[is.available()];

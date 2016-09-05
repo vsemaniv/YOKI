@@ -8,8 +8,6 @@ import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,8 +20,6 @@ import com.cusbee.yoki.model.DishModel;
 @Service
 @Transactional
 public class DishServiceImpl implements DishService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DishServiceImpl.class);
 
     @Autowired
     private DishDao dao;
