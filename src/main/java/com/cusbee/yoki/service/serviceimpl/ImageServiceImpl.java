@@ -32,10 +32,10 @@ public class ImageServiceImpl implements ImageService {
         return imageDTOs;
     }
 
-    public List<String> saveImagesToServer(List<String> dishImages) {
+    public List<String> saveImagesToServer(List<String> dishImages, String dishName) {
         List<String> links = new ArrayList<>();
         for (String dishImage : dishImages) {
-            File file = createNewImageFile();
+            File file = createNewImageFile(dishName);
             links.add(file.getAbsolutePath());
             try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
                 byte[] imageData = Base64.decodeBase64(dishImage);
@@ -68,8 +68,10 @@ public class ImageServiceImpl implements ImageService {
         return images;
     }
 
-    private File createNewImageFile() {
+    private File createNewImageFile(String dishName) {
         StringBuilder sb = new StringBuilder(BASE_PATH)
+                .append(dishName)
+                .append("_")
                 .append(System.currentTimeMillis())
                 .append(".png");
         File file = new File(sb.toString());

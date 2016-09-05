@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ImageService {
 
-    List<String> saveImagesToServer(List<String> dishImages);
+    List<String> saveImagesToServer(List<String> dishImages, String dishName);
 
     List<String> getImagesFromServer(List<DishImage> dishImages);
 
