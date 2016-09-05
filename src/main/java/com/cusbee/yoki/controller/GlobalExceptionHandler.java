@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {Exception.class})
-    @ResponseBody YokiResult commonErrorHandler(Exception e) {
+    @ResponseBody ExceptionModel commonErrorHandler(Exception e) {
         LOG.error("Unexpected exception occurred: {}", e.getStackTrace());
-        return new YokiResult(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), new ExceptionModel(e));
+        return new ExceptionModel(e);
     }
 }
