@@ -101,7 +101,7 @@ public class DishServiceImpl implements DishService {
 
     private void handleImages(Dish dish, List<String> images) {
         if (CollectionUtils.isNotEmpty(images)) {
-            List<String> links = imageService.saveImagesToServer(images);
+            List<String> links = imageService.saveImagesToServer(images, dish.getName());
             List<DishImage> dishImages = dish.getImages();
             for (String link : links) {
                 dishImages.add(new DishImage(link, dish));
