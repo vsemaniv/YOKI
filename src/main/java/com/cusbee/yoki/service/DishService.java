@@ -13,6 +13,8 @@ public interface DishService {
 	Dish get(Long id);
 
 	List<Dish> getAll();
+
+	List<Dish> getAvailable();
 	
 	Dish saveDish(DishModel request, CrudOperation operation);
 

@@ -39,4 +39,8 @@ public class DishDaoImpl implements DishDao {
 		return (List<Dish>) em.createQuery("SELECT d FROM Dish d").getResultList();
 	}
 
+	public List<Dish> getAvailable() {
+		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = true").getResultList();
+	}
+
 }

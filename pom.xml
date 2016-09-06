@@ -326,7 +326,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<path>/yoki</path>
+					<path>/</path>
 					<update>true</update>
 					<url>http://localhost:8080/manager/text</url>
 					<username>yoki</username>

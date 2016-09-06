@@ -22,7 +22,7 @@ public class MessagingServiceImpl implements MessagingService {
 
     private static final String API_KEY = "AIzaSyBR_JUYj5sNtNxwQUv9lV4OcDSqB55qi_c";
     //number of attempts to resend notification if previous attempt failed
-    private static final int retries = 5;
+    private static final int retries = 10;
 
     private static final String DELIVERY_TITLE = "Час забирати замовлення!";
     private static final String REJECTED_TITLE = "Скасоване замовлення!";
@@ -84,10 +84,10 @@ public class MessagingServiceImpl implements MessagingService {
         }
         return token;
     }
-/*
+    /*
     public static void main(String[] args) {
-        String token = "e5Hm8LEIr-k:APA91bGUg73EnUAXxACW924QNsq4HVkn9tBuYoTe9hET2yyugLxGVf5ap-36VuKsvylpHCX_8IA6yP4vjpH8c8iB0quQAclf-FfcLec7pqVRQE_Kkf0cEiI-6I6NaRzu8a2YbSrCQy34";
+        String token = "e4rxhodtM2c:APA91bH2a1SfLAvzcjw1f2SvuvUchRnsnYixOaLdTcVXe1mJW5DuFk2O_t0gb2RiM6ANyxF7PSKsKUo4pI0vlO_Zo5zCZb5Pm6WYorsubhMM7H8uK1s748FEE7XmTBiZWoprCSl-wFXQ";
 
-        new MessagingServiceImpl().sendPushNotification(token,"идет айдишка?",1L);
+        new MessagingServiceImpl().sendPushNotification(token,"Оп-оп",3L, false);
     }*/
 }

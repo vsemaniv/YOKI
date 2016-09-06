@@ -28,12 +28,6 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
-    @Autowired
-    private ValidatorService validatorService;
-
-    @Autowired
-    private DishRepository repository;
-
     @ApiOperation(value = "create new dish")
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public YokiResult<Dish> add(@RequestBody DishModel request) {
@@ -49,7 +43,6 @@ public class DishController {
     @ApiOperation(value = "remove dish")
     @RequestMapping(value = "remove", method = RequestMethod.POST)
     public YokiResult<Dish> remove(@RequestBody IdModel idModel) {
-        validatorService.validateRequestIdNotNull(idModel.getId(), Dish.class);
         dishService.remove(idModel.getId());
         return new YokiResult<Dish>(HttpStatus.OK, SUCCESS, null);
     }
@@ -57,14 +50,19 @@ public class DishController {
     @ApiOperation(value = "get dish")
     @RequestMapping(value = "get", method = RequestMethod.GET)
     public YokiResult<Dish> get(@RequestParam Long id) {
-        validatorService.validateRequestIdNotNull(id, Dish.class);
-        return new YokiResult<Dish>(HttpStatus.OK, SUCCESS, repository.findById(id));
+        return new YokiResult<Dish>(HttpStatus.OK, SUCCESS, dishService.get(id));
     }
 
     @ApiOperation(value = "get all dishes")
     @RequestMapping(value = "getAll", method = RequestMethod.GET)
     public List<Dish> getAll() {
-        return repository.findAll();
+        return dishService.getAll();
+    }
+
+    @ApiOperation(value = "get available dishes")
+    @RequestMapping(value = "getAvailable", method = RequestMethod.GET)
+    public List<Dish> getAvailable() {
+        return dishService.getAvailable();
     }
 
     @ApiOperation(value = "deactivate dish")

@@ -12,10 +12,4 @@ import com.cusbee.yoki.entity.Dish;
 public interface DishRepository extends JpaRepository<Dish, Long> {
 
 	Dish findByName(String name);
-	
-	@Query(value="SELECT d.* FROM dish d WHERE d.id = (:id) AND enabled='Y'", nativeQuery=true)
-	Dish findById(@Param("id") Long id);
-	
-	@Query(value="SELECT d.* FROM dish d WHERE enabled='Y' AND dish_type IS NOT NULL", nativeQuery=true)
-	List<Dish> findAll();
 }

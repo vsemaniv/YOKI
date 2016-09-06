@@ -51,6 +51,10 @@ public class DishServiceImpl implements DishService {
         return dao.getAll();
     }
 
+    public List<Dish> getAvailable() {
+        return dao.getAvailable();
+    };
+
     @Override
     @Transactional
     public void remove(Long id) {
