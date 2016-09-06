@@ -22,6 +22,5 @@ public class UtilComponent {
     public void setDefaultTimezone() {
         TimeZone.setDefault(TimeZone.getTimeZone(DEFAULT_TIMEZONE));
         LOG.debug("Default timezone was set to " + DEFAULT_TIMEZONE);
-        System.out.println("Default timezone was set to " + DEFAULT_TIMEZONE);
     }
 }
