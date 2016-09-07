@@ -39,7 +39,7 @@ public class OperatorController {
 		return orderService.getAll();
 	}
 
-	@RequestMapping(value = "crateOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "createOrder", method = RequestMethod.POST)
 	public YokiResult<Order> createOrder(@RequestBody OrderModel request) {
 		Order order = orderService.saveOrder(request, CrudOperation.CREATE);
 		return new YokiResult<>(HttpStatus.OK, "Order was successfully created", order);
@@ -73,12 +73,13 @@ public class OperatorController {
 	@RequestMapping(value = "testBinotel", method = RequestMethod.POST)
 	public Object testBinotel(@RequestParam(value = "key") String key,
 							  @RequestParam(value = "signature") String signature,
+							  @RequestParam(value = "phone") String phone,
 							  @RequestParam(value = "uri") String uri) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Content-Type", "application/json");
 		//make rest template
-		BinotelPostModel model = new BinotelPostModel(key, signature);
+		BinotelPostModel model = new BinotelPostModel(key, signature, "901", phone);
 		HttpEntity<BinotelPostModel> entity = new HttpEntity<>(model, headers);
 		return restTemplate.postForObject(uri, entity, Object.class);
 	}
