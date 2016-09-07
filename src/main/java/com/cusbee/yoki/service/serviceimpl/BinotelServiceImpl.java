@@ -37,7 +37,7 @@ public class BinotelServiceImpl {
         headers.set("Content-Type", "application/json");
         headers.set("Content-Length", String.valueOf(raw.length()));
         //make rest template
-        BinotelPostModel model = new BinotelPostModel(KEY, md5Signature);
+        /*BinotelPostModel model = new BinotelPostModel(KEY, md5Signature);*/
         restTemplate.postForObject(uriWithParams, headers, Object.class);
 
     }
