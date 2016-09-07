@@ -6,12 +6,17 @@ import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.model.OrderModel;
+import com.cusbee.yoki.model.binotel.BinotelPostModel;
 import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import javax.ws.rs.POST;
 import java.util.List;
 
 /**
@@ -34,7 +39,7 @@ public class OperatorController {
 		return orderService.getAll();
 	}
 
-	@RequestMapping(value = "createOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "crateOrder", method = RequestMethod.POST)
 	public YokiResult<Order> createOrder(@RequestBody OrderModel request) {
 		Order order = orderService.saveOrder(request, CrudOperation.CREATE);
 		return new YokiResult<>(HttpStatus.OK, "Order was successfully created", order);
@@ -63,5 +68,18 @@ public class OperatorController {
 	public YokiResult<Order> closeOrder(@RequestBody IdModel idModel) {
 		Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.CLOSED);
 		return new YokiResult<Order>(HttpStatus.OK, "Order was successfully closed", order);
+	}
+
+	@RequestMapping(value = "testBinotel", method = RequestMethod.POST)
+	public Object testBinotel(@RequestParam(value = "key") String key,
+							  @RequestParam(value = "signature") String signature,
+							  @RequestParam(value = "uri") String uri) {
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json");
+		//make rest template
+		BinotelPostModel model = new BinotelPostModel(key, signature);
+		HttpEntity<BinotelPostModel> entity = new HttpEntity<>(model, headers);
+		return restTemplate.postForObject(uri, entity, Object.class);
 	}
 }
