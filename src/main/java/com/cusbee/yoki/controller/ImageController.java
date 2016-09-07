@@ -3,7 +3,6 @@ package com.cusbee.yoki.controller;
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.entity.IdEntity;
 import com.cusbee.yoki.service.ImageService;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,7 @@ public class ImageController {
     ImageService imageService;
 
     @RequestMapping(value = "saveImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
-    public YokiResult<IdEntity> addImages(@RequestParam(value = "id") @NotNull Long id,
+    public YokiResult<IdEntity> addImages(@RequestParam(value = "id") Long id,
                                            @RequestParam(value = "type") String type,
                                            MultipartRequest request) {
         IdEntity idEntity = imageService.addImages(request.getFiles("files[]"), type, id);
