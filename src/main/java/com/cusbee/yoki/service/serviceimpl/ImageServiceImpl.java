@@ -1,91 +1,73 @@
 package com.cusbee.yoki.service.serviceimpl;
 
+import com.cusbee.yoki.entity.Dish;
+import com.cusbee.yoki.entity.DishImage;
+import com.cusbee.yoki.entity.IdEntity;
+import com.cusbee.yoki.entity.enums.EntityType;
+import com.cusbee.yoki.entity.enums.ImageType;
 import com.cusbee.yoki.exception.ApplicationException;
-import com.cusbee.yoki.model.images.GetImageDTO;
-import com.cusbee.yoki.model.images.ImageDTO;
+import com.cusbee.yoki.service.DishService;
 import com.cusbee.yoki.service.ImageService;
-import com.cusbee.yoki.utils.ImageCache;
-import org.apache.commons.codec.binary.Base64;
+import com.cusbee.yoki.service.ValidatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private static final String BASE_PATH = "/home/yoki/images/dish";
+    //real path to save image
+    private static final String BASE_PATH = "/home/yoki/images/";
+    //path to get the image
+    private static final String ALIAS_PATH = "/yokimages/";
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
 
-    public List<ImageDTO> getImagesForDishes(List<GetImageDTO> dishes) {
-        List<ImageDTO> imageDTOs = new ArrayList<>();
-        for(GetImageDTO dish : dishes) {
-            Long dishId = dish.getDishId();
-            if(ImageCache.cached(dishId)) {
-                imageDTOs.add(new ImageDTO(dishId, ImageCache.getLinks(dishId)));
-            } else {
-                List<String> imagesFromServer = getImagesFromServer(dish.getLinks());
-                imageDTOs.add(new ImageDTO(dishId, imagesFromServer));
-            }
-        }
-        return imageDTOs;
-    }
+    @Autowired
+    DishService dishService;
 
-    public List<String> saveImagesToServer(List<String> dishImages, String dishName) {
-        List<String> links = new ArrayList<>();
-        for (String dishImage : dishImages) {
-            File file = createNewImageFile(dishName);
-            links.add(file.getAbsolutePath());
-            try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
-                byte[] imageData = Base64.decodeBase64(dishImage);
-                os.write(imageData);
-            } catch (IOException e) {
-                LOG.error("Error during saving image on server", e);
-                e.printStackTrace();
-            }
-        }
-        return links;
-    }
+    @Autowired
+    ValidatorService validatorService;
 
-    public List<String> getImagesFromServer(List<String> links) {
+    @Override
+    public IdEntity addImages(List<MultipartFile> images, String type, Long id) {
+        if(validatorService.isEnumValid(type, EntityType.class)) {
+            Dish dish = dishService.get(id);
+            for (MultipartFile image : images) {
+                if (!image.isEmpty()) {
+                    try {
+                        String[] split = image.getOriginalFilename().split("\\.");
+                        String extension = split.length > 0 ? split[split.length-1] : "";
+                        if(extension.isEmpty() || !validatorService.isEnumValid(extension, ImageType.class)) {
+                            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unsupported image type");
+                        }
 
-        List<String> images = new ArrayList<>();
-        for (String link : links) {
-            File file = new File(link);
-            if (file.exists()) {
-                try(InputStream is = new BufferedInputStream(new FileInputStream(file))) {
-                    byte[] data = new byte[is.available()];
-                    is.read(data);
-                    images.add(Base64.encodeBase64String(data));
-                } catch (IOException e) {
-                    LOG.error("Error during fetching image from server", e);
-                    e.printStackTrace();
+                        String relativePath = buildFileName(type, "/", id, "_", System.currentTimeMillis(), ".", extension);
+                        image.transferTo(new File(BASE_PATH + relativePath));
+                        dish.getImages().add(new DishImage(ALIAS_PATH + relativePath, dish));
+                    } catch (IOException e) {
+                        throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
+                                "Problem occurred while writing file to disk", e);
+                    }
                 }
-            } else {
-                throw new ApplicationException(HttpStatus.NOT_FOUND, "File doesn't exist or link is broken");
             }
+            return dish;
+        } else {
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unknown image type");
         }
-        return images;
     }
 
-    private File createNewImageFile(String dishName) {
-        StringBuilder sb = new StringBuilder(BASE_PATH)
-                .append(dishName)
-                .append("_")
-                .append(System.currentTimeMillis())
-                .append(".png");
-        File file = new File(sb.toString());
-        try {
-            file.createNewFile();
-            return file;
-        } catch (IOException e) {
-            LOG.error("Error during creating new file on server", e);
-            throw new ApplicationException("Error during creating new file on server", e);
+    private String buildFileName(Object... parts) {
+        StringBuilder sb = new StringBuilder();
+        for(Object part : parts) {
+            sb.append(part);
         }
+        return sb.toString();
     }
 /*
     public static void main(String[] args) {
@@ -99,6 +81,7 @@ public class ImageServiceImpl implements ImageService {
         List<String> imagesFromServer = service.getImagesFromServer(links);
         System.out.println(imagesFromServer);
     }*/
+
 }
 
 

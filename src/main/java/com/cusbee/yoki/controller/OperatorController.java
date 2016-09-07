@@ -70,6 +70,7 @@ public class OperatorController {
 		return new YokiResult<Order>(HttpStatus.OK, "Order was successfully closed", order);
 	}
 
+
 	@RequestMapping(value = "testBinotel", method = RequestMethod.POST)
 	public Object testBinotel(@RequestParam(value = "key") String key,
 							  @RequestParam(value = "signature") String signature,

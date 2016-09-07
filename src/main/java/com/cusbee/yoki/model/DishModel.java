@@ -1,7 +1,6 @@
 package com.cusbee.yoki.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class DishModel implements RequestModel, Serializable {
 
@@ -13,13 +12,11 @@ public class DishModel implements RequestModel, Serializable {
 	private String type;
 	private Double price;
 	private Long categoryId;
-
-	private List<String> images;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Double price, String description, Long category_id,
-					 String type, List<String> images) {
+					 String type) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -27,7 +24,6 @@ public class DishModel implements RequestModel, Serializable {
 		this.description = description;
 		this.categoryId = category_id;
 		this.type = type;
-		this.images = images;
 	}
 
 	@Override
@@ -77,13 +73,5 @@ public class DishModel implements RequestModel, Serializable {
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
-	}
-
-	public List<String> getImages() {
-		return images;
-	}
-
-	public void setImages(List<String> images) {
-		this.images = images;
 	}
 }

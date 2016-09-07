@@ -7,8 +7,6 @@ import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
-import com.cusbee.yoki.utils.ImageCache;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,9 +25,6 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private CategoryService categoryService;
-
-    @Autowired
-    private ImageService imageService;
 
     @Autowired
     private ValidatorService validatorService;
@@ -87,12 +82,7 @@ public class DishServiceImpl implements DishService {
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
-        handleImages(dish, request.getImages());
-        Dish savedDish = dao.save(dish);
-        if(CollectionUtils.isNotEmpty(request.getImages())) {
-            ImageCache.putToCache(savedDish.getId(), request.getImages());
-        }
-        return savedDish;
+        return dao.save(dish);
     }
 
     @Override
@@ -106,16 +96,6 @@ public class DishServiceImpl implements DishService {
         String type = request.getType();
         return validatorService.isEnumValid(type, DishType.class) ?
                 DishType.valueOf(type.toUpperCase()) : DishType.ORDINARY;
-    }
-
-    private void handleImages(Dish dish, List<String> images) {
-        if (CollectionUtils.isNotEmpty(images)) {
-            List<String> links = imageService.saveImagesToServer(images, dish.getName());
-            List<DishImage> dishImages = dish.getImages();
-            for (String link : links) {
-                dishImages.add(new DishImage(link, dish));
-            }
-        }
     }
 
 

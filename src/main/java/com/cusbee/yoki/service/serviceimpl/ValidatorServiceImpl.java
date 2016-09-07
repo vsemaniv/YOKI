@@ -161,7 +161,7 @@ public class ValidatorServiceImpl implements ValidatorService {
     public <E extends Enum<E>> boolean isEnumValid(String type, Class<E> enumClass) {
         if (StringUtils.isEmpty(type)) return false;
         for (E e : enumClass.getEnumConstants()) {
-            if (e.name().equals(type)) {
+            if (e.name().equals(type.toUpperCase())) {
                 return true;
             }
         }
