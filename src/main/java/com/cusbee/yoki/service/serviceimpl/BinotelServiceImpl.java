@@ -67,8 +67,4 @@ public class BinotelServiceImpl implements BinotelService {
             throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during converting params to json", e);
         }
     }
-
-    public static void main(String[] args) {
-        new BinotelServiceImpl().makeCall("901", "0954865473");
-    }
 }
