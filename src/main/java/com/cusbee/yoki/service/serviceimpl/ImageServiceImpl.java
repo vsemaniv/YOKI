@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.List;
 
@@ -46,19 +47,26 @@ public class ImageServiceImpl implements ImageService {
                         if(extension.isEmpty() || !validatorService.isEnumValid(extension, ImageType.class)) {
                             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unsupported image type");
                         }
-
+                        createDirectoriesIfNeeded(type);
                         String relativePath = buildFileName(type, "/", id, "_", System.currentTimeMillis(), ".", extension);
                         image.transferTo(new File(BASE_PATH + relativePath));
                         dish.getImages().add(new DishImage(ALIAS_PATH + relativePath, dish));
                     } catch (IOException e) {
                         throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
-                                "Problem occurred while writing file to disk", e);
+                                "Problem occurred while writing file to disk. Maybe directories don't exist", e);
                     }
                 }
             }
             return dish;
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unknown image type");
+        }
+    }
+
+    private void createDirectoriesIfNeeded(String type) {
+        File file = new File(BASE_PATH + type);
+        if(!file.exists()) {
+            file.mkdirs();
         }
     }
 

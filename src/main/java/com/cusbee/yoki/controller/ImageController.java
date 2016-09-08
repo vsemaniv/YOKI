@@ -14,11 +14,11 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
-    @RequestMapping(value = "addImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @RequestMapping(value = "addImages", method = RequestMethod.POST, consumes = {"multipart/form-data", "application/json"})
     public YokiResult<IdEntity> addImages(@RequestParam(value = "id") Long id,
                                            @RequestParam(value = "type") String type,
                                            MultipartRequest request) {
-        IdEntity idEntity = imageService.addImages(request.getFiles("files[]"), type, id);
+        IdEntity idEntity = imageService.addImages(request.getFiles("images[]"), type, id);
         return new YokiResult<>(HttpStatus.OK, "Images have been added successfully", idEntity);
     }
 }
