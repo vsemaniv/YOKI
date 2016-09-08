@@ -1,5 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
+import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.DishImage;
 import com.cusbee.yoki.entity.IdEntity;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.List;
 
@@ -31,6 +31,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     DishService dishService;
+
+    @Autowired
+    DishDao dishDao;
 
     @Autowired
     ValidatorService validatorService;
@@ -57,7 +60,7 @@ public class ImageServiceImpl implements ImageService {
                     }
                 }
             }
-            return dish;
+            return dishDao.save(dish);
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unknown image type");
         }
