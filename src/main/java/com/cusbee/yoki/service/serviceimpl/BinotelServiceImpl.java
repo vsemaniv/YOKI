@@ -46,13 +46,20 @@ public class BinotelServiceImpl implements BinotelService {
 
     @Override
     public void makeCall(String extNumber, String phoneNumber) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-        String signature = createSignature(extNumber, phoneNumber);
-        BinotelPostModel model = new BinotelPostModel(KEY, signature, extNumber, phoneNumber);
-        HttpEntity<BinotelPostModel> entity = new HttpEntity<>(model, headers);
-        Object response = restTemplate.postForObject(URI_FOR_CALL, entity, Object.class);
-        LOG.debug("Attempt to make call via Binotel.", response);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json");
+            String signature = createSignature(extNumber, phoneNumber);
+            BinotelPostModel model = new BinotelPostModel(KEY, signature, extNumber, phoneNumber);
+            HttpEntity<BinotelPostModel> entity = new HttpEntity<>(model, headers);
+            Object response = restTemplate.postForObject(URI_FOR_CALL, entity, Object.class);
+            LOG.debug("Attempt to make call via Binotel.", response);
+        } catch (Exception e) {
+            String errorMessage = "Failed to make call via Binotel";
+            LOG.error(errorMessage, e);
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage, e);
+        }
+
     }
 
     private String createSignature(String extNumber, String phoneNumber) {
