@@ -14,7 +14,7 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
-    @RequestMapping(value = "saveImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @RequestMapping(value = "addImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public YokiResult<IdEntity> addImages(@RequestParam(value = "id") Long id,
                                            @RequestParam(value = "type") String type,
                                            MultipartRequest request) {

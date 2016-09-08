@@ -208,7 +208,7 @@ public class ValidatorServiceImpl implements ValidatorService {
 
     // *** REGEX VALIDATION METHODS ***
     private boolean validateRegexAccountUsername(String username) {
-        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}-_\\d]{5,25}$");
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}-_\\d]{4,25}$");
         Matcher matcher = pattern.matcher(username);
         if (!matcher.matches()) {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid username. Username include only alphabet symbols and numbers and should be at least 5 and at last 15 symbols long");
@@ -220,7 +220,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         Pattern pattern = Pattern.compile("^.{8,}$");
         Matcher matcher = pattern.matcher(password);
         if (!matcher.matches()) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Password is too weak. Username should include at least 8 symbols");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Password is too weak. It should include at least 8 symbols");
         }
         return matcher.matches();
     }

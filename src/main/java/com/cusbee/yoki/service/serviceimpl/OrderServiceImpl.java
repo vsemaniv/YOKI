@@ -116,7 +116,11 @@ public class OrderServiceImpl implements OrderService {
                         "Invalid Request");
         }
         if(request.getTimeToDeliver() != null){
-            order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
+            if(request.getTimeToDeliver().isEmpty()) {
+                order.setTimeToDeliver(null);
+            } else {
+                order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
+            }
         }
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
