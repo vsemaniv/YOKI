@@ -48,7 +48,7 @@ public class DishServiceImpl implements DishService {
 
     public List<Dish> getAvailable() {
         return dao.getAvailable();
-    };
+    }
 
     @Override
     @Transactional

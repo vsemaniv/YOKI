@@ -21,6 +21,8 @@ public interface CategoryService {
 			throws BaseException;
 	
 	Set<Dish> getAllDishes(Long id);
+
+	Set<Dish> getAvailableDishes(Long id);
 	
 	Category removeDishFromCategory(CategoryModel request) ;
 

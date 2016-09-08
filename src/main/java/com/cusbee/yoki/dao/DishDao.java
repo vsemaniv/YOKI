@@ -15,4 +15,6 @@ public interface DishDao {
 	List<Dish> getAll();
 
 	List<Dish> getAvailable();
+
+	List<Dish> getAvailable(Long categoryId);
 }

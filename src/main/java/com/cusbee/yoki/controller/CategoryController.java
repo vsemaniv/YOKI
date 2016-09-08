@@ -66,6 +66,12 @@ public class CategoryController {
 	public Set<Dish> getAllDishes(@PathVariable("id") Long id) {
 		return categoryService.getAllDishes(id);
 	}
+
+	@ApiOperation(value="get available dishes from category")
+	@RequestMapping(value="getAvailableDishesFromCategory/{id}", method=RequestMethod.GET)
+	public Set<Dish> getAvailableDishes(@PathVariable("id") Long id) {
+		return categoryService.getAllDishes(id);
+	}
 	
 	@ApiOperation(value="remove dish from category")
 	@RequestMapping(value="removeDishFromCategory", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)

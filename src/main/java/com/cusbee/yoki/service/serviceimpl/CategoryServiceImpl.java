@@ -1,9 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.service.ActivationService;
@@ -23,7 +20,6 @@ import com.cusbee.yoki.model.CategoryModel;
 import com.cusbee.yoki.model.DishModel;
 import com.cusbee.yoki.service.CategoryService;
 import com.cusbee.yoki.service.DishService;
-import com.cusbee.yoki.utils.ErrorCodes;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -94,6 +90,13 @@ public class CategoryServiceImpl implements CategoryService {
 	public Set<Dish> getAllDishes(Long id) {
 		Category category = get(id);
 		return category.getDishes();
+	}
+
+	@Override
+	@Transactional
+	public Set<Dish> getAvailableDishes(Long id) {
+		Category category = get(id);
+		return new HashSet<>(dishDao.getAvailable(id));
 	}
 
 	public Category processActivation(Long id, boolean activate) {
