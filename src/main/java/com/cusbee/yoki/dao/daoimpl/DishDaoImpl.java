@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.cusbee.yoki.entity.Category;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +44,8 @@ public class DishDaoImpl implements DishDao {
 		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = true").getResultList();
 	}
 
-	public List<Dish> getAvailable(Long categoryId) {
-		return (List<Dish>) em.createNativeQuery("SELECT d.* FROM dish d WHERE d.enabled = 'Y' AND d.category_id = ?1").setParameter(1, categoryId).getResultList();
+	public List<Dish> getAvailable(Category category) {
+		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = 'Y' AND d.category = ?1").setParameter(1, category).getResultList();
 	}
 
 }

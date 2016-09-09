@@ -2,6 +2,7 @@ package com.cusbee.yoki.dao;
 
 import java.util.List;
 
+import com.cusbee.yoki.entity.Category;
 import com.cusbee.yoki.entity.Dish;
 
 public interface DishDao {
@@ -16,5 +17,5 @@ public interface DishDao {
 
 	List<Dish> getAvailable();
 
-	List<Dish> getAvailable(Long categoryId);
+	List<Dish> getAvailable(Category category);
 }

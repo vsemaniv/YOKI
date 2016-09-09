@@ -94,9 +94,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public Set<Dish> getAvailableDishes(Long id) {
+	public List<Dish> getAvailableDishes(Long id) {
 		Category category = get(id);
-		return new HashSet<>(dishDao.getAvailable(id));
+		return new ArrayList<>(dishDao.getAvailable(category));
 	}
 
 	public Category processActivation(Long id, boolean activate) {

@@ -22,7 +22,7 @@ public interface CategoryService {
 	
 	Set<Dish> getAllDishes(Long id);
 
-	Set<Dish> getAvailableDishes(Long id);
+	List<Dish> getAvailableDishes(Long id);
 	
 	Category removeDishFromCategory(CategoryModel request) ;
 
