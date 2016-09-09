@@ -6,6 +6,7 @@ import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.model.OrderModel;
+import com.cusbee.yoki.model.binotel.BinotelCallRequest;
 import com.cusbee.yoki.service.BinotelService;
 import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
@@ -62,9 +63,8 @@ public class OperatorController {
     }
 
     @RequestMapping(value = "makeCall", method = RequestMethod.POST)
-    public YokiResult makeCall(@RequestParam(value = "line") String operatorLine,
-                               @RequestParam(value = "phone") String phone) {
-        binotelService.makeCall(operatorLine, phone);
+    public YokiResult makeCall(@RequestBody BinotelCallRequest request) {
+        binotelService.makeCall(request.getLine(), request.getPhoneNumber());
         return new YokiResult<>(HttpStatus.OK, "success", null);
     }
 }
