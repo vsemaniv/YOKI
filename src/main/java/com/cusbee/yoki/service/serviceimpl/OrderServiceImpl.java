@@ -190,6 +190,11 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
+    public List<Order> getCourierPendingOrders(CourierDetails courier) {
+        return dao.getCourierPendingOrders(courier);
+    }
+
     /**
      * Rewrites all dishes in the order.
      * At first this method clears list of dishes making it empty.

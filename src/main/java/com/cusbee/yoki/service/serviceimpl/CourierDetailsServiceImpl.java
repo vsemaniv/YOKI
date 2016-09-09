@@ -12,7 +12,6 @@ import com.cusbee.yoki.service.CourierDetailsService;
 import com.cusbee.yoki.service.OrderService;
 import com.cusbee.yoki.service.ValidatorService;
 
-import com.cusbee.yoki.utils.ErrorCodes;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

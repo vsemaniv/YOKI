@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.OrderStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 @Table(name = "orders")

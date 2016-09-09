@@ -12,6 +12,7 @@ import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
@@ -33,7 +34,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Autowired
 	private OrderDao orderDao;
-	
+
 	@Override
 	public void acceptIncomingKitchenOrder(Long id) {
     	Order order = dao.get(id);
@@ -63,6 +64,20 @@ public class AdministratorServiceImpl implements AdministratorService {
 		order.setTimeTaken(Calendar.getInstance());
 		return orderDao.save(order);
 	}
+
+	public void passOrdersToCourier(Long courierId) {
+		CourierDetails courierDetails = courierService.get(courierId);
+        List<Order> courierPendingOrders = orderService.getCourierPendingOrders(courierDetails);
+        if(courierPendingOrders.isEmpty()) {
+            throw new ApplicationException(HttpStatus.OK, "There are no orders for courier");
+        }
+        for(Order pendingOrder : courierPendingOrders) {
+            pendingOrder.setStatus(OrderStatus.DELIVERY);
+            pendingOrder.setTimeTaken(Calendar.getInstance());
+            orderDao.save(pendingOrder);
+        }
+
+    }
 
 	public CourierDetails manageCourierWorkTime(Long id, boolean onPlace) {
 		return courierService.updateStatus(id, onPlace ? CourierDetails.CourierStatus.FREE : CourierDetails.CourierStatus.OUT);

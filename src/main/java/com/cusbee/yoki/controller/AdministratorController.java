@@ -66,6 +66,12 @@ public class AdministratorController {
         return new YokiResult<>(HttpStatus.OK, "Order was successfully passed to courier", order);
     }
 
+    @RequestMapping(value = "passOrdersToCourier", method = RequestMethod.POST)
+    public YokiResult passOrdersToCourier(@RequestBody IdModel idModel) {
+        service.passOrdersToCourier(idModel.getId());
+        return new YokiResult<>(HttpStatus.OK, "Order was successfully passed to courier", null);
+    }
+
     @RequestMapping(value = "releaseCourier", method = RequestMethod.POST)
     public YokiResult releaseCourier(@RequestBody IdModel courierIdModel) {
         return new YokiResult<>(HttpStatus.OK, "Courier is now out of work", service.manageCourierWorkTime(courierIdModel.getId(), false));

@@ -2,6 +2,7 @@ package com.cusbee.yoki.service;
 
 import java.util.List;
 
+import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Order;
@@ -29,5 +30,7 @@ public interface OrderService {
 	Order saveOrderStatus(Long id, OrderStatus status);
 
 	Order getCurrentOrderForCourier(Long courierId);
+
+	List<Order> getCourierPendingOrders(CourierDetails courier);
 	
 }

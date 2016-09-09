@@ -96,7 +96,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional
 	public List<Dish> getAvailableDishes(Long id) {
 		Category category = get(id);
-		return new ArrayList<>(dishDao.getAvailable(category));
+		return dishDao.getAvailable(category);
 	}
 
 	public Category processActivation(Long id, boolean activate) {

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.cusbee.yoki.entity.CourierDetails;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,4 +40,8 @@ public class OrderDaoImpl implements OrderDao {
 		return em.find(Order.class, id);
 	}
 
+	@Override
+	public List<Order> getCourierPendingOrders(CourierDetails courier) {
+		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.pending = true AND o.courier = ?1").setParameter(1, courier).getResultList();
+	}
 }
