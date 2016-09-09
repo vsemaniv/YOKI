@@ -64,7 +64,7 @@ public class OperatorController {
 
     @RequestMapping(value = "makeCall", method = RequestMethod.POST)
     public YokiResult makeCall(@RequestBody BinotelCallRequest request) {
-        binotelService.makeCall(request.getLine(), request.getPhoneNumber());
+        binotelService.makeCall(request.getLine(), request.getPhone());
         return new YokiResult<>(HttpStatus.OK, "success", null);
     }
 }

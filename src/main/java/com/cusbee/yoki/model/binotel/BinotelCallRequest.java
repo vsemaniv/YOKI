@@ -2,7 +2,7 @@ package com.cusbee.yoki.model.binotel;
 
 public class BinotelCallRequest {
     private String line;
-    private String phoneNumber;
+    private String phone;
 
     public String getLine() {
         return line;
@@ -12,11 +12,11 @@ public class BinotelCallRequest {
         this.line = line;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
