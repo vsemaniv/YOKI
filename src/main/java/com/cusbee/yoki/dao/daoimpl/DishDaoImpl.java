@@ -44,7 +44,7 @@ public class DishDaoImpl implements DishDao {
 	}
 
 	public List<Dish> getAvailable(Long categoryId) {
-		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = true AND d.category_id = ?1").setParameter(1, categoryId).getResultList();
+		return (List<Dish>) em.createNativeQuery("SELECT d.* FROM dish d WHERE d.enabled = 'Y' AND d.category_id = ?1").setParameter(1, categoryId).getResultList();
 	}
 
 }
