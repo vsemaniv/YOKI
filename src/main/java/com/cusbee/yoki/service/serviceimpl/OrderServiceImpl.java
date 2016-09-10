@@ -56,13 +56,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAvailableOrders() {
-        return repository.getAvailableOrders();
+        return dao.getAvailable();
     }
 
     @Override
     public List<Order> getOrderHistory(String startDate, String endDate, String clientId) {
         if(StringUtils.isNotEmpty(startDate) && StringUtils.isNotEmpty(endDate)) {
-            validatorService.validateDates(startDate, endDate);
+            validatorService.validateDates(DateUtil.DATE_FORMAT, startDate, endDate);
             if(StringUtils.isEmpty(clientId)) {
                 return repository.getOrderHistory(startDate, endDate);
             } else {
@@ -95,21 +95,10 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setClient(parseClient(request.getClient(), new Client()));
-                order.setPending(Boolean.FALSE);
-                order.setWrittenOff(Boolean.FALSE);
                 break;
             case UPDATE:
                 order = get(request.getId());
                 order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
-                if(request.getCourierId() != null) {
-                    order.setCourierDetails(courierService.get(request.getCourierId()));
-                }
-                if(request.getTimeTaken() != null){
-                    order.setTimeTaken(DateUtil.getCalendar(request.getTimeTaken()));
-                }
-                if(request.getTimeDelivered() != null){
-                	order.setTimeDelivered(DateUtil.getCalendar(request.getTimeDelivered()));
-                }
                 break;
             default:
                 throw new ApplicationException(HttpStatus.BAD_REQUEST,
@@ -120,6 +109,14 @@ public class OrderServiceImpl implements OrderService {
                 order.setTimeToDeliver(null);
             } else {
                 order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
+            }
+        }
+        if(request.getCourierId() != null) {
+            if(order.getTimeToDeliver() != null) {
+                order.setCourierDetails(courierService.get(request.getCourierId()));
+            } else {
+                throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "You should specify delivery time before specifying the courier!");
             }
         }
         if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
@@ -149,27 +146,26 @@ public class OrderServiceImpl implements OrderService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Decline message should not be empty!");
         }
-        order.setPending(Boolean.FALSE);
-        releaseCourierIfExist(order);
-        return dao.save(order);
+        if(request.getClosed() == Boolean.TRUE) {
+            order.setClosed(true);
+        }
+        order.setPending(false);
+        Order savedOrder = dao.save(order);
+        return savedOrder;
     }
 
+    @Deprecated
     @Override
     public Order assignCourierToOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
-        Calendar timeToTake = DateUtil.getCalendar(request.getTimeToTake());
         Calendar timeToDeliver = DateUtil.getCalendar(request.getTimeToDeliver());
-        releaseCourierIfExist(order);
+
         CourierDetails courier = courierService.get(request.getCourierId());
-        courier.setStatus(CourierDetails.CourierStatus.BUSY);
-        if(timeToTake != null && timeToDeliver != null){
-            order.setTimeToTake(timeToTake);
+        if (timeToDeliver != null){
             order.setTimeToDeliver(timeToDeliver);
-            order.setPending(Boolean.TRUE);
             order.setCourierDetails(courier);
             dao.save(order);
-            messagingService.notifyCourier(courier, order);
             return order;
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to take order and time to deliver order should not be empty");
@@ -193,6 +189,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getCourierPendingOrders(CourierDetails courier) {
         return dao.getCourierPendingOrders(courier);
+    }
+
+    @Override
+    public Order closeOrder(Long id) {
+        Order order = get(id);
+        order.setClosed(true);
+        return dao.save(order);
     }
 
     /**
@@ -236,11 +239,12 @@ public class OrderServiceImpl implements OrderService {
         return amount;
     }
 
+    @Deprecated
     private void releaseCourierIfExist(Order order) {
         CourierDetails currentCourier = order.getCourierDetails();
         if(currentCourier != null && currentCourier.getStatus() != CourierDetails.CourierStatus.OUT) {
             currentCourier.setStatus(CourierDetails.CourierStatus.FREE);
         }
-        messagingService.releaseCourier(currentCourier, order);
+        messagingService.notifyAboutDeclinedOrder(currentCourier, order);
     }
 }

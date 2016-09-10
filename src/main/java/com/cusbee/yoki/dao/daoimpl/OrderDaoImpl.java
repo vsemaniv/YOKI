@@ -36,6 +36,11 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	@Override
+	public List<Order> getAvailable() {
+		return (List<Order>) em.createQuery("SELECT o FROM Order o WHERE o.closed = false").getResultList();
+	}
+
+	@Override
 	public Order get(Long id) {
 		return em.find(Order.class, id);
 	}

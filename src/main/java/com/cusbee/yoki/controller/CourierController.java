@@ -44,7 +44,7 @@ public class CourierController {
         return courierService.getCourierByUsername(username);
     }
 
-    @RequestMapping(value="done", method=RequestMethod.POST)
+    @RequestMapping(value="delivered", method=RequestMethod.POST)
     public YokiResult<Order> orderDelivered(@RequestBody IdModel idModel) {
     	// status DONE and time when courier done this order and status courier in free
     	return new YokiResult<Order>(HttpStatus.OK, "Order is done", courierService.orderDelivered(idModel.getId()));
@@ -57,9 +57,15 @@ public class CourierController {
     }
 
     //takes pending order for particular courier
+    @Deprecated
     @RequestMapping(value = "getPendingOrder", method = RequestMethod.POST)
     public YokiResult<Order> getPendingOrder(@RequestBody IdModel courierIdModel) {
         Order order = orderService.getCurrentOrderForCourier(courierIdModel.getId());
         return new YokiResult<>(HttpStatus.OK, "Token was successfully saved", order);
+    }
+
+    @RequestMapping(value = "getPendingOrders", method = RequestMethod.GET)
+    public List<Order> getPendingOrders(@RequestBody IdModel idModel) {
+        return orderService.getCourierPendingOrders(courierService.get(idModel.getId()));
     }
  }

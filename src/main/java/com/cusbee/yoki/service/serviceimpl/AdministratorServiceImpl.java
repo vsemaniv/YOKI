@@ -66,17 +66,19 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	public void passOrdersToCourier(Long courierId) {
-		CourierDetails courierDetails = courierService.get(courierId);
-        List<Order> courierPendingOrders = orderService.getCourierPendingOrders(courierDetails);
+		CourierDetails courier = courierService.get(courierId);
+        List<Order> courierPendingOrders = orderService.getCourierPendingOrders(courier);
         if(courierPendingOrders.isEmpty()) {
             throw new ApplicationException(HttpStatus.OK, "There are no orders for courier");
         }
+		courier.setStatus(CourierDetails.CourierStatus.BUSY);
+		courier.setTimeToArrive(null);
+		Calendar currentTime = Calendar.getInstance();
         for(Order pendingOrder : courierPendingOrders) {
             pendingOrder.setStatus(OrderStatus.DELIVERY);
-            pendingOrder.setTimeTaken(Calendar.getInstance());
+            pendingOrder.setTimeTaken(currentTime);
             orderDao.save(pendingOrder);
         }
-
     }
 
 	public CourierDetails manageCourierWorkTime(Long id, boolean onPlace) {

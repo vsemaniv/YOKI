@@ -6,12 +6,16 @@ import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.exception.ApplicationException;
+import com.cusbee.yoki.model.CallCourierModel;
 import com.cusbee.yoki.model.CourierModel;
+import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.repositories.CourierRepository;
 import com.cusbee.yoki.service.CourierDetailsService;
+import com.cusbee.yoki.service.MessagingService;
 import com.cusbee.yoki.service.OrderService;
 import com.cusbee.yoki.service.ValidatorService;
 
+import com.cusbee.yoki.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +53,7 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
     OrderService orderService;
 
     @Autowired
-    CourierDetailsService courierService;
+    MessagingService messagingService;
 
     @Autowired
     CourierRepository courierRepository;
@@ -100,12 +104,15 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
     @Override
     public Order orderDelivered(Long orderId) {
         Order order = orderService.get(orderId);
-        CourierDetails courierDetails = order.getCourierDetails();
+        CourierDetails courier = order.getCourierDetails();
         order.setStatus(OrderStatus.DONE);
         order.setTimeDelivered(Calendar.getInstance());
-        order.setPending(Boolean.FALSE);
-        courierDetails.setStatus(CourierDetails.CourierStatus.FREE);
-        return orderDao.save(order);
+        order.setPending(false);
+        Order savedOrder = orderDao.save(order);
+        if(orderService.getCourierPendingOrders(courier).size() == 0) {
+            courier.setStatus(CourierDetails.CourierStatus.FREE);
+        }
+        return savedOrder;
     }
 
     @Override
@@ -118,5 +125,27 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Messaging token should not be empty!");
         }
+    }
+
+    @Override
+    public CourierDetails callCourierToBase(CallCourierModel request) {
+        validatorService.validateRequestNotNull(request, CourierDetails.class);
+        String timeToArrive = request.getTimeToArrive();
+        validatorService.validateDates(DateUtil.TIME_FORMAT, timeToArrive);
+        CourierDetails courier = get(request.getId());
+        courier.setTimeToArrive(timeToArrive);
+        CourierDetails savedCourier = dao.save(courier);
+        messagingService.summonCourier(courier);
+        return savedCourier;
+    }
+
+    @Override
+    public CourierDetails declineCallCourierToBase(IdModel request) {
+        validatorService.validateRequestNotNull(request, CourierDetails.class);
+        CourierDetails courier = get(request.getId());
+        courier.setTimeToArrive(null);
+        CourierDetails savedCourier = dao.save(courier);
+        messagingService.cancelSummonCourier(courier);
+        return savedCourier;
     }
 }

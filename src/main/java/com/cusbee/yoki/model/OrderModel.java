@@ -18,6 +18,7 @@ public class OrderModel implements RequestModel, Serializable {
     private Double cost;
     private ClientModel client;
     private Long courierId;
+    private Boolean closed;
     private String status;
     private String message;
     private String timeToTake;
@@ -112,5 +113,13 @@ public class OrderModel implements RequestModel, Serializable {
 
     public void setTimeDelivered(String timeDelivered) {
         this.timeDelivered = timeDelivered;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
     }
 }

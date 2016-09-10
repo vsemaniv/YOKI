@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
@@ -169,16 +170,14 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     @Override
-    public void validateDates(String... dates) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public void validateDates(DateFormat format, String... dates) {
         try {
             for (String date : dates) {
                 format.parse(date);
             }
         } catch (ParseException e) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid date format");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid date/time format");
         }
-
     }
 
     private void validateAccountFields(AccountModel request, boolean createOperation) {

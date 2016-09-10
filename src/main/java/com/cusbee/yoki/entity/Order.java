@@ -37,11 +37,15 @@ public class Order implements BaseEntity, Serializable {
     //shows if order is actual for courier.
     @Column
     @Type(type = "org.hibernate.type.YesNoType")
-    private Boolean pending;
+    private boolean pending;
 
     @Column(name = "written_off")
     @Type(type = "org.hibernate.type.YesNoType")
-    private Boolean writtenOff;
+    private boolean writtenOff;
+
+    @Column(name = "closed")
+    @Type(type = "org.hibernate.type.YesNoType")
+    private boolean closed;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "courier_id")
@@ -52,10 +56,6 @@ public class Order implements BaseEntity, Serializable {
 
     @Column(name = "message")
     private String message;
-    
-    @Column(name = "time_to_take")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar timeToTake;
     
     @Column(name = "time_taken")
     @Temporal(TemporalType.TIMESTAMP)
@@ -76,14 +76,6 @@ public class Order implements BaseEntity, Serializable {
     public void setClient(Client client) {
         this.client = client;
     }
-    
-    public Calendar getTimeToTake() {
-		return timeToTake;
-	}
-
-	public void setTimeToTake(Calendar timeToTake) {
-		this.timeToTake = timeToTake;
-	}
 
 	public Calendar getTimeTaken() {
 		return timeTaken;
@@ -161,6 +153,14 @@ public class Order implements BaseEntity, Serializable {
         this.message = message;
     }
 
+    public boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
+    }
+
     public boolean isWrittenOff() {
         return writtenOff;
     }
@@ -169,11 +169,11 @@ public class Order implements BaseEntity, Serializable {
         this.writtenOff = writtenOff;
     }
 
-    public boolean isPending() {
-        return pending;
+    public boolean isClosed() {
+        return closed;
     }
 
-    public void setPending(boolean pending) {
-        this.pending = pending;
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }

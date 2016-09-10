@@ -12,5 +12,4 @@ public enum OrderStatus {
 	DELIVERY,		//order is on its way to consumer
 	DELIVERY_FAILED,//failed to deliver order
 	DONE, 			//order was successfully delivered
-	CLOSED			//call-center had done a control call and closed the order
 }

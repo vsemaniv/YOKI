@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartRequest;
+
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "images")
 public class ImageController {
@@ -20,5 +23,11 @@ public class ImageController {
                                            MultipartRequest request) {
         IdEntity idEntity = imageService.addImages(request.getFiles("images[]"), type, id);
         return new YokiResult<>(HttpStatus.OK, "Images have been added successfully", idEntity);
+    }
+
+    @RequestMapping(value = "removeImages", method = RequestMethod.POST)
+    public YokiResult<IdEntity> removeImages(List<String> links) {
+        IdEntity idEntity = imageService.removeImages(links);
+        return new YokiResult<>(HttpStatus.OK, "Images have been removed successfully", idEntity);
     }
 }

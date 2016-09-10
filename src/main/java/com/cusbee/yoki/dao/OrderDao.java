@@ -12,6 +12,8 @@ public interface OrderDao {
 	void remove(Order order);
 
 	List<Order> getAll();
+
+	List<Order> getAvailable();
 	
 	Order get(Long id);
 

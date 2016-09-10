@@ -4,7 +4,9 @@ import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 
 public interface MessagingService {
-    void notifyCourier(CourierDetails courier, Order order);
+    void summonCourier(CourierDetails courier);
 
-    void releaseCourier(CourierDetails courier, Order order);
+    void cancelSummonCourier(CourierDetails courier);
+
+    void notifyAboutDeclinedOrder(CourierDetails courier, Order order);
 }

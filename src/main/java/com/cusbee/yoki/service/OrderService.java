@@ -32,5 +32,7 @@ public interface OrderService {
 	Order getCurrentOrderForCourier(Long courierId);
 
 	List<Order> getCourierPendingOrders(CourierDetails courier);
+
+	Order closeOrder(Long id);
 	
 }

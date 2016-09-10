@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@ApiClass("Operations with available non-processed orders")
+@ApiClass("Operations which are making only by operator")
 @RestController
 @RequestMapping(value = "operator")
 public class OperatorController {
@@ -27,29 +27,6 @@ public class OperatorController {
     @Autowired
     BinotelService binotelService;
 
-    @RequestMapping(value = "getAll", method = RequestMethod.GET)
-    public List<Order> getAvailableOrders() {
-        return orderService.getAll();
-    }
-
-    @RequestMapping(value = "createOrder", method = RequestMethod.POST)
-    public YokiResult<Order> createOrder(@RequestBody OrderModel request) {
-        Order order = orderService.saveOrder(request, CrudOperation.CREATE);
-        return new YokiResult<>(HttpStatus.OK, "Order was successfully created", order);
-    }
-
-    @RequestMapping(value = "updateOrder", method = RequestMethod.POST)
-    public YokiResult<Order> updateOrder(@RequestBody OrderModel request) {
-        Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
-        return new YokiResult<>(HttpStatus.OK, "Order was successfully updated", order);
-    }
-
-    @RequestMapping(value = "declineOrder", method = RequestMethod.POST)
-    public YokiResult<Order> declineOrder(@RequestBody OrderModel request) {
-        Order order = orderService.declineOrder(request);
-        return new YokiResult<Order>(HttpStatus.OK, "Order declined successfully", order);
-    }
-
     @RequestMapping(value = "setOrderInProgress", method = RequestMethod.POST)
     public YokiResult<Order> setOrderInProgress(@RequestBody IdModel idModel) {
         Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.IN_PROGRESS);
@@ -58,7 +35,7 @@ public class OperatorController {
 
     @RequestMapping(value = "closeOrder", method = RequestMethod.POST)
     public YokiResult<Order> closeOrder(@RequestBody IdModel idModel) {
-        Order order = orderService.saveOrderStatus(idModel.getId(), OrderStatus.CLOSED);
+        Order order = orderService.closeOrder(idModel.getId());
         return new YokiResult<Order>(HttpStatus.OK, "Order was successfully closed", order);
     }
 

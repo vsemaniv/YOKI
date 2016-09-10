@@ -25,61 +25,56 @@ public class MessagingServiceImpl implements MessagingService {
     private static final int retries = 10;
 
     private static final String DELIVERY_TITLE = "Час забирати замовлення!";
-    private static final String REJECTED_TITLE = "Скасоване замовлення!";
-    private static final String MESSAGE_PATTERN = "Прибуття на базу: %1$tR.\r\n Доставити до: %2$tR.";
+    private static final String REJECTED_TITLE = "Скасовано замовлення!";
 
     @Override
-    public void notifyCourier(final CourierDetails courier, final Order order) {
-        Thread courierNotifier = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Date timeToTake = order.getTimeToTake().getTime();
-                Date timeToDeliver = order.getTimeToDeliver().getTime();
-                String token = getCourierToken(courier);
-                String message = String.format(MESSAGE_PATTERN, timeToTake, timeToDeliver);
-                sendPushNotification(token, message, order.getId(), false);
-            }
-        });
-        courierNotifier.start();
+    public void summonCourier(CourierDetails courier) {
+        String token = getCourierToken(courier);
+        sendPushNotification(token, DELIVERY_TITLE, "Вам потрібно дістатися бази до " + courier.getTimeToArrive());
     }
 
-    public void releaseCourier(final CourierDetails courier, final Order order) {
+    @Override
+    public void cancelSummonCourier(CourierDetails courier) {
+        String token = getCourierToken(courier);
+        sendPushNotification(token, "Призначення скасовано", "На базу наразі йти не потрібно.");
+    }
+
+    @Override
+    public void notifyAboutDeclinedOrder(CourierDetails courier, Order order) {
         final String message = String.format("Замовлення номер %1d скасовано.", order.getId());
-        Thread courierNotifier = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = getCourierToken(courier);
-                sendPushNotification(token, message, order.getId(), true);
-            }
-        });
-        courierNotifier.start();
+        String token = getCourierToken(courier);
+        sendPushNotification(token, REJECTED_TITLE, message);
     }
 
 
-    public void sendPushNotification(String token, String message, Long orderId, boolean declined) {
-        Sender sender = new Sender(API_KEY);
-        Message msg = new Message.Builder()
-                .addData("title", declined ? REJECTED_TITLE : DELIVERY_TITLE)
-                .addData("message", message)
-                .addData("decline", String.valueOf(declined))
-                .addData("order", orderId.toString())
-                .build();
-        Result result;
-        try {
-            result = sender.send(msg, token, retries);
-            if (StringUtils.isEmpty(result.getErrorCodeName())) {
-                LOG.debug("GCM Notification was sent successfully: {}", result);
-            } else {
-                LOG.error("Error while sending push notification: {}", result.getErrorCodeName());
+    public void sendPushNotification(final String token, final String title, final String message) {
+        Thread courierNotifier = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Sender sender = new Sender(API_KEY);
+                Message msg = new Message.Builder()
+                        .addData("title", title)
+                        .addData("message", message)
+                        .build();
+                Result result;
+                try {
+                    result = sender.send(msg, token, retries);
+                    if (StringUtils.isEmpty(result.getErrorCodeName())) {
+                        LOG.debug("GCM Notification was sent successfully: {}", result);
+                    } else {
+                        LOG.error("Error while sending push notification: {}", result.getErrorCodeName());
+                    }
+                } catch (Exception e) {
+                    LOG.error("Exception occurred : {}", e.getStackTrace());
+                }
             }
-        } catch (Exception e) {
-            LOG.error("Exception occurred : {}", e.getStackTrace());
-        }
+        });
+        courierNotifier.start();
     }
 
     private String getCourierToken(CourierDetails courier) {
         String token = courier.getMessagingToken();
-        if(StringUtils.isEmpty(token)) {
+        if (StringUtils.isEmpty(token)) {
             throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Courier device is not registered for notifications!");
         }
         return token;

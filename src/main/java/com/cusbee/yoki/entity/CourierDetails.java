@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Set;
 
 //TODO remove
@@ -30,6 +31,9 @@ public class CourierDetails implements BaseEntity, Serializable {
 
     @Column(name = "messaging_token")
     private String messagingToken;
+
+    @Column(name = "time_to_arrive")
+    private String timeToArrive;
 
     public CourierDetails() {
     }
@@ -78,6 +82,14 @@ public class CourierDetails implements BaseEntity, Serializable {
 
     public void setMessagingToken(String messagingToken) {
         this.messagingToken = messagingToken;
+    }
+
+    public String getTimeToArrive() {
+        return timeToArrive;
+    }
+
+    public void setTimeToArrive(String timeToArrive) {
+        this.timeToArrive = timeToArrive;
     }
 
     public enum CourierStatus {

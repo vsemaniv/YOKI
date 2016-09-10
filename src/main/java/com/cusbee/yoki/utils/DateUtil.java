@@ -12,12 +12,13 @@ import java.util.Date;
  * Created on 01.09.2016.
  */
 public class DateUtil {
-    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
     public static Date getDate(String dateTime) {
         Calendar cal = Calendar.getInstance();
         try {
-            return SDF.parse(dateTime);
+            return DATE_FORMAT.parse(dateTime);
         } catch (ParseException e) {
             throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to parse date", e);
         }

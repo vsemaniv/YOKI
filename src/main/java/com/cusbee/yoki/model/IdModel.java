@@ -1,6 +1,6 @@
 package com.cusbee.yoki.model;
 
-public class IdModel {
+public class IdModel implements RequestModel {
 
     private Long id;
 
