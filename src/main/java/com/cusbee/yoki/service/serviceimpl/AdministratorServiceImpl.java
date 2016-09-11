@@ -30,9 +30,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 	private OrderService orderService;
 
 	@Autowired
-	private ValidatorService validatorService;
-
-	@Autowired
 	private OrderDao orderDao;
 
 	@Override
@@ -80,9 +77,5 @@ public class AdministratorServiceImpl implements AdministratorService {
             orderDao.save(pendingOrder);
         }
     }
-
-	public CourierDetails manageCourierWorkTime(Long id, boolean onPlace) {
-		return courierService.updateStatus(id, onPlace ? CourierDetails.CourierStatus.FREE : CourierDetails.CourierStatus.OUT);
-	}
 
 }

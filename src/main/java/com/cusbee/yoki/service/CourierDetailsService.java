@@ -30,4 +30,6 @@ public interface CourierDetailsService {
     CourierDetails callCourierToBase(CallCourierModel request);
 
     CourierDetails declineCallCourierToBase(IdModel request);
+
+    CourierDetails manageCourierWorkTime(Long id, boolean isFree);
 }

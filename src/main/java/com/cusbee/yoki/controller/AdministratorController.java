@@ -31,10 +31,6 @@ public class AdministratorController {
     @Autowired
     private CourierDetailsService courierService;
 
-
-
-
-
     @RequestMapping(value = "getOrderHistory", method = RequestMethod.GET)
     public List<Order> getOrderHistory(@RequestParam(value = "startDate", required = false) String startDate,
                                        @RequestParam(value = "endDate", required = false) String endDate,
@@ -79,15 +75,5 @@ public class AdministratorController {
     public YokiResult<CourierDetails> declineCallCourierToBase(@RequestBody IdModel request) {
         CourierDetails courier = courierService.declineCallCourierToBase(request);
         return new YokiResult<>(HttpStatus.OK, "Now courier is notified about NOT coming to base", courier);
-    }
-
-    @RequestMapping(value = "releaseCourier", method = RequestMethod.POST)
-    public YokiResult releaseCourier(@RequestBody IdModel courierIdModel) {
-        return new YokiResult<>(HttpStatus.OK, "Courier is now out of work", service.manageCourierWorkTime(courierIdModel.getId(), false));
-    }
-
-    @RequestMapping(value = "courierOnPlace", method = RequestMethod.POST)
-    public YokiResult courierOnPlace(@RequestBody IdModel courierIdModel) {
-        return new YokiResult<>(HttpStatus.OK, "Courier is now working", service.manageCourierWorkTime(courierIdModel.getId(), true));
     }
 }

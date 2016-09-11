@@ -3,15 +3,12 @@ package com.cusbee.yoki.controller;
 import java.util.List;
 
 import com.cusbee.yoki.dto.YokiResult;
-import com.cusbee.yoki.dto.YokiResult.Status;
 import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.CourierModel;
 import com.cusbee.yoki.model.IdModel;
-import com.cusbee.yoki.repositories.OrderRepository;
 import com.cusbee.yoki.service.CourierDetailsService;
 import com.cusbee.yoki.service.OrderService;
-import com.cusbee.yoki.service.ValidatorService;
 import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +64,17 @@ public class CourierController {
     @RequestMapping(value = "getPendingOrders", method = RequestMethod.GET)
     public List<Order> getPendingOrders(@RequestBody IdModel idModel) {
         return orderService.getCourierPendingOrders(courierService.get(idModel.getId()));
+    }
+
+
+
+    @RequestMapping(value = "courierOut", method = RequestMethod.POST)
+    public YokiResult courierOut(@RequestBody IdModel courierIdModel) {
+        return new YokiResult<>(HttpStatus.OK, "Courier is now out of work", courierService.manageCourierWorkTime(courierIdModel.getId(), false));
+    }
+
+    @RequestMapping(value = "courierFree", method = RequestMethod.POST)
+    public YokiResult courierFree(@RequestBody IdModel courierIdModel) {
+        return new YokiResult<>(HttpStatus.OK, "Courier is now working", courierService.manageCourierWorkTime(courierIdModel.getId(), true));
     }
  }

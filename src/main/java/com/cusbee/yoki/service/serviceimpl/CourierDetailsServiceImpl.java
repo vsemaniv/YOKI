@@ -148,4 +148,9 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
         messagingService.cancelSummonCourier(courier);
         return savedCourier;
     }
+
+    @Override
+    public CourierDetails manageCourierWorkTime(Long id, boolean isFree) {
+        return updateStatus(id, isFree ? CourierDetails.CourierStatus.FREE : CourierDetails.CourierStatus.OUT);
+    }
 }
