@@ -32,6 +32,9 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private ActivationService activationService;
 
+    @Autowired
+    private ImageService imageService;
+
     @Override
     @Transactional
     public Dish get(Long id) {
@@ -55,6 +58,7 @@ public class DishServiceImpl implements DishService {
     public void remove(Long id) {
         Dish dish = get(id);
         dish.setCategory(null);
+        removeImages(dish.getImages());
         dao.remove(dish);
     }
 
@@ -96,6 +100,14 @@ public class DishServiceImpl implements DishService {
         String type = request.getType();
         return validatorService.isEnumValid(type, DishType.class) ?
                 DishType.valueOf(type.toUpperCase()) : DishType.ORDINARY;
+    }
+
+    private void removeImages(List<DishImage> dishImages) {
+        List<String> links = new ArrayList<>();
+        for(DishImage dishImage : dishImages) {
+            links.add(dishImage.getLink());
+        }
+        imageService.removeImages(links);
     }
 
 

@@ -66,6 +66,20 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    @Override
+    public void removeImages(List<String> links) {
+        validatorService.validateLinks(links);
+        for(String link : links) {
+            String linkToDelete = link.replace(ALIAS_PATH, BASE_PATH);
+            File file = new File(linkToDelete);
+            if(file.exists()) {
+                file.delete();
+            } else {
+                LOG.error("Attempt to delete image on non-existing path. Link: "+ linkToDelete);
+            }
+        }
+    }
+
     private void createDirectoriesIfNeeded(String type) {
         File file = new File(BASE_PATH + type);
         if(!file.exists()) {

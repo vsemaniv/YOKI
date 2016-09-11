@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -177,6 +177,18 @@ public class ValidatorServiceImpl implements ValidatorService {
             }
         } catch (ParseException e) {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid date/time format");
+        }
+    }
+
+    @Override
+    public void validateLinks(List<String> links) {
+        Pattern pattern = Pattern.compile("^/yokimages/\\w+?/.+?\\.\\w{3,4}$");
+        Matcher matcher;
+        for(String link : links) {
+            matcher = pattern.matcher(link);
+            if(!matcher.matches()) {
+                throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "At least one of the links is invalid");
+            }
         }
     }
 

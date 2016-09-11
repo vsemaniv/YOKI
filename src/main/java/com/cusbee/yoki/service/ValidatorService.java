@@ -5,6 +5,7 @@ import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.model.*;
 
 import java.text.DateFormat;
+import java.util.List;
 
 /**
 
@@ -26,6 +27,8 @@ public interface ValidatorService {
     void validateEntityNotNull(BaseEntity entity, Class entityClass);
 
     void validateDates(DateFormat format, String... dates);
+
+    void validateLinks(List<String> links);
 
     <E extends Enum<E>> boolean isEnumValid(String type, Class<E> enumClass);
 }

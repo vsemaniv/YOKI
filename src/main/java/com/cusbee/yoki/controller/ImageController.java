@@ -26,8 +26,8 @@ public class ImageController {
     }
 
     @RequestMapping(value = "removeImages", method = RequestMethod.POST)
-    public YokiResult<IdEntity> removeImages(List<String> links) {
-        IdEntity idEntity = imageService.removeImages(links);
-        return new YokiResult<>(HttpStatus.OK, "Images have been removed successfully", idEntity);
+    public YokiResult<IdEntity> removeImages(@RequestBody List<String> links) {
+        imageService.removeImages(links);
+        return new YokiResult<>(HttpStatus.OK, "Images have been removed successfully", null);
     }
 }

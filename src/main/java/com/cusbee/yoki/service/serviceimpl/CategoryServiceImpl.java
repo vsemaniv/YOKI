@@ -59,9 +59,10 @@ public class CategoryServiceImpl implements CategoryService {
 		Category category = get(id);
 		Set<Dish> dishes = category.getDishes();
 		for (Dish dish : dishes) {
-			dish.setCategory(null);
+			dishService.remove(dish.getId());
 		}
-		this.dao.remove(category);
+		dishes.clear();
+		dao.remove(category);
 	}
 
 	public Category saveCategory(CategoryModel request, CrudOperation status) {
