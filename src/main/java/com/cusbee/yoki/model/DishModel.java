@@ -1,6 +1,9 @@
 package com.cusbee.yoki.model;
 
+import com.cusbee.yoki.entity.Ingredient;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class DishModel implements RequestModel, Serializable {
 
@@ -12,11 +15,12 @@ public class DishModel implements RequestModel, Serializable {
 	private String type;
 	private Double price;
 	private Long categoryId;
+	private List<Ingredient> ingredients;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Double price, String description, Long category_id,
-					 String type) {
+					 String type, List<Ingredient> ingredients) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -24,6 +28,7 @@ public class DishModel implements RequestModel, Serializable {
 		this.description = description;
 		this.categoryId = category_id;
 		this.type = type;
+		this.ingredients = ingredients;
 	}
 
 	@Override
@@ -73,5 +78,13 @@ public class DishModel implements RequestModel, Serializable {
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 }

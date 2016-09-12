@@ -7,6 +7,7 @@ import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private IngredientService ingredientService;
 
     @Autowired
     private ValidatorService validatorService;
@@ -86,6 +90,9 @@ public class DishServiceImpl implements DishService {
         dish.setType(getDishType(request));
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
+        if(CollectionUtils.isNotEmpty(request.getIngredients())) {
+            addIngredientsToDish(dish, request.getIngredients());
+        }
         return dao.save(dish);
     }
 
@@ -110,5 +117,10 @@ public class DishServiceImpl implements DishService {
         imageService.removeImages(links);
     }
 
-
+    private void addIngredientsToDish(Dish dish, List<Ingredient> ingredients) {
+        List<Ingredient> ingredientList = dish.getIngredients();
+        for(Ingredient ingredientRequest : ingredients) {
+            ingredientList.add(ingredientService.get(ingredientRequest.getId()));
+        }
+    }
 }

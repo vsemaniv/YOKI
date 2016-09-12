@@ -50,6 +50,9 @@ public class Dish implements IdEntity, Activatable, Serializable {
     @Fetch(FetchMode.JOIN)
     private List<DishImage> images;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ingredient> ingredients;
+
     public Long getId() {
         return id;
     }
@@ -112,6 +115,14 @@ public class Dish implements IdEntity, Activatable, Serializable {
 
     public void setImages(List<DishImage> images) {
         this.images = images;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     @Override
