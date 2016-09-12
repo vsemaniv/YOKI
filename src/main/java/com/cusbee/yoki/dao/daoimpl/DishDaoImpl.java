@@ -18,7 +18,8 @@ public class DishDaoImpl implements DishDao {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
+	@Override
 	public Dish save(Dish dish) {
 		return em.merge(dish);
 	}
@@ -40,12 +41,13 @@ public class DishDaoImpl implements DishDao {
 		return (List<Dish>) em.createQuery("SELECT d FROM Dish d").getResultList();
 	}
 
+	@Override
 	public List<Dish> getAvailable() {
 		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = true").getResultList();
 	}
 
+	@Override
 	public List<Dish> getAvailable(Category category) {
 		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = 'Y' AND d.category = ?1").setParameter(1, category).getResultList();
 	}
-
 }

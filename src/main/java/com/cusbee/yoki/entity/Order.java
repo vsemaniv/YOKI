@@ -20,7 +20,7 @@ public class Order implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DishQuantity> dishes = new ArrayList<>();
 
     @Column(name = "order_date")
@@ -49,7 +49,7 @@ public class Order implements BaseEntity, Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "courier_id")
-    private CourierDetails courierDetails;
+    private CourierDetails courier;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Client client;
@@ -101,12 +101,12 @@ public class Order implements BaseEntity, Serializable {
 		this.timeDelivered = timeDelivered;
 	}
 
-    public CourierDetails getCourierDetails() {
-        return courierDetails;
+    public CourierDetails getCourier() {
+        return courier;
     }
 
-    public void setCourierDetails(CourierDetails courierDetails) {
-        this.courierDetails = courierDetails;
+    public void setCourier(CourierDetails courier) {
+        this.courier = courier;
     }
 
     public Long getId() {
@@ -127,6 +127,10 @@ public class Order implements BaseEntity, Serializable {
 
     public List<DishQuantity> getDishes() {
         return dishes;
+    }
+
+    public void setDishes(List<DishQuantity> dishes) {
+        this.dishes = dishes;
     }
 
     public Calendar getOrderDate() {

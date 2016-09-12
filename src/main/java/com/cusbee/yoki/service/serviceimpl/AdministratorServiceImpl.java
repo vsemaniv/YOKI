@@ -1,5 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
+import com.cusbee.yoki.dto.YokiPosterResponse;
 import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.service.*;
@@ -33,27 +34,23 @@ public class AdministratorServiceImpl implements AdministratorService {
 	private OrderDao orderDao;
 
 	@Override
-	public void acceptIncomingKitchenOrder(Long id) {
+	public YokiPosterResponse acceptIncomingKitchenOrder(Long id) {
     	Order order = dao.get(id);
 		order.setStatus(OrderStatus.COOKING);
 		if(!order.isWrittenOff()) {
-			boolean writtenOffSuccessfully = posterService.writeOffOrder(order);
-			if(writtenOffSuccessfully) {
-				order.setWrittenOff(true);
-			} else {
-				throw new ApplicationException(HttpStatus.BAD_REQUEST,
-						"Unexpected error during writeoff. Please contact CRM vendor");
-			}
+			String result = posterService.writeOffOrder(order);
+			order.setWrittenOff(true);
+			Order savedOrder = dao.save(order);
+			return new YokiPosterResponse(result, savedOrder);
 		} else {
 			throw new ApplicationException(HttpStatus.BAD_REQUEST,
 					"Order was already written off!");
 		}
-    	dao.save(order);
     }
 
 	public Order passOrderToCourier(Long orderId) {
 		Order order = orderService.get(orderId);
-		CourierDetails courierDetails = order.getCourierDetails();
+		CourierDetails courierDetails = order.getCourier();
 		if(courierDetails == null) {
 			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "You should assign courier before passing it to him!");
 		}

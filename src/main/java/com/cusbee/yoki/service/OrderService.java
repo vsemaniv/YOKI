@@ -17,6 +17,8 @@ public interface OrderService {
 
 	List<Order> getAvailableOrders();
 
+	List<DishQuantity> getDishesByOrder(Long orderId);
+
 	List<Order> getOrderHistory(String startDate, String endDate, String clientId);
 
 	Order get(Long id);

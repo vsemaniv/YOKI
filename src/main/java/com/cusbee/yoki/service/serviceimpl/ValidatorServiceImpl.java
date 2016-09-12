@@ -114,11 +114,6 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public void validateOrderSaveRequest(OrderModel request, CrudOperation operation) {
         validateRequestNotNull(request, Order.class);
-        if (Objects.isNull(request.getDishes())) {
-            throw new ApplicationException(
-                    HttpStatus.BAD_REQUEST,
-                    "List of ordered dishes is empty");
-        }
         switch (operation) {
             case CREATE:
                 if(request.getClient() == null) {

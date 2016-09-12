@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Set;
 
 //TODO remove
@@ -21,7 +20,7 @@ public class CourierDetails implements BaseEntity, Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "courierDetails")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "courier")
     @JsonIgnore
     private Set<Order> orders;
 

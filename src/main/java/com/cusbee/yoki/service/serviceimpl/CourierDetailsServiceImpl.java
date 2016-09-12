@@ -104,7 +104,7 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
     @Override
     public Order orderDelivered(Long orderId) {
         Order order = orderService.get(orderId);
-        CourierDetails courier = order.getCourierDetails();
+        CourierDetails courier = order.getCourier();
         order.setStatus(OrderStatus.DONE);
         order.setTimeDelivered(Calendar.getInstance());
         order.setPending(false);
@@ -133,7 +133,11 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
         String timeToArrive = request.getTimeToArrive();
         validatorService.validateDates(DateUtil.TIME_FORMAT, timeToArrive);
         CourierDetails courier = get(request.getId());
-        courier.setTimeToArrive(timeToArrive);
+        if(courier.getStatus() == CourierDetails.CourierStatus.FREE) {
+            courier.setTimeToArrive(timeToArrive);
+        } else {
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "This courier is out of work");
+        }
         CourierDetails savedCourier = dao.save(courier);
         messagingService.summonCourier(courier);
         return savedCourier;

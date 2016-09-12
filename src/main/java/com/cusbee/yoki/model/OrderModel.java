@@ -1,12 +1,9 @@
 package com.cusbee.yoki.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class OrderModel implements RequestModel, Serializable {
 
@@ -21,7 +18,6 @@ public class OrderModel implements RequestModel, Serializable {
     private Boolean closed;
     private String status;
     private String message;
-    private String timeToTake;
     private String timeToDeliver;
     private String timeTaken;
     private String timeDelivered;
@@ -81,14 +77,6 @@ public class OrderModel implements RequestModel, Serializable {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getTimeToTake() {
-        return timeToTake;
-    }
-
-    public void setTimeToTake(String timeToTake) {
-        this.timeToTake = timeToTake;
     }
 
     public String getTimeToDeliver() {

@@ -4,6 +4,7 @@ import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.poster.*;
 import com.cusbee.yoki.service.StorageService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -24,8 +25,10 @@ public class PosterServiceImpl implements StorageService {
 
     private static String token = "4f665e3e5c5f15ab92749a46b0c904ab";
 
+    private static StringBuilder couldNotWriteOff = new StringBuilder();
+
     @Override
-    public boolean writeOffOrder(Order order) {
+    public String writeOffOrder(Order order) {
         List<WriteOffDish> writeOffDishes = remapDishes(order);
         PosterWriteOffModel model = new PosterWriteOffModel(1, writeOffDishes);
 
@@ -40,7 +43,17 @@ public class PosterServiceImpl implements StorageService {
                 .toUriString();
         WriteOffResponse response = restTemplate.postForObject(uriWithParams, entity, WriteOffResponse.class);
         LOG.debug("call to" + uriWithParams, response);
-        return response.getSuccess() != null && response.getSuccess() == 1;
+
+        String notWrittenOff = checkCouldNotWriteOff();
+        if(response.getSuccess() != null && response.getSuccess() == 1) {
+            if(StringUtils.isEmpty(notWrittenOff)) {
+                return "";
+            } else {
+                return notWrittenOff;
+            }
+        } else {
+            return "Невідома помилка під час списання продуктів. Доведеться списувати вручну";
+        }
     }
 
     /**
@@ -54,17 +67,25 @@ public class PosterServiceImpl implements StorageService {
         List<WriteOffDish> writeOffList = new ArrayList<>();
         List<PosterDish> posterDishes = getDishesFromPoster();
         List<DishQuantity> orderMap = order.getDishes();
+        //required for building could-not-writeoff-string
+        boolean flag = true;
 
+        nextDish:
         for (DishQuantity dishQuantity : orderMap) {
             String dishName = dishQuantity.getDish().getName();
             for (PosterDish posterDish : posterDishes) {
                 if (posterDish.getName().equals(dishName)) {
                     writeOffList.add(new WriteOffDish(posterDish.getId(), posterDish.getType(), dishQuantity.getQuantity()));
-                    break;
+                    continue nextDish;
                 }
             }
-            /*throw new ApplicationException(HttpStatus.BAD_REQUEST,
-                    "Could not find dish \"" + dishName + "\" in poster. Writeoff failed");*/
+            //can't reach this statement if poster dishes contain current dish
+            if(flag) {
+                couldNotWriteOff.append("Не вдалося списати наступні страви: ").append(dishName);
+                flag = false;
+            } else {
+                couldNotWriteOff.append(",").append(dishName);
+            }
         }
         return writeOffList;
     }
@@ -79,5 +100,11 @@ public class PosterServiceImpl implements StorageService {
                 .toUriString();
         PosterDishResponse posterDishList = restTemplate.getForObject(uriWithParams, PosterDishResponse.class);
         return posterDishList.getPosterDishes();
+    }
+
+    private String checkCouldNotWriteOff() {
+        String notWrittenOff = couldNotWriteOff.toString();
+        couldNotWriteOff.delete(0, couldNotWriteOff.length());
+        return notWrittenOff;
     }
 }

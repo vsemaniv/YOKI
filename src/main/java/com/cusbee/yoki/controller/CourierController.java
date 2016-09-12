@@ -61,12 +61,10 @@ public class CourierController {
         return new YokiResult<>(HttpStatus.OK, "Token was successfully saved", order);
     }
 
-    @RequestMapping(value = "getPendingOrders", method = RequestMethod.GET)
+    @RequestMapping(value = "getPendingOrders", method = RequestMethod.POST)
     public List<Order> getPendingOrders(@RequestBody IdModel idModel) {
         return orderService.getCourierPendingOrders(courierService.get(idModel.getId()));
     }
-
-
 
     @RequestMapping(value = "courierOut", method = RequestMethod.POST)
     public YokiResult courierOut(@RequestBody IdModel courierIdModel) {

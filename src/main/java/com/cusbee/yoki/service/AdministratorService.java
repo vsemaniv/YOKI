@@ -1,5 +1,6 @@
 package com.cusbee.yoki.service;
 
+import com.cusbee.yoki.dto.YokiPosterResponse;
 import com.cusbee.yoki.entity.Order;
 
 public interface AdministratorService {
@@ -8,5 +9,5 @@ public interface AdministratorService {
 
 	void passOrdersToCourier(Long orderId);
 
-	void acceptIncomingKitchenOrder(Long id);
+	YokiPosterResponse acceptIncomingKitchenOrder(Long id);
 }

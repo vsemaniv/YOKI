@@ -36,9 +36,6 @@ public class OrderServiceImpl implements OrderService {
     private ClientService clientService;
 
     @Autowired
-    private MessagingService messagingService;
-
-    @Autowired
     private CourierDetailsService courierService;
 
     @Autowired
@@ -51,12 +48,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAll() {
-        return dao.getAll();
+        List<Order> orders = dao.getAll();
+        processLazyInitialization(orders);
+        return orders;
     }
 
     @Override
     public List<Order> getAvailableOrders() {
-        return dao.getAvailable();
+        List<Order> orders = dao.getAvailable();
+        processLazyInitialization(orders);
+        return orders;
+    }
+
+    @Override
+    public List<DishQuantity> getDishesByOrder(Long orderId) {
+        Order order = get(orderId);
+        return order.getDishes();
     }
 
     @Override
@@ -95,10 +102,13 @@ public class OrderServiceImpl implements OrderService {
                 order = new Order();
                 order.setOrderDate(Calendar.getInstance());
                 order.setClient(parseClient(request.getClient(), new Client()));
+                order.setStatus(OrderStatus.FRESH);
                 break;
             case UPDATE:
                 order = get(request.getId());
-                order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
+                if(request.getClient() != null) {
+                    order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
+                }
                 break;
             default:
                 throw new ApplicationException(HttpStatus.BAD_REQUEST,
@@ -113,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
         }
         if(request.getCourierId() != null) {
             if(order.getTimeToDeliver() != null) {
-                order.setCourierDetails(courierService.get(request.getCourierId()));
+                order.setCourier(courierService.get(request.getCourierId()));
             } else {
                 throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
                         "You should specify delivery time before specifying the courier!");
@@ -125,8 +135,8 @@ public class OrderServiceImpl implements OrderService {
         if(request.getDishes() != null) {
             List<DishQuantityModel> dishModels = request.getDishes();
             resetDishes(order, dishModels);
+            order.setCost(countAmount(request.getDishes()));
         }
-        order.setCost(countAmount(request.getDishes()));
         return dao.save(order);
     }
 
@@ -159,17 +169,19 @@ public class OrderServiceImpl implements OrderService {
     public Order assignCourierToOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
-        Calendar timeToDeliver = DateUtil.getCalendar(request.getTimeToDeliver());
-
         CourierDetails courier = courierService.get(request.getCourierId());
-        if (timeToDeliver != null){
-            order.setTimeToDeliver(timeToDeliver);
-            order.setCourierDetails(courier);
-            dao.save(order);
-            return order;
-        } else {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to take order and time to deliver order should not be empty");
+        if(courier.getStatus() != CourierDetails.CourierStatus.FREE) {
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Courier must be free to assign orders!");
         }
+        if (StringUtils.isNotEmpty(request.getTimeToDeliver())) {
+            Calendar timeToDeliver = DateUtil.getCalendar(request.getTimeToDeliver());
+            order.setTimeToDeliver(timeToDeliver);
+        }
+        if(order.getTimeToDeliver() == null) {
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to deliver order should not be empty");
+        }
+        order.setCourier(courier);
+        return dao.save(order);
     }
 
     @Override
@@ -239,12 +251,14 @@ public class OrderServiceImpl implements OrderService {
         return amount;
     }
 
-    @Deprecated
-    private void releaseCourierIfExist(Order order) {
-        CourierDetails currentCourier = order.getCourierDetails();
-        if(currentCourier != null && currentCourier.getStatus() != CourierDetails.CourierStatus.OUT) {
-            currentCourier.setStatus(CourierDetails.CourierStatus.FREE);
+    /**
+     * This methods protects from org.hibernate.LazyInitializationException,
+     * that occurs every time we are trying to return lazy loaded orders.
+     * @param orders - list of loaded orders
+     */
+    private void processLazyInitialization(List<Order> orders) {
+        for(Order order : orders) {
+            order.setDishes(null);
         }
-        messagingService.notifyAboutDeclinedOrder(currentCourier, order);
     }
 }

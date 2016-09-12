@@ -15,7 +15,7 @@ public interface DishService {
 	List<Dish> getAll();
 
 	List<Dish> getAvailable();
-	
+
 	Dish saveDish(DishModel request, CrudOperation operation);
 
 	Dish processActivation(Long id, boolean activate);

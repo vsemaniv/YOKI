@@ -1,5 +1,6 @@
 package com.cusbee.yoki.controller;
 
+import com.cusbee.yoki.dto.YokiPosterResponse;
 import com.cusbee.yoki.dto.YokiResult;
 import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.Order;
@@ -39,9 +40,9 @@ public class AdministratorController {
     }
 
     @RequestMapping(value = "proceedToCooking", method = RequestMethod.POST)
-    public YokiResult<Order> sendToCooking(@RequestBody IdModel idModel) {
-        service.acceptIncomingKitchenOrder(idModel.getId());
-        return new YokiResult<>(HttpStatus.OK, "Order was successfully declined", null);
+    public YokiResult sendToCooking(@RequestBody IdModel idModel) {
+        YokiPosterResponse response = service.acceptIncomingKitchenOrder(idModel.getId());
+        return new YokiResult<>(HttpStatus.OK, "", response);
     }
 
     @Deprecated
