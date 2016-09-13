@@ -6,22 +6,19 @@ import java.io.Serializable;
 /**
  * Created on 12.09.2016.
  */
-
-@Entity
 @Table(name = "ingredient")
+@Entity
 public class Ingredient implements IdEntity, Serializable {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    String iconLink;
-
-
+    private String iconLink;
 
     public Long getId() {
         return id;

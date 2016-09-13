@@ -103,12 +103,18 @@ public class ValidatorServiceImpl implements ValidatorService {
                 if (dishRepository.findByName(request.getName()) != null) {
                     throw new ApplicationException(HttpStatus.BAD_REQUEST, "Dish with such name already exists");
                 }
+                validateRegexDishName(request.getName());
+                validateRegexDishPrice(request.getPrice());
                 break;
             case UPDATE:
-
+                if(StringUtils.isNotEmpty(request.getName())) {
+                    validateRegexDishName(request.getName());
+                }
+                if(request.getPrice() != null) {
+                    validateRegexDishPrice(request.getPrice());
+                }
                 break;
         }
-        validateDishFields(request);
     }
 
     @Override
@@ -195,11 +201,6 @@ public class ValidatorServiceImpl implements ValidatorService {
         if (createOperation || StringUtils.isNotEmpty(request.getNewPassword())) {
             validateRegexAccountPassword(request.getNewPassword());
         }
-    }
-
-    private void validateDishFields(DishModel request) {
-        validateRegexDishName(request.getName());
-        validateRegexDishPrice(request.getPrice());
     }
 
     private void validateClientFields(ClientModel request) {

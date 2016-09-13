@@ -84,10 +84,18 @@ public class DishServiceImpl implements DishService {
             default:
                 throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid request");
         }
-        dish.setName(request.getName());
-        dish.setPrice(request.getPrice());
-        dish.setDescription(request.getDescription());
-        dish.setType(getDishType(request));
+        if(request.getName() != null) {
+            dish.setName(request.getName());
+        }
+        if(request.getPrice() != null) {
+            dish.setPrice(request.getPrice());
+        }
+        if(request.getDescription() != null) {
+            dish.setDescription(request.getDescription());
+        }
+        if(request.getType() != null) {
+            dish.setType(getDishType(request));
+        }
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
         if(CollectionUtils.isNotEmpty(request.getIngredients())) {

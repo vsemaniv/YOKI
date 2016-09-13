@@ -13,6 +13,7 @@ import java.util.List;
  * Created on 12.09.2016.
  */
 @Repository
+@Transactional
 public class IngredientDaoImpl implements IngredientDao {
 
     @PersistenceContext

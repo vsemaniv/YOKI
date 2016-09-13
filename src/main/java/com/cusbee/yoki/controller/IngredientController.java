@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,23 +25,23 @@ public class IngredientController {
     @Autowired
     IngredientService ingredientService;
 
-    @RequestMapping(value = "create")
+    @RequestMapping(value = "create", method = RequestMethod.POST)
     public YokiResult<Ingredient> create(@RequestBody Ingredient request) {
         return new YokiResult<>(HttpStatus.OK, "Ingredient successfully created", ingredientService.addIngredient(request));
     }
 
-    @RequestMapping(value = "update")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     public YokiResult<Ingredient> update(@RequestBody Ingredient request) {
         return new YokiResult<>(HttpStatus.OK, "Ingredient successfully updated", ingredientService.updateIngredient(request));
     }
 
-    @RequestMapping(value = "remove")
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
     public YokiResult<Ingredient> remove(@RequestBody IdModel idModel) {
         ingredientService.remove(idModel.getId());
         return new YokiResult<>(HttpStatus.OK, "Ingredient successfully removed", null);
     }
 
-    @RequestMapping(value = "getAll")
+    @RequestMapping(value = "getAll", method = RequestMethod.POST)
     public List<Ingredient> getAll() {
         return ingredientService.getAll();
     }
