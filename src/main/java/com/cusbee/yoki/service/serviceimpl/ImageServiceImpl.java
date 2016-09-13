@@ -53,7 +53,7 @@ public class ImageServiceImpl implements ImageService {
         if (validatorService.isEnumValid(type, EntityType.class) && images.length > 0) {
             createDirectoriesIfNeeded(type);
             String relativePath;
-            switch (EntityType.valueOf(type)) {
+            switch (EntityType.valueOf(type.toUpperCase())) {
                 case DISH:
                     Dish dish = dishService.get(id);
                     for (MultipartFile image : images) {
