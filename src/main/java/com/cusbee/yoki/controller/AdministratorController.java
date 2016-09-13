@@ -14,6 +14,7 @@ import com.wordnik.swagger.annotations.ApiClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class AdministratorController {
     private CourierDetailsService courierService;
 
     @RequestMapping(value = "getOrderHistory", method = RequestMethod.GET)
+    @Transactional
     public List<Order> getOrderHistory(@RequestParam(value = "startDate", required = false) String startDate,
                                        @RequestParam(value = "endDate", required = false) String endDate,
                                        @RequestParam(value = "clientPhone", required = false) String client) {

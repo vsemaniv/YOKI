@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "ingredient")
-public class Ingredient implements BaseEntity, Serializable {
+public class Ingredient implements IdEntity, Serializable {
 
     @Id
     @GeneratedValue

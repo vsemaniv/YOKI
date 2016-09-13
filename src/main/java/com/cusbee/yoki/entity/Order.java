@@ -20,7 +20,7 @@ public class Order implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DishQuantity> dishes = new ArrayList<>();
 
     @Column(name = "order_date")

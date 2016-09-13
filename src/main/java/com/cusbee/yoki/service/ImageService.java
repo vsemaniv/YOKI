@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ImageService {
 
-    IdEntity addImages(List<MultipartFile> images, String type, Long id);
+    IdEntity addImages(String type, Long id, MultipartFile... images);
+
+    List<String> addSliderImages(MultipartFile... images);
 
     void removeImages(List<String> links);
 }

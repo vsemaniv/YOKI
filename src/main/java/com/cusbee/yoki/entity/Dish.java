@@ -50,7 +50,7 @@ public class Dish implements IdEntity, Activatable, Serializable {
     @Fetch(FetchMode.JOIN)
     private List<DishImage> images;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Ingredient> ingredients;
 
     public Long getId() {
