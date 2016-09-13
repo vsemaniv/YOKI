@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.cusbee.yoki.entity.Category;
+import com.cusbee.yoki.entity.DishImage;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,12 @@ public class DishDaoImpl implements DishDao {
 	@Transactional
 	public Dish get(Long id) {
 		return em.find(Dish.class, id);
+	}
+
+	@Override
+	public DishImage getDishImageByLink(String link) {
+		return (DishImage) em.createQuery("SELECT di FROM DishImage di WHERE di.link = ?1")
+				.setParameter(1, link).getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")

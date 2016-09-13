@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Table(name = "dish_image")
 @Entity
-public class DishImage implements Serializable {
+public class DishImage implements Serializable, BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

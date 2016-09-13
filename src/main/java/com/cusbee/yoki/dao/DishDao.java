@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cusbee.yoki.entity.Category;
 import com.cusbee.yoki.entity.Dish;
+import com.cusbee.yoki.entity.DishImage;
 
 public interface DishDao {
 
@@ -12,6 +13,8 @@ public interface DishDao {
 	void remove(Dish dish);
 	
 	Dish get(Long id);
+
+	DishImage getDishImageByLink(String link);
 	
 	List<Dish> getAll();
 

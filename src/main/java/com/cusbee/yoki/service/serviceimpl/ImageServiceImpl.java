@@ -84,9 +84,10 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void removeImages(List<String> links) {
+    public void removeDishImages(List<String> links) {
         validatorService.validateLinks(links);
         for (String link : links) {
+            removeDishImageEntity(link);
             String linkToDelete = link.replace(ALIAS_PATH, BASE_PATH);
             File file = new File(linkToDelete);
             if (file.exists()) {
@@ -134,6 +135,14 @@ public class ImageServiceImpl implements ImageService {
             sb.append(part);
         }
         return sb.toString();
+    }
+
+    private void removeDishImageEntity(String link) {
+        DishImage dishImage = dishDao.getDishImageByLink(link);
+        validatorService.validateEntityNotNull(dishImage, DishImage.class);
+        Dish dish = dishImage.getDish();
+        dish.getImages().remove(dishImage);
+        dishDao.save(dish);
     }
 /*
     public static void main(String[] args) {
