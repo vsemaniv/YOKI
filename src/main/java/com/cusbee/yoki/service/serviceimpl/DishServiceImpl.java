@@ -122,7 +122,7 @@ public class DishServiceImpl implements DishService {
         for(DishImage dishImage : dishImages) {
             links.add(dishImage.getLink());
         }
-        imageService.removeImages(links);
+        imageService.removeDishImages(links);
     }
 
     private void addIngredientsToDish(Dish dish, List<Ingredient> ingredients) {
