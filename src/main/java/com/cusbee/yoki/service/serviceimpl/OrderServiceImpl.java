@@ -51,16 +51,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAll() {
-        List<Order> orders = dao.getAll();
-        processLazyInitialization(orders);
-        return orders;
+        return dao.getAll();
     }
 
     @Override
     public List<Order> getAvailableOrders() {
-        List<Order> orders = dao.getAvailable();
-        processLazyInitialization(orders);
-        return orders;
+        return dao.getAvailable();
     }
 
     @Override
@@ -141,6 +137,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setPending(false);
         Order savedOrder = dao.save(order);
+        releaseCourierIfNoOrders(savedOrder.getCourier());
         return savedOrder;
     }
 
@@ -189,14 +186,11 @@ public class OrderServiceImpl implements OrderService {
     @CacheEvict(value = "order")
     public Order orderDelivered(Long id) {
         Order order = get(id);
-        CourierDetails courier = order.getCourier();
         order.setStatus(OrderStatus.DONE);
         order.setTimeDelivered(Calendar.getInstance());
         order.setPending(false);
         Order savedOrder = dao.save(order);
-        if(getCourierPendingOrders(courier).size() == 0) {
-            courier.setStatus(CourierDetails.CourierStatus.FREE);
-        }
+        releaseCourierIfNoOrders(order.getCourier());
         return savedOrder;
     }
 
@@ -284,14 +278,9 @@ public class OrderServiceImpl implements OrderService {
         return amount;
     }
 
-    /**
-     * This methods protects from org.hibernate.LazyInitializationException,
-     * that occurs every time we are trying to return lazy loaded orders.
-     * @param orders - list of loaded orders
-     */
-    private void processLazyInitialization(List<Order> orders) {
-        for(Order order : orders) {
-            order.setDishes(null);
+    private void releaseCourierIfNoOrders(CourierDetails courier) {
+        if(getCourierPendingOrders(courier).size() == 0) {
+            courier.setStatus(CourierDetails.CourierStatus.FREE);
         }
     }
 }
