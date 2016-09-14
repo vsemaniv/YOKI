@@ -8,6 +8,8 @@ import com.cusbee.yoki.model.DishModel;
 
 public interface DishService {
 
+	Dish save(Dish dish);
+
 	void remove(Long id);
 
 	Dish get(Long id);

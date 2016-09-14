@@ -44,6 +44,12 @@ public class OrderServiceImpl implements OrderService {
     private ValidatorService validatorService;
 
     @Override
+    @CacheEvict(value = "order", key = "#order.id")
+    public Order save(Order order) {
+        return dao.save(order);
+    }
+
+    @Override
     public List<Order> getAll() {
         List<Order> orders = dao.getAll();
         processLazyInitialization(orders);

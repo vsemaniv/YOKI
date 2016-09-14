@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface IngredientService {
 
+    Ingredient save(Ingredient ingredient);
+
     List<Ingredient> getAll();
 
     Ingredient get(Long id);

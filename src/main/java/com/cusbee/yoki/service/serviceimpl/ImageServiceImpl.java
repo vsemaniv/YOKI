@@ -1,7 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.dao.DishDao;
-import com.cusbee.yoki.dao.IngredientDao;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.DishImage;
 import com.cusbee.yoki.entity.IdEntity;
@@ -43,9 +42,6 @@ public class ImageServiceImpl implements ImageService {
     DishDao dishDao;
 
     @Autowired
-    IngredientDao ingredientDao;
-
-    @Autowired
     ValidatorService validatorService;
 
     @Override
@@ -60,12 +56,12 @@ public class ImageServiceImpl implements ImageService {
                         relativePath = saveImage(image, type, id);
                         dish.getImages().add(new DishImage(ALIAS_PATH + relativePath, dish));
                     }
-                    return dishDao.save(dish);
+                    return dishService.save(dish);
                 case INGREDIENT:
                     Ingredient ingredient = ingredientService.get(id);
                     relativePath = saveImage(images[0], type, id);
                     ingredient.setIconLink(ALIAS_PATH + relativePath);
-                    return ingredientDao.save(ingredient);
+                    return ingredientService.save(ingredient);
             }
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Unknown image type");
@@ -142,7 +138,7 @@ public class ImageServiceImpl implements ImageService {
         validatorService.validateEntityNotNull(dishImage, DishImage.class);
         Dish dish = dishImage.getDish();
         dish.getImages().remove(dishImage);
-        dishDao.save(dish);
+        dishService.save(dish);
     }
 /*
     public static void main(String[] args) {

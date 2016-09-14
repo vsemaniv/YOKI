@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.cusbee.yoki.dao.OrderDao;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 
@@ -19,9 +18,6 @@ import java.util.List;
 public class AdministratorServiceImpl implements AdministratorService {
 
 	@Autowired
-	private OrderDao dao;
-
-	@Autowired
 	private StorageService posterService;
 
 	@Autowired
@@ -30,17 +26,14 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Autowired
 	private OrderService orderService;
 
-	@Autowired
-	private OrderDao orderDao;
-
 	@Override
 	public YokiPosterResponse acceptIncomingKitchenOrder(Long id) {
-    	Order order = dao.get(id);
+    	Order order = orderService.get(id);
 		order.setStatus(OrderStatus.COOKING);
 		if(!order.isWrittenOff()) {
 			String result = posterService.writeOffOrder(order);
 			order.setWrittenOff(true);
-			Order savedOrder = dao.save(order);
+			Order savedOrder = orderService.save(order);
 			return new YokiPosterResponse(result, savedOrder);
 		} else {
 			throw new ApplicationException(HttpStatus.BAD_REQUEST,
@@ -56,7 +49,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 		}
 		order.setStatus(OrderStatus.DELIVERY);
 		order.setTimeTaken(Calendar.getInstance());
-		return orderDao.save(order);
+		return orderService.save(order);
 	}
 
 	public void passOrdersToCourier(Long courierId) {
@@ -71,7 +64,7 @@ public class AdministratorServiceImpl implements AdministratorService {
         for(Order pendingOrder : courierPendingOrders) {
             pendingOrder.setStatus(OrderStatus.DELIVERY);
             pendingOrder.setTimeTaken(currentTime);
-            orderDao.save(pendingOrder);
+            orderService.save(pendingOrder);
         }
     }
 

@@ -42,6 +42,12 @@ public class DishServiceImpl implements DishService {
     private ImageService imageService;
 
     @Override
+    @CacheEvict(value = "dish", allEntries = true)
+    public Dish save(Dish dish) {
+        return dao.save(dish);
+    }
+
+    @Override
     @Cacheable("dish")
     public Dish get(Long id) {
         validatorService.validateRequestIdNotNull(id, Dish.class);

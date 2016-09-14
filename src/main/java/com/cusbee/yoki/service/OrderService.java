@@ -10,6 +10,8 @@ import com.cusbee.yoki.model.OrderModel;
 
 public interface OrderService {
 
+	Order save(Order order);
+
 	void remove(Order order);
 
 	List<Order> getAll();

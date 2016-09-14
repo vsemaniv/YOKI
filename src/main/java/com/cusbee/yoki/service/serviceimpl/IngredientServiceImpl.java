@@ -28,6 +28,12 @@ public class IngredientServiceImpl implements IngredientService {
     private ValidatorService validatorService;
 
     @Override
+    @CacheEvict(value = "ingredient", allEntries = true)
+    public Ingredient save(Ingredient ingredient) {
+        return dao.save(ingredient);
+    }
+
+    @Override
     @Cacheable("ingredient")
     public List<Ingredient> getAll() {
         return dao.getAll();
