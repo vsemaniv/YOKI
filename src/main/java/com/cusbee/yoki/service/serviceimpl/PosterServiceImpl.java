@@ -1,5 +1,6 @@
 package com.cusbee.yoki.service.serviceimpl;
 
+import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.DishQuantity;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.poster.*;
@@ -7,6 +8,7 @@ import com.cusbee.yoki.service.StorageService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -26,6 +28,9 @@ public class PosterServiceImpl implements StorageService {
     private static String token = "4f665e3e5c5f15ab92749a46b0c904ab";
 
     private static StringBuilder couldNotWriteOff = new StringBuilder();
+
+    @Autowired
+    DishDao dishDao;
 
     @Override
     public String writeOffOrder(Order order) {
@@ -66,7 +71,7 @@ public class PosterServiceImpl implements StorageService {
     private List<WriteOffDish> remapDishes(Order order) {
         List<WriteOffDish> writeOffList = new ArrayList<>();
         List<PosterDish> posterDishes = getDishesFromPoster();
-        List<DishQuantity> orderMap = order.getDishes();
+        List<DishQuantity> orderMap = dishDao.getDishesByOrder(order);
         //required for building could-not-writeoff-string
         boolean flag = true;
 

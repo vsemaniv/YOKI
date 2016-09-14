@@ -3,6 +3,7 @@ package com.cusbee.yoki.service.serviceimpl;
 import com.cusbee.yoki.dao.IngredientDao;
 import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.model.IngredientModel;
+import com.cusbee.yoki.service.ImageService;
 import com.cusbee.yoki.service.IngredientService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.lang.StringUtils;
@@ -27,14 +28,17 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
     private ValidatorService validatorService;
 
+    @Autowired
+    private ImageService imageService;
+
     @Override
-    @CacheEvict(value = "ingredient", allEntries = true)
+    @CacheEvict(cacheNames = {"ingredient", "ingredients"}, allEntries = true)
     public Ingredient save(Ingredient ingredient) {
         return dao.save(ingredient);
     }
 
     @Override
-    @Cacheable("ingredient")
+    @Cacheable("ingredients")
     public List<Ingredient> getAll() {
         return dao.getAll();
     }
@@ -49,7 +53,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @CacheEvict(value = "ingredient", allEntries = true)
+    @CacheEvict(cacheNames = {"ingredient", "ingredients"}, allEntries = true)
     public Ingredient addIngredient(IngredientModel request) {
         Ingredient ingredient = new Ingredient();
         if(StringUtils.isNotEmpty(request.getName())) {
@@ -59,7 +63,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @CacheEvict(value = "ingredient", allEntries = true)
+    @CacheEvict(cacheNames = {"ingredient", "ingredients"}, allEntries = true)
     public Ingredient updateIngredient(IngredientModel request) {
         Ingredient ingredient = get(request.getId());
         if(StringUtils.isNotEmpty(request.getName())) {
@@ -69,9 +73,12 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @CacheEvict(value = "ingredient", allEntries = true)
+    @CacheEvict(cacheNames = {"ingredient", "ingredients"}, allEntries = true)
     public void remove(Long id) {
         Ingredient ingredient = get(id);
+        if(StringUtils.isNotEmpty(ingredient.getIconLink())) {
+            imageService.removeIngredientIcon(ingredient.getIconLink());
+        }
         dao.remove(ingredient);
     }
 }

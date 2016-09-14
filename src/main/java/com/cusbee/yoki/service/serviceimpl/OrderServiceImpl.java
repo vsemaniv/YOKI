@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     private ValidatorService validatorService;
 
     @Override
-    @CacheEvict(value = "order", key = "#order.id")
+    @CacheEvict(cacheNames = {"order", "order_dishes"}, key = "#order.id")
     public Order save(Order order) {
         return dao.save(order);
     }
@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable("order")
+    @Cacheable("order_dishes")
     public List<DishQuantity> getDishesByOrder(Long orderId) {
         Order order = get(orderId);
         return dishDao.getDishesByOrder(order);
@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @CacheEvict(value = "order", key = "#request.id")
+    @CacheEvict(cacheNames = {"order", "order_dishes"}, key = "#order.id")
     public Order updateOrder(OrderModel request) {
         validatorService.validateOrderSaveRequest(request, CrudOperation.UPDATE);
         Order order = get(request.getId());
@@ -250,7 +250,7 @@ public class OrderServiceImpl implements OrderService {
      * @param dishModels    - dish models received from front-end
      */
     private void resetDishes(Order order, List<DishQuantityModel> dishModels) {
-        List<DishQuantity> dishes = order.getDishes();
+        List<DishQuantity> dishes = dishDao.getDishesByOrder(order);
         dishes.clear();
         for (DishQuantityModel model : dishModels) {
             Dish dish = dishService.get(model.getDishId());

@@ -18,8 +18,13 @@ public class CacheConfig {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Arrays.asList(
                 new ConcurrentMapCache("order"),
+                new ConcurrentMapCache("order_dishes"),
                 new ConcurrentMapCache("dish"),
-                new ConcurrentMapCache("ingredient")));
+                new ConcurrentMapCache("all_dishes"),
+                new ConcurrentMapCache("av_dishes"),
+                new ConcurrentMapCache("category_dishes"),
+                new ConcurrentMapCache("ingredient"),
+                new ConcurrentMapCache("ingredients")));
         return cacheManager;
     }
 }

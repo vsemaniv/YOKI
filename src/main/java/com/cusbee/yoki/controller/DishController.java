@@ -81,7 +81,7 @@ public class DishController {
     }
 
     @ApiOperation(value = "get ingredients")
-    @RequestMapping(value = "getIngredients", method = RequestMethod.GET)
+    @RequestMapping(value = "getIngredients", method = RequestMethod.POST)
     public List<Ingredient> getIngredients(@RequestBody IdModel idModel) {
         return dishService.getIngredients(idModel.getId());
     }

@@ -12,4 +12,6 @@ public interface ImageService {
     List<String> addSliderImages(MultipartFile... images);
 
     void removeDishImages(List<String> links);
+
+    void removeIngredientIcon(String link);
 }

@@ -94,6 +94,18 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    @Override
+    public void removeIngredientIcon(String link) {
+        removeDishImageEntity(link);
+        String linkToDelete = link.replace(ALIAS_PATH, BASE_PATH);
+        File file = new File(linkToDelete);
+        if (file.exists()) {
+            file.delete();
+        } else {
+            LOG.error("Attempt to delete image on non-existing path. Link: " + linkToDelete);
+        }
+    }
+
     /**
      * @param image - multipart with image to save
      * @return relative path to access image

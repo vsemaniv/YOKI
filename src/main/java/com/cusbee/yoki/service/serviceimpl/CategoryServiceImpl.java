@@ -90,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	@Cacheable("dish")
+	@Cacheable("category_dishes")
 	public Set<Dish> getAllDishes(Long id) {
 		Category category = get(id);
 		return category.getDishes();
@@ -98,7 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	@Cacheable("dish")
+	@Cacheable("category_dishes")
 	public List<Dish> getAvailableDishes(Long id) {
 		Category category = get(id);
 		return dishDao.getAvailable(category);
@@ -111,7 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	@CacheEvict(value = "dish", allEntries = true)
+	@CacheEvict(value = "category_dishes", allEntries = true)
 	public Category addDishToCategory(CategoryModel request) {
 		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
@@ -136,7 +136,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	@CacheEvict(value = "dish", allEntries = true)
+	@CacheEvict(value = "category_dishes", allEntries = true)
 	public Category removeDishFromCategory(CategoryModel request) {
 		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?

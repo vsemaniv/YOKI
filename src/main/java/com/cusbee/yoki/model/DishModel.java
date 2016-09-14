@@ -15,12 +15,12 @@ public class DishModel implements RequestModel, Serializable {
 	private String type;
 	private Double price;
 	private Long categoryId;
-	private List<Ingredient> ingredients;
+	private List<Long> ingredientIds;
 	
 	public DishModel(){}
 	
 	public DishModel(Long id, String name, Double price, String description, Long category_id,
-					 String type, List<Ingredient> ingredients) {
+					 String type, List<Long> ingredientIds) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -28,7 +28,7 @@ public class DishModel implements RequestModel, Serializable {
 		this.description = description;
 		this.categoryId = category_id;
 		this.type = type;
-		this.ingredients = ingredients;
+		this.ingredientIds = ingredientIds;
 	}
 
 	@Override
@@ -80,11 +80,11 @@ public class DishModel implements RequestModel, Serializable {
 		this.categoryId = categoryId;
 	}
 
-	public List<Ingredient> getIngredients() {
-		return ingredients;
+	public List<Long> getIngredientIds() {
+		return ingredientIds;
 	}
 
-	public void setIngredients(List<Ingredient> ingredients) {
-		this.ingredients = ingredients;
+	public void setIngredientIds(List<Long> ingredientIds) {
+		this.ingredientIds = ingredientIds;
 	}
 }

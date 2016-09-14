@@ -6,7 +6,9 @@ import java.util.List;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
+import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.repositories.DishRepository;
+import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +45,10 @@ public class DishServiceImpl implements DishService {
     private ImageService imageService;
 
     @Autowired
-    private DishRepository dishRepository;
+    private IngredientRepository ingredientRepository;
 
     @Override
-    @CacheEvict(value = "dish", allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
     public Dish save(Dish dish) {
         return dao.save(dish);
     }
@@ -61,19 +63,19 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    @Cacheable("dish")
+    @Cacheable("all_dishes")
     public List<Dish> getAll() {
         return dao.getAll();
     }
 
     @Override
-    @Cacheable("dish")
+    @Cacheable("av_dishes")
     public List<Dish> getAvailable() {
         return dao.getAvailable();
     }
 
     @Override
-    @CacheEvict(value = "dish", allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
     public void remove(Long id) {
         Dish dish = get(id);
         dish.setCategory(null);
@@ -83,7 +85,7 @@ public class DishServiceImpl implements DishService {
 
 
     @Override
-    @CacheEvict(value = "dish", allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
     public Dish saveDish(DishModel request, CrudOperation operation) {
         Dish dish;
         validatorService.validateDishSaveRequest(request, operation);
@@ -113,14 +115,14 @@ public class DishServiceImpl implements DishService {
         }
         Long categoryId = request.getCategoryId();
         dish.setCategory(categoryId == null ? null : categoryService.get(categoryId));
-        if(CollectionUtils.isNotEmpty(request.getIngredients())) {
-            addIngredientsToDish(dish, request.getIngredients());
+        if(CollectionUtils.isNotEmpty(request.getIngredientIds())) {
+            remapDishIngredients(dish, request.getIngredientIds());
         }
         return dao.save(dish);
     }
 
     @Override
-    @CacheEvict(value = "dish", allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
     public Dish processActivation(Long id, boolean activate) {
         Dish dish = get(id);
         activationService.processActivation(dish, activate);
@@ -128,9 +130,8 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    @Cacheable("dish")
     public List<Ingredient> getIngredients(Long dishId) {
-        return dishRepository.getDishIngredients(dishId);
+        return ingredientRepository.getDishIngredients(dishId);
     }
 
     private DishType getDishType(DishModel request) {
@@ -147,10 +148,12 @@ public class DishServiceImpl implements DishService {
         imageService.removeDishImages(links);
     }
 
-    private void addIngredientsToDish(Dish dish, List<Ingredient> ingredients) {
-        List<Ingredient> ingredientList = dish.getIngredients();
-        for(Ingredient ingredientRequest : ingredients) {
-            ingredientList.add(ingredientService.get(ingredientRequest.getId()));
+    private void remapDishIngredients(Dish dish, List<Long> ingredientIds) {
+        List<Ingredient> ingredientList = ingredientRepository.getDishIngredients(dish.getId());
+        ingredientList.clear();
+        for(Long ingredientId : ingredientIds) {
+            ingredientList.add(ingredientService.get(ingredientId));
         }
+        dish.setIngredients(ingredientList);
     }
 }
