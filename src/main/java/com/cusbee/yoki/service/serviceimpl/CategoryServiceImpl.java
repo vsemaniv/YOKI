@@ -7,6 +7,8 @@ import com.cusbee.yoki.service.ActivationService;
 import com.cusbee.yoki.service.ValidatorService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
+	@Cacheable("dish")
 	public Set<Dish> getAllDishes(Long id) {
 		Category category = get(id);
 		return category.getDishes();
@@ -95,6 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
+	@Cacheable("dish")
 	public List<Dish> getAvailableDishes(Long id) {
 		Category category = get(id);
 		return dishDao.getAvailable(category);
@@ -107,6 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@CacheEvict(value = "dish", allEntries = true)
 	public Category addDishToCategory(CategoryModel request) {
 		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
@@ -130,6 +135,8 @@ public class CategoryServiceImpl implements CategoryService {
 		return category;
 	}
 
+	@Override
+	@CacheEvict(value = "dish", allEntries = true)
 	public Category removeDishFromCategory(CategoryModel request) {
 		validatorService.validateRequestNotNull(request, Category.class);
 		//TODO we should implement this logic on frontend. If someone calls it on backend, it will cause nothing, right?
