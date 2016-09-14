@@ -36,6 +36,8 @@ public interface OrderService {
 
 	List<Order> getCourierPendingOrders(CourierDetails courier);
 
+	Order orderDelivered(Long id);
+
 	Order closeOrder(Long id);
 	
 }

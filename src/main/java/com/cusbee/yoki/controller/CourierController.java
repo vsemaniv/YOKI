@@ -44,7 +44,7 @@ public class CourierController {
     @RequestMapping(value="delivered", method=RequestMethod.POST)
     public YokiResult<Order> orderDelivered(@RequestBody IdModel idModel) {
     	// status DONE and time when courier done this order and status courier in free
-    	return new YokiResult<Order>(HttpStatus.OK, "Order is done", courierService.orderDelivered(idModel.getId()));
+    	return new YokiResult<Order>(HttpStatus.OK, "Order is done", orderService.orderDelivered(idModel.getId()));
     }
 
     @RequestMapping(value = "saveMessagingToken", method = RequestMethod.POST)

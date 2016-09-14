@@ -1,8 +1,6 @@
 package com.cusbee.yoki.service;
 
-import com.cusbee.yoki.entity.Account;
 import com.cusbee.yoki.entity.CourierDetails;
-import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.model.CallCourierModel;
 import com.cusbee.yoki.model.CourierModel;
 import com.cusbee.yoki.model.IdModel;
@@ -22,8 +20,6 @@ public interface CourierDetailsService {
     CourierDetails getCourierByUsername(String username);
 
     CourierDetails updateStatus(Long id, CourierDetails.CourierStatus status);
-
-    Order orderDelivered(Long orderId);
 
     CourierDetails saveCourierDetails(CourierModel request);
 

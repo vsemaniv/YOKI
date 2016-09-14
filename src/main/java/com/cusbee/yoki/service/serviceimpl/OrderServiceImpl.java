@@ -181,6 +181,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @CacheEvict(value = "order")
+    public Order orderDelivered(Long id) {
+        Order order = get(id);
+        CourierDetails courier = order.getCourier();
+        order.setStatus(OrderStatus.DONE);
+        order.setTimeDelivered(Calendar.getInstance());
+        order.setPending(false);
+        Order savedOrder = dao.save(order);
+        if(getCourierPendingOrders(courier).size() == 0) {
+            courier.setStatus(CourierDetails.CourierStatus.FREE);
+        }
+        return savedOrder;
+    }
+
+    @Override
+    @CacheEvict(value = "order")
     public Order closeOrder(Long id) {
         Order order = get(id);
         order.setClosed(true);
