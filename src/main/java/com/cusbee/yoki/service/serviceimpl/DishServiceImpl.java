@@ -9,6 +9,8 @@ import com.cusbee.yoki.entity.enums.DishType;
 import com.cusbee.yoki.service.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishModel;
-
+//TODO make separate cache for get alls
 @Service
 @Transactional
 public class DishServiceImpl implements DishService {
@@ -40,7 +42,7 @@ public class DishServiceImpl implements DishService {
     private ImageService imageService;
 
     @Override
-    @Transactional
+    @Cacheable("dish")
     public Dish get(Long id) {
         validatorService.validateRequestIdNotNull(id, Dish.class);
         Dish dish = dao.get(id);
@@ -49,16 +51,19 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Cacheable("dish")
     public List<Dish> getAll() {
         return dao.getAll();
     }
 
+    @Override
+    @Cacheable("dish")
     public List<Dish> getAvailable() {
         return dao.getAvailable();
     }
 
     @Override
-    @Transactional
+    @CacheEvict(value = "dish", allEntries = true)
     public void remove(Long id) {
         Dish dish = get(id);
         dish.setCategory(null);
@@ -68,7 +73,7 @@ public class DishServiceImpl implements DishService {
 
 
     @Override
-    @Transactional
+    @CacheEvict(value = "dish", allEntries = true)
     public Dish saveDish(DishModel request, CrudOperation operation) {
         Dish dish;
         validatorService.validateDishSaveRequest(request, operation);
@@ -105,6 +110,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @CacheEvict(value = "dish", allEntries = true)
     public Dish processActivation(Long id, boolean activate) {
         Dish dish = get(id);
         activationService.processActivation(dish, activate);

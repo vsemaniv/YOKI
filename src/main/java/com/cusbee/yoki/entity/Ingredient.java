@@ -2,6 +2,7 @@ package com.cusbee.yoki.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created on 12.09.2016.
@@ -42,5 +43,18 @@ public class Ingredient implements IdEntity, Serializable {
 
     public void setIconLink(String iconLink) {
         this.iconLink = iconLink;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ingredient that = (Ingredient) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

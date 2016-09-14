@@ -12,6 +12,8 @@ import com.cusbee.yoki.service.*;
 import com.cusbee.yoki.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +44,6 @@ public class OrderServiceImpl implements OrderService {
     private ValidatorService validatorService;
 
     @Override
-    public void remove(Order order) {
-        dao.remove(order);
-    }
-
-    @Override
     public List<Order> getAll() {
         List<Order> orders = dao.getAll();
         processLazyInitialization(orders);
@@ -61,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable("order")
     public List<DishQuantity> getDishesByOrder(Long orderId) {
         Order order = get(orderId);
         return order.getDishes();
@@ -86,6 +84,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable("order")
     public Order get(Long id) {
         validatorService.validateRequestIdNotNull(id, Order.class);
         Order order = dao.get(id);
@@ -94,53 +93,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order saveOrder(OrderModel request, CrudOperation operation) {
-        validatorService.validateOrderSaveRequest(request, operation);
-        Order order;
-        switch (operation) {
-            case CREATE:
-                order = new Order();
-                order.setOrderDate(Calendar.getInstance());
-                order.setClient(parseClient(request.getClient(), new Client()));
-                order.setStatus(OrderStatus.FRESH);
-                break;
-            case UPDATE:
-                order = get(request.getId());
-                if(request.getClient() != null) {
-                    order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
-                }
-                break;
-            default:
-                throw new ApplicationException(HttpStatus.BAD_REQUEST,
-                        "Invalid Request");
-        }
-        if(request.getTimeToDeliver() != null){
-            if(request.getTimeToDeliver().isEmpty()) {
-                order.setTimeToDeliver(null);
-            } else {
-                order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
-            }
-        }
-        if(request.getCourierId() != null) {
-            if(order.getTimeToDeliver() != null) {
-                order.setCourier(courierService.get(request.getCourierId()));
-            } else {
-                throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "You should specify delivery time before specifying the courier!");
-            }
-        }
-        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
-            order.setStatus(OrderStatus.valueOf(request.getStatus()));
-        }
-        if(request.getDishes() != null) {
-            List<DishQuantityModel> dishModels = request.getDishes();
-            resetDishes(order, dishModels);
-            order.setCost(countAmount(request.getDishes()));
-        }
-        return dao.save(order);
+    public Order createOrder(OrderModel request) {
+        validatorService.validateOrderSaveRequest(request, CrudOperation.CREATE);
+        Order order = new Order();
+        order.setOrderDate(Calendar.getInstance());
+        order.setClient(parseClient(request.getClient(), new Client()));
+        order.setStatus(OrderStatus.FRESH);
+        return saveOrder(request, order);
     }
 
     @Override
+    @CacheEvict(value = "order", key = "#request.id")
+    public Order updateOrder(OrderModel request) {
+        validatorService.validateOrderSaveRequest(request, CrudOperation.UPDATE);
+        Order order = get(request.getId());
+        if(request.getClient() != null) {
+            order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
+        }
+        return saveOrder(request, order);
+    }
+
+    @Override
+    @CacheEvict(value = "order", key = "#request.id")
     public Order declineOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
@@ -166,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Deprecated
     @Override
+    @CacheEvict(value = "order", key = "#request.id")
     public Order assignCourierToOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
@@ -185,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @CacheEvict(value = "order", key = "#request.id")
     public Order saveOrderStatus(Long id, OrderStatus status) {
         Order order = get(id);
         order.setStatus(status);
@@ -204,9 +180,45 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @CacheEvict(value = "order")
     public Order closeOrder(Long id) {
         Order order = get(id);
         order.setClosed(true);
+        return dao.save(order);
+    }
+
+    @Override
+    @Deprecated
+    //DO NOT USE
+    @CacheEvict(value = "order", key = "#order.id")
+    public void remove(Order order) {
+        dao.remove(order);
+    }
+
+    private Order saveOrder(OrderModel request, Order order) {
+        if(request.getTimeToDeliver() != null){
+            if(request.getTimeToDeliver().isEmpty()) {
+                order.setTimeToDeliver(null);
+            } else {
+                order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
+            }
+        }
+        if(request.getCourierId() != null) {
+            if(order.getTimeToDeliver() != null) {
+                order.setCourier(courierService.get(request.getCourierId()));
+            } else {
+                throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "You should specify delivery time before specifying the courier!");
+            }
+        }
+        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+            order.setStatus(OrderStatus.valueOf(request.getStatus()));
+        }
+        if(request.getDishes() != null) {
+            List<DishQuantityModel> dishModels = request.getDishes();
+            resetDishes(order, dishModels);
+            order.setCost(countAmount(request.getDishes()));
+        }
         return dao.save(order);
     }
 

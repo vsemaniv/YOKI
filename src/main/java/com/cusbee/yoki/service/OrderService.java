@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.cusbee.yoki.entity.CourierDetails;
 import com.cusbee.yoki.entity.DishQuantity;
-import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Order;
 import com.cusbee.yoki.entity.enums.OrderStatus;
 import com.cusbee.yoki.model.OrderModel;
@@ -23,7 +22,9 @@ public interface OrderService {
 
 	Order get(Long id);
 	
-	Order saveOrder(OrderModel request, CrudOperation operation);
+	Order createOrder(OrderModel request);
+
+	Order updateOrder(OrderModel request);
 
 	Order declineOrder(OrderModel request);
 

@@ -42,13 +42,13 @@ public class OrderController {
 
     @RequestMapping(value = "createOrder", method = RequestMethod.POST)
     public YokiResult<Order> createOrder(@RequestBody OrderModel request) {
-        Order order = orderService.saveOrder(request, CrudOperation.CREATE);
+        Order order = orderService.createOrder(request);
         return new YokiResult<>(HttpStatus.OK, "Order was successfully created", order);
     }
 
     @RequestMapping(value = "updateOrder", method = RequestMethod.POST)
     public YokiResult<Order> updateOrder(@RequestBody OrderModel request) {
-        Order order = orderService.saveOrder(request, CrudOperation.UPDATE);
+        Order order = orderService.updateOrder(request);
         return new YokiResult<>(HttpStatus.OK, "Order was successfully updated", order);
     }
 

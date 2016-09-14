@@ -1,6 +1,8 @@
 package com.cusbee.yoki.service;
 
 import com.cusbee.yoki.entity.Ingredient;
+import com.cusbee.yoki.model.IngredientModel;
+
 import java.util.List;
 
 /**
@@ -13,9 +15,9 @@ public interface IngredientService {
 
     Ingredient get(Long id);
 
-    Ingredient addIngredient(Ingredient request);
+    Ingredient addIngredient(IngredientModel request);
 
-    Ingredient updateIngredient(Ingredient request);
+    Ingredient updateIngredient(IngredientModel request);
 
     void remove(Long id);
 }
