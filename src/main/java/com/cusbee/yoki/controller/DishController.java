@@ -2,6 +2,7 @@ package com.cusbee.yoki.controller;
 
 import java.util.List;
 
+import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.model.IdModel;
 import com.cusbee.yoki.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,11 @@ public class DishController {
     public YokiResult<Dish> activate(@RequestBody IdModel idModel) {
         Dish dish = dishService.processActivation(idModel.getId(), true);
         return new YokiResult<Dish>(HttpStatus.OK, SUCCESS, dish);
+    }
+
+    @ApiOperation(value = "get ingredients")
+    @RequestMapping(value = "getIngredients", method = RequestMethod.GET)
+    public List<Ingredient> getIngredients(@RequestBody IdModel idModel) {
+        return dishService.getIngredients(idModel.getId());
     }
 }

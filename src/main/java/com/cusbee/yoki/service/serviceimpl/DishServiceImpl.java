@@ -123,6 +123,13 @@ public class DishServiceImpl implements DishService {
         return dao.save(dish);
     }
 
+    @Override
+    @Cacheable("dish")
+    public List<Ingredient> getIngredients(Long dishId) {
+        Dish dish = get(dishId);
+        return dish.getIngredients();
+    }
+
     private DishType getDishType(DishModel request) {
         String type = request.getType();
         return validatorService.isEnumValid(type, DishType.class) ?

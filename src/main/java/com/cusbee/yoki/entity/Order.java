@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 @Table(name = "orders")
@@ -20,7 +21,8 @@ public class Order implements BaseEntity, Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<DishQuantity> dishes = new ArrayList<>();
 
     @Column(name = "order_date")

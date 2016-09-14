@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.*;
 
 import com.cusbee.yoki.entity.enums.DishType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
@@ -52,6 +53,7 @@ public class Dish implements IdEntity, Activatable, Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "dish_ingredient")
+    @JsonIgnore
     private List<Ingredient> ingredients;
 
     public Long getId() {

@@ -2,6 +2,7 @@ package com.cusbee.yoki.service;
 
 import java.util.List;
 
+import com.cusbee.yoki.entity.Ingredient;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.model.DishModel;
@@ -21,4 +22,6 @@ public interface DishService {
 	Dish saveDish(DishModel request, CrudOperation operation);
 
 	Dish processActivation(Long id, boolean activate);
+
+	List<Ingredient> getIngredients(Long dishId);
 }
