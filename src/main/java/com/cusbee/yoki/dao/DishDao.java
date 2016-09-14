@@ -2,9 +2,7 @@ package com.cusbee.yoki.dao;
 
 import java.util.List;
 
-import com.cusbee.yoki.entity.Category;
-import com.cusbee.yoki.entity.Dish;
-import com.cusbee.yoki.entity.DishImage;
+import com.cusbee.yoki.entity.*;
 
 public interface DishDao {
 
@@ -21,4 +19,6 @@ public interface DishDao {
 	List<Dish> getAvailable();
 
 	List<Dish> getAvailable(Category category);
+
+	List<DishQuantity> getDishesByOrder(Order order);
 }

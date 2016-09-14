@@ -5,13 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.cusbee.yoki.entity.Category;
-import com.cusbee.yoki.entity.DishImage;
+import com.cusbee.yoki.entity.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.DishDao;
-import com.cusbee.yoki.entity.Dish;
 
 @Repository("dishImpl")
 @Transactional
@@ -56,5 +54,11 @@ public class DishDaoImpl implements DishDao {
 	@Override
 	public List<Dish> getAvailable(Category category) {
 		return (List<Dish>) em.createQuery("SELECT d FROM Dish d WHERE d.enabled = 'Y' AND d.category = ?1").setParameter(1, category).getResultList();
+	}
+
+	@Override
+	public List<DishQuantity> getDishesByOrder(Order order) {
+		return (List<DishQuantity>) em.createQuery("SELECT dq FROM DishQuantity dq WHERE dq.order = ?1")
+				.setParameter(1, order).getResultList();
 	}
 }

@@ -2,6 +2,7 @@ package com.cusbee.yoki.service.serviceimpl;
 
 import java.util.*;
 
+import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.OrderStatus;
@@ -27,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDao dao;
+
+    @Autowired
+    private DishDao dishDao;
 
     @Autowired
     private OrderRepository repository;
@@ -63,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
     @Cacheable("order")
     public List<DishQuantity> getDishesByOrder(Long orderId) {
         Order order = get(orderId);
-        return order.getDishes();
+        return dishDao.getDishesByOrder(order);
     }
 
     @Override

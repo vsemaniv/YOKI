@@ -6,6 +6,7 @@ import java.util.List;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
+import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.service.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private DishRepository dishRepository;
 
     @Override
     @CacheEvict(value = "dish", allEntries = true)
@@ -126,8 +130,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Cacheable("dish")
     public List<Ingredient> getIngredients(Long dishId) {
-        Dish dish = get(dishId);
-        return dish.getIngredients();
+        return dishRepository.getDishIngredients(dishId);
     }
 
     private DishType getDishType(DishModel request) {
