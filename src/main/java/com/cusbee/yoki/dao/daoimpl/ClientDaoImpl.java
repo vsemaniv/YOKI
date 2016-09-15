@@ -4,15 +4,15 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.ClientDao;
 import com.cusbee.yoki.entity.Client;
 
 @Repository
-@Transactional 
+@Transactional
 public class ClientDaoImpl implements ClientDao{
 
 	@PersistenceContext

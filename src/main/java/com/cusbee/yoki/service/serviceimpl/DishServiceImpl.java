@@ -6,8 +6,6 @@ import java.util.List;
 import com.cusbee.yoki.entity.*;
 import com.cusbee.yoki.entity.enums.CrudOperation;
 import com.cusbee.yoki.entity.enums.DishType;
-import com.cusbee.yoki.model.IngredientModel;
-import com.cusbee.yoki.repositories.DishRepository;
 import com.cusbee.yoki.repositories.IngredientRepository;
 import com.cusbee.yoki.service.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -16,11 +14,13 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cusbee.yoki.dao.DishDao;
 import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishModel;
+
+import javax.transaction.Transactional;
+
 //TODO make separate cache for get alls
 @Service
 @Transactional

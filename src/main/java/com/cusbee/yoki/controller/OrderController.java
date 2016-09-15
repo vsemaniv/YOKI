@@ -10,7 +10,6 @@ import com.cusbee.yoki.service.OrderService;
 import com.wordnik.swagger.annotations.ApiClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +23,6 @@ import java.util.List;
 @ApiClass("Operations with orders")
 @RestController
 @RequestMapping(value = "order")
-@Transactional
 public class OrderController {
 
     @Autowired

@@ -23,7 +23,10 @@ import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.DishQuantityModel;
 import com.cusbee.yoki.model.OrderModel;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -250,7 +253,7 @@ public class OrderServiceImpl implements OrderService {
      * @param dishModels    - dish models received from front-end
      */
     private void resetDishes(Order order, List<DishQuantityModel> dishModels) {
-        List<DishQuantity> dishes = dishDao.getDishesByOrder(order);
+        List<DishQuantity> dishes = order.getDishes();
         dishes.clear();
         for (DishQuantityModel model : dishModels) {
             Dish dish = dishService.get(model.getDishId());

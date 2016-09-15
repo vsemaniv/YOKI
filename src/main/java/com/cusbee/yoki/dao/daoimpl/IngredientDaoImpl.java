@@ -3,10 +3,10 @@ package com.cusbee.yoki.dao.daoimpl;
 import com.cusbee.yoki.dao.IngredientDao;
 import com.cusbee.yoki.entity.Ingredient;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**

@@ -4,10 +4,10 @@ import com.cusbee.yoki.dao.CourierDao;
 
 import com.cusbee.yoki.entity.CourierDetails;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import java.util.List;
 
@@ -24,7 +24,6 @@ public class CourierDaoImpl implements CourierDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional
     public List<CourierDetails> getAllCouriers(){
         return (List<CourierDetails>) em.createQuery("SELECT cd FROM CourierDetails cd").getResultList();
     }
