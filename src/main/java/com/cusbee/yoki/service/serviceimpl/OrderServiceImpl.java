@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @CacheEvict(cacheNames = {"order", "order_dishes"}, key = "#order.id")
+    @CacheEvict(cacheNames = {"order", "order_dishes"}, key = "#request.id")
     public Order updateOrder(OrderModel request) {
         validatorService.validateOrderSaveRequest(request, CrudOperation.UPDATE);
         Order order = get(request.getId());
@@ -167,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @CacheEvict(value = "order", key = "#request.id")
+    @CacheEvict(value = "order", key = "#id")
     public Order saveOrderStatus(Long id, OrderStatus status) {
         Order order = get(id);
         order.setStatus(status);
