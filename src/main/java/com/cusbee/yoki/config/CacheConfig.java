@@ -22,7 +22,8 @@ public class CacheConfig {
                 new ConcurrentMapCache("dish"),
                 new ConcurrentMapCache("all_dishes"),
                 new ConcurrentMapCache("av_dishes"),
-                new ConcurrentMapCache("category_dishes"),
+                new ConcurrentMapCache("category_all_dishes"),
+                new ConcurrentMapCache("category_av_dishes"),
                 new ConcurrentMapCache("ingredient"),
                 new ConcurrentMapCache("ingredients")));
         return cacheManager;
