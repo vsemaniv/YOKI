@@ -66,6 +66,7 @@ public class AdministratorServiceImpl implements AdministratorService {
             pendingOrder.setTimeTaken(currentTime);
             orderService.save(pendingOrder);
         }
+		courierService.save(courier);
     }
 
 }

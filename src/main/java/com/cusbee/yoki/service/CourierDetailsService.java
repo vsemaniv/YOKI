@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface CourierDetailsService {
 
+    CourierDetails save(CourierDetails courier);
+
     void remove(Long id);
 
     CourierDetails get(Long id);

@@ -48,6 +48,11 @@ public class CourierDetailsServiceImpl implements CourierDetailsService {
     CourierRepository courierRepository;
 
     @Override
+    public CourierDetails save(CourierDetails courier) {
+        return dao.save(courier);
+    }
+
+    @Override
     public CourierDetails get(Long id) {
         validatorService.validateRequestIdNotNull(id, CourierDetails.class);
         CourierDetails courierDetails = dao.get(id);
