@@ -75,15 +75,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrderHistory(String startDate, String endDate, String clientId) {
-        if(StringUtils.isNotEmpty(startDate) && StringUtils.isNotEmpty(endDate)) {
+        if (StringUtils.isNotEmpty(startDate) && StringUtils.isNotEmpty(endDate)) {
             validatorService.validateDates(DateUtil.DATE_FORMAT, startDate, endDate);
-            if(StringUtils.isEmpty(clientId)) {
+            if (StringUtils.isEmpty(clientId)) {
                 return repository.getOrderHistory(startDate, endDate);
             } else {
                 Client client = clientService.get(clientId);
                 return repository.getOrderHistory(startDate, endDate, clientId);
             }
-        } else if(StringUtils.isNotEmpty(clientId)) {
+        } else if (StringUtils.isNotEmpty(clientId)) {
             Client client = clientService.get(clientId);
             return repository.getOrderHistory(clientId);
         } else {
@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrder(OrderModel request) {
         validatorService.validateOrderSaveRequest(request, CrudOperation.UPDATE);
         Order order = get(request.getId());
-        if(request.getClient() != null) {
+        if (request.getClient() != null) {
             order.setClient(parseClient(request.getClient(), clientService.get(request.getClient().getPhone())));
         }
         return saveOrder(request, order);
@@ -127,19 +127,19 @@ public class OrderServiceImpl implements OrderService {
     public Order declineOrder(OrderModel request) {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
-        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+        if (validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Invalid order status");
         }
-        if(StringUtils.isNotEmpty(request.getMessage())) {
+        if (StringUtils.isNotEmpty(request.getMessage())) {
             order.setMessage(request.getMessage());
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,
                     "Decline message should not be empty!");
         }
-        if(request.getClosed() == Boolean.TRUE) {
+        if (request.getClosed() == Boolean.TRUE) {
             order.setClosed(true);
         }
         order.setPending(false);
@@ -155,14 +155,14 @@ public class OrderServiceImpl implements OrderService {
         validatorService.validateRequestNotNull(request, Order.class);
         Order order = get(request.getId());
         CourierDetails courier = courierService.get(request.getCourierId());
-        if(courier.getStatus() != CourierDetails.CourierStatus.FREE) {
+        if (courier.getStatus() != CourierDetails.CourierStatus.FREE) {
             throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Courier must be free to assign orders!");
         }
         if (StringUtils.isNotEmpty(request.getTimeToDeliver())) {
             Calendar timeToDeliver = DateUtil.getCalendar(request.getTimeToDeliver());
             order.setTimeToDeliver(timeToDeliver);
         }
-        if(order.getTimeToDeliver() == null) {
+        if (order.getTimeToDeliver() == null) {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Assigned time to deliver order should not be empty");
         }
         order.setCourier(courier);
@@ -218,25 +218,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Order saveOrder(OrderModel request, Order order) {
-        if(request.getTimeToDeliver() != null){
-            if(request.getTimeToDeliver().isEmpty()) {
+        if (request.getTimeToDeliver() != null) {
+            if (request.getTimeToDeliver().isEmpty()) {
                 order.setTimeToDeliver(null);
             } else {
                 order.setTimeToDeliver(DateUtil.getCalendar(request.getTimeToDeliver()));
             }
         }
-        if(request.getCourierId() != null) {
-            if(order.getTimeToDeliver() != null) {
+        if (request.getCourierId() != null) {
+            if (order.getTimeToDeliver() != null) {
                 order.setCourier(courierService.get(request.getCourierId()));
             } else {
                 throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR,
                         "You should specify delivery time before specifying the courier!");
             }
         }
-        if(validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
+        if (validatorService.isEnumValid(request.getStatus(), OrderStatus.class)) {
             order.setStatus(OrderStatus.valueOf(request.getStatus()));
         }
-        if(request.getDishes() != null) {
+        if (request.getPending() == Boolean.TRUE) {
+            order.setPending(true);
+        }
+        if (request.getDishes() != null) {
             List<DishQuantityModel> dishModels = request.getDishes();
             resetDishes(order, dishModels);
             order.setCost(countAmount(request.getDishes()));
@@ -249,8 +252,8 @@ public class OrderServiceImpl implements OrderService {
      * At first this method clears list of dishes making it empty.
      * Then it adds to order every dish that came in order model from UI.
      *
-     * @param order         - old order version retrieved from database
-     * @param dishModels    - dish models received from front-end
+     * @param order      - old order version retrieved from database
+     * @param dishModels - dish models received from front-end
      */
     private void resetDishes(Order order, List<DishQuantityModel> dishModels) {
         List<DishQuantity> dishes = order.getDishes();
@@ -286,7 +289,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void releaseCourierIfNoOrders(CourierDetails courier) {
-        if(getCourierPendingOrders(courier).size() == 0) {
+        if (getCourierPendingOrders(courier).size() == 0) {
             courier.setStatus(CourierDetails.CourierStatus.FREE);
         }
     }

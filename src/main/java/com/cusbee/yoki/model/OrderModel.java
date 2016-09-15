@@ -16,6 +16,7 @@ public class OrderModel implements RequestModel, Serializable {
     private ClientModel client;
     private Long courierId;
     private Boolean closed;
+    private Boolean pending;
     private String status;
     private String message;
     private String timeToDeliver;
@@ -109,5 +110,13 @@ public class OrderModel implements RequestModel, Serializable {
 
     public void setClosed(Boolean closed) {
         this.closed = closed;
+    }
+
+    public Boolean getPending() {
+        return pending;
+    }
+
+    public void setPending(Boolean pending) {
+        this.pending = pending;
     }
 }
