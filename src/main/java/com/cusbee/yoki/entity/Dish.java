@@ -51,8 +51,10 @@ public class Dish implements IdEntity, Activatable, Serializable {
     @Fetch(FetchMode.JOIN)
     private List<DishImage> images;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "dish_ingredient")
+    @ManyToMany
+    @JoinTable(name = "dish_ingredient",
+            joinColumns = {@JoinColumn(name = "dish_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient_id", referencedColumnName = "id")})
     @JsonIgnore
     private List<Ingredient> ingredients;
 

@@ -154,7 +154,7 @@ public class AccountServiceImpl implements AccountService {
         if(passwordFromDB.equals(encodedPassword)) {
             return true;
         } else {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Password entered in the \"Current password\" field is incorrect.");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Password entered in the 'Current password' field is incorrect.");
         }
     }
 

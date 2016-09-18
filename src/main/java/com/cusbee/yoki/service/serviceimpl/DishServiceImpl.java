@@ -93,6 +93,7 @@ public class DishServiceImpl implements DishService {
             case CREATE:
                 dish = new Dish();
                 dish.setImages(new ArrayList<DishImage>());
+                dish.setIngredients(new ArrayList<Ingredient>());
                 dish.setEnabled(Boolean.TRUE);
                 break;
             case UPDATE:
@@ -149,7 +150,7 @@ public class DishServiceImpl implements DishService {
     }
 
     private void remapDishIngredients(Dish dish, List<Long> ingredientIds) {
-        List<Ingredient> ingredientList = ingredientRepository.getDishIngredients(dish.getId());
+        List<Ingredient> ingredientList = dish.getIngredients();
         ingredientList.clear();
         for(Long ingredientId : ingredientIds) {
             ingredientList.add(ingredientService.get(ingredientId));

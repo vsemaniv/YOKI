@@ -96,7 +96,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void removeIngredientIcon(String link) {
-        removeDishImageEntity(link);
         String linkToDelete = link.replace(ALIAS_PATH, BASE_PATH);
         File file = new File(linkToDelete);
         if (file.exists()) {

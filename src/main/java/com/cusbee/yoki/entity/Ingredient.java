@@ -1,7 +1,10 @@
 package com.cusbee.yoki.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,6 +23,10 @@ public class Ingredient implements IdEntity, Serializable {
 
     @Column
     private String iconLink;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "ingredients")
+    List<Dish> dishes;
 
     public Long getId() {
         return id;
@@ -43,6 +50,14 @@ public class Ingredient implements IdEntity, Serializable {
 
     public void setIconLink(String iconLink) {
         this.iconLink = iconLink;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     @Override
