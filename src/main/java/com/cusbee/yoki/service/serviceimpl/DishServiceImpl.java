@@ -48,7 +48,7 @@ public class DishServiceImpl implements DishService {
     private IngredientRepository ingredientRepository;
 
     @Override
-    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes", "category_av_dishes", "category_all_dishes"}, allEntries = true)
     public Dish save(Dish dish) {
         return dao.save(dish);
     }
@@ -75,7 +75,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes", "category_av_dishes", "category_all_dishes"}, allEntries = true)
     public void remove(Long id) {
         Dish dish = get(id);
         dish.setCategory(null);
@@ -85,7 +85,7 @@ public class DishServiceImpl implements DishService {
 
 
     @Override
-    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes", "category_av_dishes", "category_all_dishes"}, allEntries = true)
     public Dish saveDish(DishModel request, CrudOperation operation) {
         Dish dish;
         validatorService.validateDishSaveRequest(request, operation);
@@ -123,7 +123,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes"}, allEntries = true)
+    @CacheEvict(cacheNames = {"dish", "all_dishes", "av_dishes", "category_av_dishes", "category_all_dishes"}, allEntries = true)
     public Dish processActivation(Long id, boolean activate) {
         Dish dish = get(id);
         activationService.processActivation(dish, activate);
