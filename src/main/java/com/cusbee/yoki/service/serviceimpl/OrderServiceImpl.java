@@ -289,7 +289,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void releaseCourierIfNoOrders(CourierDetails courier) {
-        if (getCourierPendingOrders(courier).size() == 0) {
+        if (courier != null && getCourierPendingOrders(courier).size() == 0) {
             courier.setStatus(CourierDetails.CourierStatus.FREE);
         }
     }
