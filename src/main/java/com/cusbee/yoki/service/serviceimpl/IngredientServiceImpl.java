@@ -1,18 +1,23 @@
 package com.cusbee.yoki.service.serviceimpl;
 
 import com.cusbee.yoki.dao.IngredientDao;
+import com.cusbee.yoki.entity.Dish;
 import com.cusbee.yoki.entity.Ingredient;
+import com.cusbee.yoki.exception.ApplicationException;
 import com.cusbee.yoki.model.IngredientModel;
 import com.cusbee.yoki.service.ImageService;
 import com.cusbee.yoki.service.IngredientService;
 import com.cusbee.yoki.service.ValidatorService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,9 +81,20 @@ public class IngredientServiceImpl implements IngredientService {
     @CacheEvict(cacheNames = {"ingredient", "ingredients"}, allEntries = true)
     public void remove(Long id) {
         Ingredient ingredient = get(id);
-        if(StringUtils.isNotEmpty(ingredient.getIconLink())) {
-            imageService.removeIngredientIcon(ingredient.getIconLink());
+        List<Dish> dishesWithIngredient = new ArrayList<>(ingredient.getDishes());
+        if(CollectionUtils.isEmpty(dishesWithIngredient)) {
+            if(StringUtils.isNotEmpty(ingredient.getIconLink())) {
+                imageService.removeIngredientIcon(ingredient.getIconLink());
+            }
+            dao.remove(ingredient);
+        } else {
+            StringBuilder sb = new StringBuilder("Unable to remove ingredient. It is still present in the next dishes: ");
+            for(Dish dish : dishesWithIngredient) {
+                sb.append(dish.getName() + ",");
+            }
+            sb.deleteCharAt(sb.length()-1);
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, sb.toString());
         }
-        dao.remove(ingredient);
+
     }
 }
