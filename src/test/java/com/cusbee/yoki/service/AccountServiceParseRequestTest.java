@@ -121,7 +121,7 @@ public class AccountServiceParseRequestTest {
 
         verify(validatorService, times(1)).validateAccountSaveRequest(request, CrudOperation.UPDATE);
         assertNotNull(result.getPassword());
-    }*/
+    }
 
     @Test
     public void oldPasswordDoesntMatchTest() {
@@ -142,5 +142,5 @@ public class AccountServiceParseRequestTest {
                 $("5%trasdft", "gto%12rs"),
                 $("ssssssssssssssss", "1DRAWERRRRR")
         );
-    }
+    }*/
 }
