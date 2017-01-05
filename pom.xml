@@ -329,9 +329,9 @@
 					<path>/</path>
 					<port>9090</port>
 					<update>true</update>
-					<url>http://localhost:80/manager/text</url>
-					<username>yoki</username>
-					<password>Say%5Times</password>
+					<url>http://localhost:8080/manager/text</url>
+					<username>root</username>
+					<password>wsxzasdc</password>
 				</configuration>
 			</plugin>
 			<plugin>
