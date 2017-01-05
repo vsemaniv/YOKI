@@ -330,8 +330,8 @@
 					<port>9090</port>
 					<update>true</update>
 					<url>http://localhost:8080/manager/text</url>
-					<username>root</username>
-					<password>wsxzasdc</password>
+					<username>yoki</username>
+					<password>Say%5Times</password>
 				</configuration>
 			</plugin>
 			<plugin>
