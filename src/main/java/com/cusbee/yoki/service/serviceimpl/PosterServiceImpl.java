@@ -23,9 +23,9 @@ public class PosterServiceImpl implements StorageService {
     private static final RestTemplate restTemplate = new RestTemplate();
     private static final Logger LOG = LoggerFactory.getLogger(PosterServiceImpl.class);
 
-    private static final String API = "https://cusbee.joinposter.com/api/";
+    private static final String API = "https://yoki.joinposter.com/api/";
 
-    private static String token = "4f665e3e5c5f15ab92749a46b0c904ab";
+    private static String token = "0888abf80b629d6fbbec09233a72585e";
 
     private static StringBuilder couldNotWriteOff = new StringBuilder();
 
